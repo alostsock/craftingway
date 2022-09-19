@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "preinstall": "cargo install wasm-pack",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "bash -c \"cd crafty && . build-web.sh\" && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

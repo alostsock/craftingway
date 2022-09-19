@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "crafty": "link:crafty/web/pkg",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

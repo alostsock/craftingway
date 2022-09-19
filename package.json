@@ -6,7 +6,8 @@
   "scripts": {
     "preinstall": "cargo install wasm-pack",
     "dev": "vite",
-    "build": "bash -c \"cd crafty && . build-web.sh\" && tsc && vite build",
+    "build-crafty": "bash -c \"cd crafty && . build-web.sh\"",
+    "build": "pnpm run build-crafty && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,0 +1,63 @@
+name: 'Deploy to Netlify'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ 'main' ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Setup Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        cache: 'yarn'
+
+    - name: Install wasm-pack, netlify-cli
+      run: yarn global add wasm-pack netlify-cli
+
+    - name: Get submodule commit hash
+      id: get-submodule-hash
+      run: echo "::set-output name=hash::$(git submodule)"
+
+    - uses: actions/cache@v3
+      id: submodule-cache
+      with:
+        path: crafty/web/pkg
+        key: ${{ steps.get-submodule-hash.outputs.hash }}
+
+    - name: Build submodule
+      if: steps.submodule-cache.outputs.cache-hit != 'true'
+      run: yarn run build-submodule
+
+    - name: Install Node.js dependencies
+      run: yarn install
+
+    - name: Build static files
+      run: yarn run build
+
+    - name: Deploy to Netlify
+      env:
+        AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      # https://cli.netlify.com/commands/deploy
+      run: |
+        netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
+          --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import init, { recipesByJobLevel, simulateActions } from "crafty";
+import init, { simulateActions } from "crafty";
 import type { Recipe, Action, CraftState, SearchOptions, Player } from "crafty";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
@@ -11,7 +11,7 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   score_storage_threshold: undefined,
 };
 
-class _Simulator {
+class _SimulatorState {
   loaded = false;
 
   constructor() {
@@ -24,15 +24,10 @@ class _Simulator {
     if (!this.loaded) throw new Error("attempted to use simulator before load");
   }
 
-  recipesByJobLevel(level: number): Recipe[] {
-    this.checkLoaded();
-    return recipesByJobLevel(level);
-  }
-
   simulateActions(recipe: Recipe, player: Player, actions: Action[]): CraftState {
     this.checkLoaded();
     return simulateActions(recipe, player, DEFAULT_SEARCH_OPTIONS, actions);
   }
 }
 
-export const Simulator = new _Simulator();
+export const SimulatorState = new _SimulatorState();

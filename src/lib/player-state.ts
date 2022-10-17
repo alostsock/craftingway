@@ -9,10 +9,10 @@ const DEFAULT_STATS: PlayerStats = {
   job_level: 1,
   craftsmanship: 0,
   control: 0,
-  cp: 0,
+  cp: 180,
 };
 
-class _Player {
+class _PlayerState {
   private currentJob: Job = "CRP";
   private statsByJob: JobStats;
 
@@ -41,4 +41,4 @@ class _Player {
   }
 }
 
-export const Player = new _Player();
+export const PlayerState = new _PlayerState();

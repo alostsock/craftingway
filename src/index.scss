@@ -1,11 +1,10 @@
 @import "normalize.css";
+@import "variables.css";
 
 :root {
   min-height: 100vh;
 
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
   font-weight: 400;
 
   color-scheme: light dark;
@@ -16,5 +15,97 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.App {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+
+  h1 {
+    margin-top: 3rem;
+    margin-bottom: 0;
+  }
+}
+
+.Emoji {
+  img.emoji {
+    height: 1em;
+    width: 1em;
+    margin: 0 0.25em;
+    vertical-align: -0.125em;
+  }
+}
+
+.PlayerConfig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  fieldset {
+    padding: 0;
+    margin: 0;
+    border: none;
+    display: grid;
+    grid-template-columns: repeat(8, auto);
+    column-gap: var(--1);
+
+    @media (max-width: 40rem) {
+      grid-template-columns: repeat(4, auto);
+      grid-template-rows: repeat(2, auto);
+    }
+
+    input {
+      display: none;
+    }
+
+    label {
+      text-align: center;
+      padding: var(--05) 0;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 70ms;
+    }
+
+    input:checked + label {
+      opacity: 1;
+    }
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(3, auto);
+    justify-items: flex-end;
+    column-gap: var(--2);
+    row-gap: var(--1);
+
+    .field {
+      display: flex;
+      align-items: baseline;
+      gap: var(--05);
+
+      &:first-child {
+        grid-row: 1 / -1;
+      }
+    }
+
+    #input-job_level {
+      width: 3rem;
+    }
+
+    #input-craftsmanship,
+    #input-control,
+    #input-cp {
+      width: 5rem;
+    }
+  }
 }

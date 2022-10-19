@@ -13,7 +13,7 @@ const DEFAULT_STATS: PlayerStats = {
 };
 
 class _PlayerState {
-  private currentJob: Job = "CRP";
+  job: Job = "CRP";
   private statsByJob: JobStats;
 
   constructor() {
@@ -26,17 +26,13 @@ class _PlayerState {
   }
 
   get stats(): PlayerStats {
-    return this.statsByJob[this.currentJob];
-  }
-
-  setJob(job: Job) {
-    this.currentJob = job;
+    return this.statsByJob[this.job];
   }
 
   setStats(stats: Partial<PlayerStats>) {
     for (const stat of ["job_level", "craftsmanship", "control", "cp"] as const) {
       let value = stats[stat];
-      if (value != null) this.statsByJob[this.currentJob][stat] = value;
+      if (value != null) this.statsByJob[this.job][stat] = value;
     }
   }
 }

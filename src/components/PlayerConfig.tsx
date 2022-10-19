@@ -26,7 +26,7 @@ const statConfig = [
 
 const PlayerConfig = observer(function PlayerConfig() {
   return (
-    <div className="PlayerConfig">
+    <section className="PlayerConfig">
       <fieldset>
         {jobs.map(([emoji, job]) => {
           const id = `radio-${job}`;
@@ -34,15 +34,16 @@ const PlayerConfig = observer(function PlayerConfig() {
           return (
             <React.Fragment key={job}>
               <input
-                type="radio"
                 id={id}
+                className="visually-hidden"
+                type="radio"
                 name="job"
                 checked={PlayerState.job === job}
                 value={job}
                 onChange={action((e) => (PlayerState.job = e.target.value as Job))}
                 autoComplete="off"
               />
-              <label htmlFor={id}>
+              <label htmlFor={id} tabIndex={-1}>
                 <Emoji emoji={emoji} />
                 {job}
               </label>
@@ -74,7 +75,7 @@ const PlayerConfig = observer(function PlayerConfig() {
           );
         })}
       </div>
-    </div>
+    </section>
   );
 });
 

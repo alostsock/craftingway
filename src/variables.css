@@ -1,9 +1,54 @@
 :root {
+  /* rem-equivalent dimensions */
   --025: 4px;
   --05: 8px;
-  --075: 12px;
   --1: 16px;
   --15: 24px;
   --2: 32px;
   --3: 48px;
+  --4: 64px;
+
+  --grey-050: hsl(24, 23%, 97%);
+  --grey-100: hsl(26, 13%, 90%);
+  --grey-200: hsl(24, 15%, 80%);
+  --grey-300: hsl(23, 11%, 69%);
+  --grey-400: hsl(25, 8%, 61%);
+  --grey-500: hsl(25, 8%, 48%);
+  --grey-600: hsl(25, 9%, 35%);
+  --grey-700: hsl(22, 10%, 26%);
+  --grey-800: hsl(24, 11%, 24%);
+  --grey-900: hsl(26, 12%, 9%);
+
+  --indigo-050: hsl(221, 68%, 93%);
+  --indigo-100: hsl(221, 78%, 86%);
+  --indigo-200: hsl(224, 67%, 76%);
+  --indigo-300: hsl(225, 57%, 67%);
+  --indigo-400: hsl(227, 50%, 59%);
+  --indigo-500: hsl(227, 42%, 51%);
+  --indigo-600: hsl(228, 45%, 45%);
+  --indigo-700: hsl(230, 49%, 41%);
+  --indigo-800: hsl(232, 51%, 36%);
+  --indigo-900: hsl(234, 62%, 26%);
+
+  --orange-050: hsl(24, 100%, 93%);
+  --orange-100: hsl(22, 100%, 85%);
+  --orange-200: hsl(20, 100%, 77%);
+  --orange-300: hsl(18, 100%, 70%);
+  --orange-400: hsl(16, 94%, 61%);
+  --orange-500: hsl(14, 89%, 55%);
+  --orange-600: hsl(12, 86%, 47%);
+  --orange-700: hsl(10, 93%, 40%);
+  --orange-800: hsl(8, 92%, 35%);
+  --orange-900: hsl(6, 96%, 26%);
+
+  --yellow-050: #fffaeb;
+  --yellow-100: #fcefc7;
+  --yellow-200: #f8e3a3;
+  --yellow-300: #f9da8b;
+  --yellow-400: #f7d070;
+  --yellow-500: #e9b949;
+  --yellow-600: #c99a2e;
+  --yellow-700: #a27c1a;
+  --yellow-800: #7c5e10;
+  --yellow-900: #513c06;
 }

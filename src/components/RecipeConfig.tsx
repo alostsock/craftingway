@@ -16,6 +16,8 @@ const RecipeConfig = observer(function RecipeConfig() {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
 
+  const inputId = "recipe-search";
+
   useReaction(
     () => PlayerState.job,
     () => setQuery("")
@@ -30,12 +32,15 @@ const RecipeConfig = observer(function RecipeConfig() {
   }, [query]);
 
   return (
-    <div className="RecipeConfig">
+    <section className="RecipeConfig">
       <Combobox>
-        <Input value={query} onChange={(e) => setQuery(e.target.value)} />
+        <div className="field">
+          <label htmlFor={inputId}>Recipe</label>
+          <Input id={inputId} value={query} onChange={(e) => setQuery(e.target.value)} />
+        </div>
 
-        {queryResults.length > 0 && (
-          <Popover>
+        <Popover>
+          {queryResults.length > 0 && (
             <List>
               {queryResults.map((recipe) => (
                 <Option key={recipe.name} value={recipe.name}>
@@ -43,10 +48,10 @@ const RecipeConfig = observer(function RecipeConfig() {
                 </Option>
               ))}
             </List>
-          </Popover>
-        )}
+          )}
+        </Popover>
       </Combobox>
-    </div>
+    </section>
   );
 });
 

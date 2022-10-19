@@ -6,7 +6,9 @@ import RecipeConfig from "./RecipeConfig";
 const App = observer(function App() {
   return (
     <div className="App">
-      <h1>craftingway</h1>
+      <h1>
+        crafting<span>way</span>
+      </h1>
 
       <PlayerConfig />
       <RecipeConfig />

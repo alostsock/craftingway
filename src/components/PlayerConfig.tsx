@@ -5,6 +5,7 @@ import React from "react";
 import Emoji from "./Emoji";
 import { Job } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
+import { RecipeState } from "../lib/recipe-state";
 
 const jobs: [emoji: string, job: Job][] = [
   ["🪚", "CRP"],
@@ -25,6 +26,12 @@ const statConfig = [
 ] as const;
 
 const PlayerConfig = observer(function PlayerConfig() {
+  const handleJobChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO: add warning dialog before clearing recipe
+    PlayerState.job = event.target.value as Job;
+    RecipeState.recipe = null;
+  });
+
   return (
     <section className="PlayerConfig">
       <fieldset>
@@ -40,7 +47,7 @@ const PlayerConfig = observer(function PlayerConfig() {
                 name="job"
                 checked={PlayerState.job === job}
                 value={job}
-                onChange={action((e) => (PlayerState.job = e.target.value as Job))}
+                onChange={handleJobChange}
                 autoComplete="off"
               />
               <label htmlFor={id} tabIndex={-1}>

@@ -21,6 +21,7 @@ export interface RecipeData extends Omit<RawRecipeData, "jobs"> {
 class _RecipeState {
   loaded = false;
   recipes: RecipeData[] = [];
+  recipe: RecipeData | null = null;
 
   constructor() {
     makeAutoObservable(this, {

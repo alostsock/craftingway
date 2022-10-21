@@ -1,12 +1,8 @@
-import {
-  Combobox,
-  ComboboxInput as Input,
-  ComboboxPopover as Popover,
-  ComboboxList as List,
-  ComboboxOption as Option,
-} from "@reach/combobox";
+import c from "clsx";
+import { useCombobox } from "downshift";
+import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useAutorun, useReaction } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
@@ -17,6 +13,7 @@ const RecipeConfig = observer(function RecipeConfig() {
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
 
   const inputId = "recipe-search";
+  const inputPrompt = "Search for a recipe";
 
   useReaction(
     () => PlayerState.job,
@@ -25,34 +22,103 @@ const RecipeConfig = observer(function RecipeConfig() {
 
   useAutorun(() => {
     if (query.length >= 1) {
-      setQueryResults(RecipeState.searchRecipes(query, PlayerState.job));
+      const result = RecipeState.searchRecipes(query.toLowerCase(), PlayerState.job);
+      setQueryResults(result);
     } else {
       setQueryResults([]);
     }
   }, [query]);
 
+  const {
+    getComboboxProps,
+    getLabelProps,
+    getInputProps,
+    getMenuProps,
+    getItemProps,
+    isOpen,
+    highlightedIndex,
+    selectedItem: selectedRecipe,
+  } = useCombobox({
+    inputId,
+    inputValue: query,
+    onInputValueChange({ inputValue }) {
+      setQuery(inputValue || "");
+    },
+    items: queryResults,
+    itemToString(item) {
+      return item?.name || "";
+    },
+  });
+
+  useEffect(() => {
+    runInAction(() => (RecipeState.recipe = selectedRecipe));
+  }, [selectedRecipe]);
+
   return (
     <section className="RecipeConfig">
-      <Combobox>
-        <div className="field">
-          <label htmlFor={inputId}>Recipe</label>
-          <Input id={inputId} value={query} onChange={(e) => setQuery(e.target.value)} />
-        </div>
+      <div className="field">
+        <label htmlFor={inputId} {...getLabelProps()}>
+          Recipe
+        </label>
 
-        <Popover>
-          {queryResults.length > 0 && (
-            <List>
-              {queryResults.map((recipe) => (
-                <Option key={recipe.name} value={recipe.name}>
-                  {recipe.name}
-                </Option>
+        <div className="combobox" {...getComboboxProps()}>
+          <input id={inputId} placeholder={inputPrompt} spellCheck="false" {...getInputProps()} />
+
+          <ul {...getMenuProps()}>
+            {isOpen &&
+              queryResults.map((recipe, index) => (
+                <li
+                  key={recipe.name}
+                  className={c({ selected: highlightedIndex === index })}
+                  {...getItemProps({ item: recipe })}
+                >
+                  <HighlightedText needle={query} haystack={recipe.name} />
+                </li>
               ))}
-            </List>
-          )}
-        </Popover>
-      </Combobox>
+          </ul>
+        </div>
+      </div>
     </section>
   );
 });
 
 export default RecipeConfig;
+
+function HighlightedText({ needle, haystack }: { needle: string; haystack: string }) {
+  type Chunk = { highlight: boolean; text: string };
+
+  const chunks: Chunk[] = [];
+
+  // similar to `fuzzysearch` matching
+  let n = 0;
+  let h = 0;
+  while (h < haystack.length) {
+    const nch = needle.charAt(n);
+    const hch = haystack.charAt(h++);
+
+    let highlight;
+    if (nch && nch.toLowerCase() === hch.toLowerCase()) {
+      highlight = false;
+      n++;
+    } else {
+      highlight = true;
+    }
+
+    const chunk = chunks[chunks.length - 1];
+    if (chunk && chunk.highlight === highlight) {
+      chunk.text += hch;
+    } else {
+      chunks.push({ highlight, text: hch });
+    }
+  }
+
+  return (
+    <React.Fragment>
+      {chunks.map(({ highlight, text }, index) => (
+        <span key={index} className={c({ highlight })}>
+          {text}
+        </span>
+      ))}
+    </React.Fragment>
+  );
+}

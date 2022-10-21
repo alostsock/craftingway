@@ -1,5 +1,6 @@
 @import "normalize.css";
 @import "variables.css";
+
 @import "@fontsource/fira-mono/latin-400.css";
 @import "@fontsource/fira-mono/latin-500.css";
 @import "@fontsource/fira-mono/latin-700.css";
@@ -8,7 +9,7 @@
   min-height: 100vh;
 
   font-family: "Fira Mono", monospace;
-  font-weight: 400;
+  font-weight: normal;
   color-scheme: light dark;
   color: var(--orange-050);
   background-color: var(--grey-900);
@@ -17,6 +18,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
 }
 
 input {
@@ -35,7 +41,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 h1 {
-  font-weight: 400;
+  font-weight: normal;
   font-size: 2rem;
 }
 
@@ -79,9 +85,37 @@ section {
   gap: var(--05);
 }
 
-#root {
-  display: flex;
-  justify-content: center;
+.combobox {
+  position: relative;
+
+  ul {
+    position: absolute;
+    width: 100%;
+    color: var(--orange-050);
+    background: var(--grey-800);
+    font-size: 85%;
+    border-radius: 2px;
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+  }
+
+  li {
+    cursor: pointer;
+    padding: var(--025) var(--05);
+    margin: 0;
+
+    &.selected,
+    &:hover {
+      background: var(--grey-600);
+    }
+  }
+
+  .highlight {
+    font-weight: bold;
+  }
 }
 
 .App {
@@ -181,12 +215,12 @@ section {
   padding: var(--05) 0;
 
   .field,
-  div[data-reach-combobox],
+  .combobox,
   input {
     width: 100%;
   }
 
-  div[data-reach-combobox] {
+  .field {
     padding: var(--05);
   }
 }

@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@fontsource/fira-mono": "^4.5.10",
-    "@reach/combobox": "^0.18.0",
+    "clsx": "^1.2.1",
     "crafty": "link:crafty/web/pkg",
+    "downshift": "^6.1.12",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "react": "^18.2.0",

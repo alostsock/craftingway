@@ -146,6 +146,44 @@ section {
   }
 }
 
+.Icon {
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  // these icons are supersampled, so normal transparency is lost
+  // ...and I'm too lazy to fix them.
+  // as a hacky workaround, use border-radius and clip-path
+
+  &.action {
+    height: 3rem;
+    border-radius: 12.5%;
+  }
+
+  &.status {
+    height: 2.5rem;
+    clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 91% 20%, 92% 81%);
+
+    // ensure numerals in the top right don't get cut off
+    &.stacked {
+      clip-path: polygon(
+        8% 81%,
+        9% 20%,
+        50% 5%,
+        65% 12%,
+        80% 10%,
+        91% 9%,
+        93% 20%,
+        91% 31%,
+        92% 81%
+      );
+    }
+  }
+}
+
 .PlayerConfig {
   width: 100%;
   display: flex;

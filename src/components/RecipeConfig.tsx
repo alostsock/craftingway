@@ -8,6 +8,8 @@ import { useAutorun, useReaction } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 
+const RESULT_COUNT = 5;
+
 const RecipeConfig = observer(function RecipeConfig() {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
@@ -22,7 +24,7 @@ const RecipeConfig = observer(function RecipeConfig() {
 
   useAutorun(() => {
     if (query.length >= 1) {
-      const result = RecipeState.searchRecipes(query.toLowerCase(), PlayerState.job);
+      const result = RecipeState.searchRecipes(query.toLowerCase(), PlayerState.job, RESULT_COUNT);
       setQueryResults(result);
     } else {
       setQueryResults([]);
@@ -54,6 +56,8 @@ const RecipeConfig = observer(function RecipeConfig() {
     runInAction(() => (RecipeState.recipe = selectedRecipe));
   }, [selectedRecipe]);
 
+  const stars = (n: number) => Array(n).fill("★").join("");
+
   return (
     <section className="RecipeConfig">
       <div className="field">
@@ -73,6 +77,9 @@ const RecipeConfig = observer(function RecipeConfig() {
                   {...getItemProps({ item: recipe })}
                 >
                   <HighlightedText needle={query} haystack={recipe.name} />
+                  <div className="level-info">
+                    Lv.{recipe.job_level} {stars(recipe.stars)}
+                  </div>
                 </li>
               ))}
           </ul>
@@ -113,12 +120,12 @@ function HighlightedText({ needle, haystack }: { needle: string; haystack: strin
   }
 
   return (
-    <React.Fragment>
+    <div>
       {chunks.map(({ highlight, text }, index) => (
         <span key={index} className={c({ highlight })}>
           {text}
         </span>
       ))}
-    </React.Fragment>
+    </div>
   );
 }

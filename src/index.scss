@@ -26,7 +26,15 @@
 }
 
 input {
+  color: var(--orange-050);
+  background-color: var(--grey-800);
   padding: var(--025) var(--05);
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+input:focus {
+  outline: 1px solid var(--focus-color);
 }
 
 input[type="number"] {
@@ -55,9 +63,9 @@ section {
     left: calc(-1 * var(--15));
     height: 100%;
     width: var(--05);
-    border-radius: 2px;
+    border-radius: var(--border-radius);
     background-color: var(--grey-800);
-    opacity: 0.6;
+    opacity: 0.75;
     transition: background-color 70ms;
   }
 
@@ -93,19 +101,18 @@ section {
     width: 100%;
     color: var(--orange-050);
     background: var(--grey-800);
-    font-size: 85%;
-    border-radius: 2px;
+    border-radius: var(--border-radius);
 
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: var(--05) 0 0 0;
     user-select: none;
   }
 
   li {
     cursor: pointer;
     padding: var(--025) var(--05);
-    margin: 0;
+    margin: var(--05) 0;
 
     &.selected,
     &:hover {
@@ -260,5 +267,9 @@ section {
 
   .field {
     padding: var(--05);
+  }
+
+  .level-info {
+    color: var(--grey-300);
   }
 }

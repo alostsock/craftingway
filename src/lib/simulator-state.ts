@@ -1,6 +1,8 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 import init, { simulateActions } from "crafty";
 import type { Recipe, Action, CraftState, SearchOptions, Player } from "crafty";
+import { RecipeState } from "./recipe-state";
+import { PlayerState } from "./player-state";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   iterations: 100_000,
@@ -14,18 +16,24 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
 class _SimulatorState {
   loaded = false;
 
+  actions: Action[] = [];
+  craftState: CraftState | null = null;
+
   constructor() {
     makeAutoObservable(this);
 
-    init().then(() => (this.loaded = true));
-  }
+    init().then(() => runInAction(() => (this.loaded = true)));
 
-  private checkLoaded() {
-    if (!this.loaded) throw new Error("attempted to use simulator before load");
+    autorun(() => {
+      if (this.loaded && RecipeState.recipe) {
+        this.craftState = this.simulateActions(RecipeState.recipe, PlayerState.stats, this.actions);
+      } else {
+        this.craftState = null;
+      }
+    });
   }
 
   simulateActions(recipe: Recipe, player: Player, actions: Action[]): CraftState {
-    this.checkLoaded();
     return simulateActions(recipe, player, DEFAULT_SEARCH_OPTIONS, actions);
   }
 }

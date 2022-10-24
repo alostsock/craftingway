@@ -1,0 +1,28 @@
+import type { Action } from "crafty";
+
+export const ACTIONS: Action[] = [
+  "AdvancedTouch",
+  "BasicSynthesis",
+  "BasicTouch",
+  "ByregotsBlessing",
+  "CarefulSynthesis",
+  "DelicateSynthesis",
+  "FocusedSynthesis",
+  "FocusedTouch",
+  "GreatStrides",
+  "Groundwork",
+  "Innovation",
+  "Manipulation",
+  "MastersMend",
+  "MuscleMemory",
+  "Observe",
+  "PreparatoryTouch",
+  "PrudentSynthesis",
+  "PrudentTouch",
+  "Reflect",
+  "StandardTouch",
+  "TrainedFinesse",
+  "Veneration",
+  "WasteNot",
+  "WasteNotII",
+];

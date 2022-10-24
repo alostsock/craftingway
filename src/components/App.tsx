@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
+import CraftStateDisplay from "./CraftStateDisplay";
 
 const App = observer(function App() {
   return (
@@ -11,7 +12,10 @@ const App = observer(function App() {
       </h1>
 
       <PlayerConfig />
+
       <RecipeConfig />
+
+      <CraftStateDisplay />
     </div>
   );
 });

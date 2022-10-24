@@ -2,7 +2,7 @@ import c from "clsx";
 import { useCombobox } from "downshift";
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useAutorun, useReaction } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
@@ -50,11 +50,10 @@ const RecipeConfig = observer(function RecipeConfig() {
     itemToString(item) {
       return item?.name || "";
     },
+    onSelectedItemChange({ selectedItem }) {
+      runInAction(() => (RecipeState.recipe = selectedItem || null));
+    },
   });
-
-  useEffect(() => {
-    runInAction(() => (RecipeState.recipe = selectedRecipe));
-  }, [selectedRecipe]);
 
   const stars = (n: number) => Array(n).fill("★").join("");
 

@@ -1,6 +1,7 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import init, { simulateActions } from "crafty";
 import type { Recipe, Action, CraftState, SearchOptions, Player } from "crafty";
+
 import { RecipeState } from "./recipe-state";
 import { PlayerState } from "./player-state";
 
@@ -16,8 +17,8 @@ const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
 class _SimulatorState {
   loaded = false;
 
-  actions: Action[] = [];
-  craftState: CraftState | null = null;
+  private _actions: Action[] = [];
+  private _craftState: CraftState | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -31,6 +32,22 @@ class _SimulatorState {
         this.craftState = null;
       }
     });
+  }
+
+  get actions() {
+    return this._actions;
+  }
+
+  set actions(actions: Action[]) {
+    this._actions = actions;
+  }
+
+  get craftState() {
+    return this._craftState;
+  }
+
+  set craftState(state: CraftState | null) {
+    this._craftState = state;
   }
 
   simulateActions(recipe: Recipe, player: Player, actions: Action[]): CraftState {

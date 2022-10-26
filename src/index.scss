@@ -286,3 +286,29 @@ section {
     width: 100%;
   }
 }
+
+.ActionPlaylist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--15);
+
+  .playlist,
+  .actions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--05);
+  }
+
+  .playlist {
+    background: var(--grey-800);
+    // icon height + padding
+    min-height: calc(3rem + var(--1));
+    padding: var(--05);
+    border-radius: var(--border-radius);
+  }
+
+  .Icon {
+    cursor: grab;
+  }
+}

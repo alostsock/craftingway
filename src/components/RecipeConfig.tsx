@@ -39,7 +39,6 @@ const RecipeConfig = observer(function RecipeConfig() {
     getItemProps,
     isOpen,
     highlightedIndex,
-    selectedItem: selectedRecipe,
   } = useCombobox({
     inputId,
     inputValue: query,
@@ -73,7 +72,7 @@ const RecipeConfig = observer(function RecipeConfig() {
                 <li
                   key={recipe.name}
                   className={c({ selected: highlightedIndex === index })}
-                  {...getItemProps({ item: recipe })}
+                  {...getItemProps({ item: recipe, index })}
                 >
                   <HighlightedText needle={query} haystack={recipe.name} />
                   <div className="level-info">

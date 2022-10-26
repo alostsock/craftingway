@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 
 import Progress from "./Progress";
+import ActionPlaylist from "./ActionPlaylist";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 
@@ -17,6 +18,8 @@ const CraftStateDisplay = observer(function CraftStateDisplay() {
         <Progress label="Durability" value="durability" target="durability_max" />
         <Progress label="CP" value="cp" target="cp_max" />
       </div>
+
+      <ActionPlaylist />
     </section>
   );
 });

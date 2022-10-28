@@ -11,7 +11,7 @@
   font-family: "Fira Mono", monospace;
   font-weight: normal;
   color-scheme: dark;
-  color: var(--orange-050);
+  color: var(--text-color);
   background-color: var(--grey-900);
 
   font-synthesis: none;
@@ -26,7 +26,7 @@
 }
 
 input {
-  color: var(--orange-050);
+  color: var(--text-color);
   background-color: var(--grey-800);
   padding: var(--025) var(--05);
   border: none;
@@ -113,7 +113,7 @@ section {
   ul {
     position: absolute;
     width: 100%;
-    color: var(--orange-050);
+    color: var(--text-color);
     background: var(--grey-800);
     border-radius: var(--border-radius);
 
@@ -183,12 +183,12 @@ section {
   // as a hacky workaround, use border-radius and clip-path
 
   &.action picture {
-    height: 3rem;
+    height: var(--action-icon-height);
     border-radius: 12.5%;
   }
 
   &.status picture {
-    height: 2.5rem;
+    height: var(--status-icon-height);
     clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 91% 20%, 92% 81%);
   }
 
@@ -312,12 +312,12 @@ section {
 
   .playlist {
     background: var(--grey-800);
-    width: calc(100% + var(--1));
-    // icon height + padding
-    min-height: calc(3rem + var(--1));
+    min-height: calc(var(--action-icon-height) + var(--1));
     padding: var(--05);
-    margin: 0 calc(-1 * var(--05));
     border-radius: var(--border-radius);
+    // overflow into the gutter for better vertical alignment
+    width: calc(100% + var(--1));
+    margin: 0 calc(-1 * var(--05));
   }
 
   .Icon {

@@ -8,8 +8,12 @@
   --3: 48px;
   --4: 64px;
 
-  --border-radius: 2px;
+  --text-color: var(--orange-050);
   --focus-color: var(--orange-400);
+  --border-radius: 2px;
+
+  --action-icon-height: 3rem;
+  --status-icon-height: 2.5rem;
 
   --grey-050: hsl(180, 13%, 97%);
   --grey-100: hsl(180, 12%, 88%);

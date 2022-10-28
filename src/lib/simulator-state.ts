@@ -1,5 +1,5 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
-import init, { simulateActions } from "crafty";
+import init, { simulateActions, SimulatorResult } from "crafty";
 import type { Recipe, Action, CraftState, SearchOptions, Player } from "crafty";
 
 import { RecipeState } from "./recipe-state";
@@ -27,7 +27,12 @@ class _SimulatorState {
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
-        this.craftState = this.simulateActions(RecipeState.recipe, PlayerState.stats, this.actions);
+        const { craft_state, completion_reason } = this.simulateActions(
+          RecipeState.recipe,
+          PlayerState.stats,
+          this.actions
+        );
+        this.craftState = craft_state;
       } else {
         this.craftState = null;
       }
@@ -50,7 +55,7 @@ class _SimulatorState {
     this._craftState = state;
   }
 
-  simulateActions(recipe: Recipe, player: Player, actions: Action[]): CraftState {
+  simulateActions(recipe: Recipe, player: Player, actions: Action[]): SimulatorResult {
     return simulateActions(recipe, player, DEFAULT_SEARCH_OPTIONS, actions);
   }
 }

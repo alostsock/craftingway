@@ -7,8 +7,6 @@ import { BUFFS } from "../lib/buffs";
 const BuffList = observer(function BuffList() {
   if (!SimulatorState.craftState) return null;
 
-  console.log(JSON.stringify(SimulatorState.craftState.buffs));
-
   return (
     <div className="BuffList">
       {Object.entries(SimulatorState.craftState.buffs).map(([buffName, stacksOrExpiry]) => {

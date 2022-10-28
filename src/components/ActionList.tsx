@@ -71,7 +71,7 @@ const ActionPlaylist = observer(function ActionPlaylist() {
   }, [items]);
 
   return (
-    <div className="ActionPlaylist">
+    <div className="ActionList">
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={horizontalListSortingStrategy}>
           <MutableList id={id} items={items} />

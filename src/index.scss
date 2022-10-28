@@ -168,8 +168,10 @@ section {
 }
 
 .Icon {
-  display: block;
-  overflow: hidden;
+  picture {
+    display: block;
+    overflow: hidden;
+  }
 
   img {
     width: 100%;
@@ -180,29 +182,30 @@ section {
   // ...and I'm too lazy to fix them.
   // as a hacky workaround, use border-radius and clip-path
 
-  &.action {
+  &.action picture {
     height: 3rem;
     border-radius: 12.5%;
   }
 
-  &.status {
+  &.status picture {
     height: 2.5rem;
     clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 91% 20%, 92% 81%);
+  }
 
-    // ensure numerals in the top right don't get cut off
-    &.stacked {
-      clip-path: polygon(
-        8% 81%,
-        9% 20%,
-        50% 5%,
-        65% 12%,
-        80% 10%,
-        91% 9%,
-        93% 20%,
-        91% 31%,
-        92% 81%
-      );
-    }
+  // ensure numerals in the top right don't get cut off
+  &.status.with-stacks picture {
+    clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 65% 12%, 80% 10%, 91% 9%, 93% 20%, 91% 31%, 92% 81%);
+  }
+
+  &.status.with-expiry {
+    position: relative;
+  }
+
+  &.status.with-expiry .expiry {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -0.75em;
   }
 }
 
@@ -274,9 +277,6 @@ section {
   }
 }
 
-.CraftStateDisplay {
-}
-
 .Progress {
   label span {
     color: var(--grey-300);
@@ -287,7 +287,12 @@ section {
   }
 }
 
-.ActionPlaylist {
+.BuffList {
+  display: flex;
+  gap: var(--025);
+}
+
+.ActionList {
   display: flex;
   flex-direction: column;
   gap: var(--15);

@@ -7,9 +7,11 @@ type Props = {
   type: "action" | "status";
   job?: string;
   stacks?: number;
+  expiry?: number;
 };
 
-const Icon = ({ name, type, job, stacks }: Props) => {
+// component is possibly a bit bloated (split it into ActionIcon/StatusIcon?)
+const Icon = ({ name, type, job, stacks, expiry }: Props) => {
   const noImage = <span>NO IMAGE</span>;
 
   if (type === "action") {
@@ -39,10 +41,13 @@ const Icon = ({ name, type, job, stacks }: Props) => {
   const url = `icon/${type}/${name}`;
 
   return (
-    <picture className={c("Icon", type, stacks && "stacked")}>
-      <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
-      <img src={encodeURI(`${url}.png`)} alt={name} />
-    </picture>
+    <div className={c("Icon", type, stacks && "with-stacks", expiry && "with-expiry")}>
+      <picture>
+        <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
+        <img src={encodeURI(`${url}.png`)} alt={name} />
+      </picture>
+      {type === "status" && expiry && <span className="expiry">{expiry}</span>}
+    </div>
   );
 };
 

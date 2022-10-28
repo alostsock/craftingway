@@ -1,15 +1,16 @@
 import { observer } from "mobx-react-lite";
 
 import Progress from "./Progress";
-import ActionPlaylist from "./ActionPlaylist";
+import ActionList from "./ActionList";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
+import BuffList from "./BuffList";
 
-const CraftStateDisplay = observer(function CraftStateDisplay() {
+const CraftState = observer(function CraftState() {
   if (!RecipeState.recipe || !SimulatorState.craftState) return null;
 
   return (
-    <section className="CraftStateDisplay">
+    <section className="CraftState">
       <h2>{RecipeState.recipe.name}</h2>
 
       <div className="bars">
@@ -19,9 +20,11 @@ const CraftStateDisplay = observer(function CraftStateDisplay() {
         <Progress label="CP" value="cp" target="cp_max" />
       </div>
 
-      <ActionPlaylist />
+      <BuffList />
+
+      <ActionList />
     </section>
   );
 });
 
-export default CraftStateDisplay;
+export default CraftState;

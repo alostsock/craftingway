@@ -305,11 +305,18 @@ section {
     gap: var(--05);
   }
 
+  .actions [aria-disabled="true"] .Icon {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
   .playlist {
     background: var(--grey-800);
+    width: calc(100% + var(--1));
     // icon height + padding
     min-height: calc(3rem + var(--1));
     padding: var(--05);
+    margin: 0 calc(-1 * var(--05));
     border-radius: var(--border-radius);
   }
 

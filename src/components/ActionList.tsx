@@ -49,13 +49,13 @@ const ActionPlaylist = observer(function ActionPlaylist() {
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
     const { action } = active.data.current as DragData;
-
+    // icon was dragged in from the persistent list
     if (over && action) {
       const itemToAdd = idFromAction(action);
       setItems([...items, itemToAdd]);
       return;
     }
-
+    // icon is being rearranged
     if (over && over.id !== active.id) {
       setItems((items) => {
         const oldIndex = items.indexOf(active.id.toString());
@@ -84,15 +84,17 @@ const ActionPlaylist = observer(function ActionPlaylist() {
 
 export default ActionPlaylist;
 
-const PersistentList = () => {
+const PersistentList = observer(function PersistentList() {
+  const activeActions = new Set(SimulatorState.craftState?.available_moves);
+
   return (
     <div className="actions">
       {ACTIONS.map(({ name }) => (
-        <DraggableIcon key={name} id={idFromAction(name)} />
+        <DraggableIcon key={name} id={idFromAction(name)} disabled={!activeActions.has(name)} />
       ))}
     </div>
   );
-};
+});
 
 type MutableListProps = {
   id: string;
@@ -111,7 +113,12 @@ const MutableList = observer(function MutableList({ id, items }: MutableListProp
   );
 });
 
-const DraggableIcon = observer(function DraggableIcon({ id }: { id: string }) {
+type DraggableIconProps = {
+  id: string;
+  disabled?: boolean;
+};
+
+const DraggableIcon = observer(function DraggableIcon({ id, disabled }: DraggableIconProps) {
   const actionName = actionFromId(id);
   const actionLabel = ACTIONS.find((action) => action.name === actionName)?.label;
 
@@ -119,7 +126,8 @@ const DraggableIcon = observer(function DraggableIcon({ id }: { id: string }) {
 
   const data: DragData = { action: actionName };
 
-  const { setNodeRef, transform, attributes, listeners } = useDraggable({ id, data });
+  const { setNodeRef, transform, attributes, listeners } = useDraggable({ id, data, disabled });
+
   const style = transform
     ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
     : undefined;

@@ -278,8 +278,12 @@ section {
 }
 
 .Progress {
-  label span {
+  label {
     color: var(--grey-300);
+
+    span {
+      color: var(--text-color);
+    }
   }
 
   progress {
@@ -288,8 +292,10 @@ section {
 }
 
 .BuffList {
+  margin-top: calc(-1 * var(--1));
   display: flex;
   gap: var(--025);
+  min-height: var(--status-icon-height);
 }
 
 .ActionList {
@@ -322,5 +328,30 @@ section {
 
   .Icon {
     cursor: grab;
+  }
+
+  .SortableIcon {
+    position: relative;
+
+    button {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      width: 1.5em;
+      height: 1.5em;
+      overflow: hidden;
+      background: var(--grey-800);
+      padding: 0.25em 0;
+      border: 0;
+      border-radius: 0 0 0 var(--border-radius);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 70ms;
+    }
+
+    &:hover button {
+      opacity: 0.9;
+    }
   }
 }

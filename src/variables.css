@@ -12,8 +12,8 @@
   --focus-color: var(--orange-400);
   --border-radius: 2px;
 
-  --action-icon-height: 3rem;
-  --status-icon-height: 2.5rem;
+  --action-icon-height: 3em;
+  --status-icon-height: 2.5em;
 
   --grey-050: hsl(180, 13%, 97%);
   --grey-100: hsl(180, 12%, 88%);

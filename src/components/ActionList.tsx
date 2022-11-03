@@ -8,18 +8,22 @@ import {
   KeyboardSensor,
   useSensor,
   useSensors,
+  closestCorners,
 } from "@dnd-kit/core";
 import {
   arrayMove,
-  horizontalListSortingStrategy,
+  rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
 } from "@dnd-kit/sortable";
+
+import type { PointerEvent, KeyboardEvent } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
 import Icon from "./Icon";
+import Emoji from "./Emoji";
 import { ACTIONS } from "../lib/actions";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
@@ -42,9 +46,13 @@ const ActionPlaylist = observer(function ActionPlaylist() {
   const [items, setItems] = useState<string[]>([]);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    useSensor(CustomPointerSensor),
+    useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+
+  useEffect(() => {
+    SimulatorState.actions = items.map(actionFromId);
+  }, [items]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { over, active } = event;
@@ -66,15 +74,16 @@ const ActionPlaylist = observer(function ActionPlaylist() {
     }
   };
 
-  useEffect(() => {
-    SimulatorState.actions = items.map(actionFromId);
-  }, [items]);
+  const removeItem = (id: string) => {
+    const index = items.indexOf(id);
+    setItems([...items.slice(0, index), ...items.slice(index + 1)]);
+  };
 
   return (
     <div className="ActionList">
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <SortableContext items={items} strategy={horizontalListSortingStrategy}>
-          <MutableList id={id} items={items} />
+      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+        <SortableContext items={items} strategy={rectSortingStrategy}>
+          <MutableList id={id} items={items} onRemove={removeItem} />
           <PersistentList />
         </SortableContext>
       </DndContext>
@@ -99,15 +108,16 @@ const PersistentList = observer(function PersistentList() {
 type MutableListProps = {
   id: string;
   items: string[];
+  onRemove: (id: string) => void;
 };
 
-const MutableList = observer(function MutableList({ id, items }: MutableListProps) {
+const MutableList = observer(function MutableList({ id, items, onRemove }: MutableListProps) {
   const { setNodeRef } = useDroppable({ id });
 
   return (
     <div id={id} ref={setNodeRef} className="playlist">
       {items.map((id) => (
-        <SortableIcon key={id} id={id} />
+        <SortableIcon key={id} id={id} onRemove={onRemove} />
       ))}
     </div>
   );
@@ -139,7 +149,12 @@ const DraggableIcon = observer(function DraggableIcon({ id, disabled }: Draggabl
   );
 });
 
-const SortableIcon = observer(function SortableIcon({ id }: { id: string }) {
+type SortableIconProps = {
+  id: string;
+  onRemove: (id: string) => void;
+};
+
+const SortableIcon = observer(function SortableIcon({ id, onRemove }: SortableIconProps) {
   const actionName = actionFromId(id);
   const actionLabel = ACTIONS.find((action) => action.name === actionName)?.label;
 
@@ -154,8 +169,53 @@ const SortableIcon = observer(function SortableIcon({ id }: { id: string }) {
     : undefined;
 
   return (
-    <div ref={setNodeRef} id={id} style={style} {...attributes} {...listeners}>
+    <div
+      ref={setNodeRef}
+      id={id}
+      className="SortableIcon"
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       <Icon name={actionLabel} job={PlayerState.job} type="action" />
+      <button title={`Remove ${actionLabel}`} onClick={() => onRemove(id)} data-no-dnd>
+        <Emoji emoji="❌" />
+      </button>
     </div>
   );
 });
+
+class CustomPointerSensor extends PointerSensor {
+  static activators = [
+    {
+      eventName: "onPointerDown" as const,
+      handler: ({ nativeEvent: event }: PointerEvent) => {
+        return shouldHandleEvent(event.target as HTMLElement);
+      },
+    },
+  ];
+}
+
+class CustomKeyboardSensor extends KeyboardSensor {
+  static activators = [
+    {
+      eventName: "onKeyDown" as const,
+      handler: ({ nativeEvent: event }: KeyboardEvent) => {
+        return shouldHandleEvent(event.target as HTMLElement);
+      },
+    },
+  ];
+}
+
+function shouldHandleEvent(element: HTMLElement | null) {
+  let current = element;
+
+  while (current) {
+    if (current.dataset.noDnd) {
+      return false;
+    }
+    current = current.parentElement;
+  }
+
+  return true;
+}

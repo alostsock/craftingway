@@ -9,7 +9,12 @@
   --4: 64px;
 
   --text-color: var(--orange-050);
+  --text-muted-color: var(--grey-300);
   --focus-color: var(--orange-400);
+  --link-hover-color: var(--indigo-300);
+
+  --small-font-size: 90%;
+
   --border-radius: 2px;
 
   --action-icon-height: 3em;

@@ -25,6 +25,34 @@
   justify-content: center;
 }
 
+button.link {
+  color: var(--text-muted-color);
+  background: none;
+  text-decoration: underline;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    color: var(--link-hover-color);
+    cursor: pointer;
+  }
+}
+
+h1,
+h2 {
+  font-weight: normal;
+  margin: 0;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
 input {
   color: var(--text-color);
   background-color: var(--grey-800);
@@ -46,20 +74,6 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   appearance: none;
   -webkit-appearance: none;
-}
-
-h1,
-h2 {
-  font-weight: normal;
-  margin: 0;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-h2 {
-  font-size: 1.5rem;
 }
 
 section {
@@ -162,7 +176,6 @@ section {
   img.emoji {
     height: 1em;
     width: 1em;
-    margin: 0 0.25em;
     vertical-align: -0.125em;
   }
 }
@@ -212,6 +225,10 @@ section {
 .PlayerConfig {
   align-items: center;
 
+  .Emoji {
+    margin-right: 0.25em;
+  }
+
   fieldset {
     padding: 0;
     margin: 0;
@@ -247,10 +264,8 @@ section {
     column-gap: var(--2);
     row-gap: var(--05);
 
-    .field {
-      &:first-child {
-        grid-row: 1 / -1;
-      }
+    .field:first-child {
+      grid-row: 1 / -1;
     }
 
     #input-job_level {
@@ -261,6 +276,24 @@ section {
     #input-control,
     #input-cp {
       width: 4em;
+    }
+  }
+
+  .copy-prompt,
+  .copy-buttons {
+    align-self: flex-start;
+    font-size: var(--small-font-size);
+  }
+
+  .copy-buttons {
+    margin-top: calc(-1 * var(--1));
+    display: grid;
+    grid-template-columns: repeat(8, auto);
+    gap: var(--05);
+
+    @media (max-width: 22rem) {
+      grid-template-columns: repeat(4, auto);
+      grid-template-rows: repeat(2, auto);
     }
   }
 }
@@ -279,7 +312,7 @@ section {
 
 .Progress {
   label {
-    color: var(--grey-300);
+    color: var(--text-muted-color);
 
     span {
       color: var(--text-color);

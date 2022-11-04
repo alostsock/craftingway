@@ -17,7 +17,7 @@ const STATS_STORE = "statsByJob";
 
 class _PlayerState {
   job: Job;
-  private statsByJob: JobStats;
+  statsByJob: JobStats;
 
   constructor() {
     makeAutoObservable(this);
@@ -50,6 +50,12 @@ class _PlayerState {
     for (const stat of ["job_level", "craftsmanship", "control", "cp"] as const) {
       let value = stats[stat];
       if (value != null) this.statsByJob[this.job][stat] = value;
+    }
+  }
+
+  setStatsForAllJobs(stats: PlayerStats) {
+    for (const job of JOBS) {
+      this.statsByJob[job] = JSON.parse(JSON.stringify(stats));
     }
   }
 }

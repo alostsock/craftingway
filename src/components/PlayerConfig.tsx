@@ -1,22 +1,22 @@
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useState } from "react";
 
 import Emoji from "./Emoji";
-import { Job } from "../lib/jobs";
+import { Job, JOBS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 
-const jobs: [emoji: string, job: Job][] = [
-  ["🪚", "CRP"],
-  ["⚔️", "BSM"],
-  ["🛡️", "ARM"],
-  ["💎", "GSM"],
-  ["🥾", "LTW"],
-  ["🧦", "WVR"],
-  ["☕", "ALC"],
-  ["🍞", "CUL"],
-];
+const jobEmojis: Record<Job, string> = {
+  CRP: "🪚",
+  BSM: "⚔️",
+  ARM: "🛡️",
+  GSM: "💎",
+  LTW: "🥾",
+  WVR: "🧦",
+  ALC: "☕",
+  CUL: "🍞",
+};
 
 const statConfig = [
   { name: "job_level", label: "Level", min: 1, max: 90 },
@@ -30,12 +30,28 @@ const PlayerConfig = observer(function PlayerConfig() {
     // TODO: add warning dialog before clearing recipe
     PlayerState.job = event.target.value as Job;
     RecipeState.recipe = null;
+    setCopyMenuState("inactive");
+  });
+
+  type CopyMenuState = "inactive" | "copying" | "copying-all";
+  const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
+
+  const handleStatsCopy = action((job: Job) => {
+    const stats = PlayerState.statsByJob[job];
+    PlayerState.setStats(stats);
+    setCopyMenuState("inactive");
+  });
+
+  const handleStatsCopyAll = action(() => {
+    const stats = PlayerState.stats;
+    PlayerState.setStatsForAllJobs(stats);
+    setCopyMenuState("inactive");
   });
 
   return (
     <section className="PlayerConfig">
       <fieldset>
-        {jobs.map(([emoji, job]) => {
+        {JOBS.map((job) => {
           const id = `radio-${job}`;
 
           return (
@@ -51,7 +67,7 @@ const PlayerConfig = observer(function PlayerConfig() {
                 autoComplete="off"
               />
               <label htmlFor={id} tabIndex={-1}>
-                <Emoji emoji={emoji} />
+                <Emoji emoji={jobEmojis[job]} />
                 {job}
               </label>
             </React.Fragment>
@@ -82,6 +98,55 @@ const PlayerConfig = observer(function PlayerConfig() {
           );
         })}
       </div>
+
+      {copyMenuState !== "copying" && (
+        <button className="link copy-prompt" onClick={() => setCopyMenuState("copying")}>
+          Copy stats <strong>from</strong> another job
+        </button>
+      )}
+
+      {copyMenuState === "copying" && (
+        <React.Fragment>
+          <div className="copy-prompt">
+            Copy stats from…{" "}
+            <button className="link" onClick={() => setCopyMenuState("inactive")}>
+              Cancel
+            </button>
+          </div>
+
+          <div className="copy-buttons">
+            {JOBS.map((job) => (
+              <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
+                {job}
+              </button>
+            ))}
+          </div>
+        </React.Fragment>
+      )}
+
+      {copyMenuState !== "copying-all" && (
+        <button className="link copy-prompt" onClick={() => setCopyMenuState("copying-all")}>
+          Copy stats <strong>to</strong> all other jobs
+        </button>
+      )}
+
+      {copyMenuState === "copying-all" && (
+        <React.Fragment>
+          <div className="copy-prompt">
+            Copying <Emoji emoji={jobEmojis[PlayerState.job]} />
+            {PlayerState.job} stats to all other jobs…{" "}
+          </div>
+          <div className="copy-buttons">
+            <span>Are you sure?</span>
+            <button className="link" onClick={handleStatsCopyAll}>
+              OK
+            </button>
+            <button className="link" onClick={() => setCopyMenuState("inactive")}>
+              Cancel
+            </button>
+          </div>
+        </React.Fragment>
+      )}
     </section>
   );
 });

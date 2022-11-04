@@ -1,6 +1,6 @@
 import c from "clsx";
 import { useCombobox } from "downshift";
-import { runInAction } from "mobx";
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 
@@ -9,6 +9,8 @@ import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 
 const RESULT_COUNT = 5;
+
+const stars = (n: number) => Array(n).fill("★").join("");
 
 const RecipeConfig = observer(function RecipeConfig() {
   const [query, setQuery] = useState("");
@@ -39,6 +41,7 @@ const RecipeConfig = observer(function RecipeConfig() {
     getItemProps,
     isOpen,
     highlightedIndex,
+    reset: resetCombobox,
   } = useCombobox({
     inputId,
     inputValue: query,
@@ -50,11 +53,22 @@ const RecipeConfig = observer(function RecipeConfig() {
       return item?.name || "";
     },
     onSelectedItemChange({ selectedItem }) {
-      runInAction(() => (RecipeState.recipe = selectedItem || null));
+      setRecipe(selectedItem || null);
     },
   });
 
-  const stars = (n: number) => Array(n).fill("★").join("");
+  const setRecipe = action((recipe: RecipeData | null) => {
+    if (recipe && !recipe.jobs.has(PlayerState.job)) {
+      PlayerState.job = recipe.jobs.values().next().value;
+    }
+    RecipeState.recipe = recipe;
+  });
+
+  const handleReset = action(() => {
+    RecipeState.recipe = null;
+    setQuery("");
+    resetCombobox();
+  });
 
   return (
     <section className="RecipeConfig">
@@ -78,11 +92,22 @@ const RecipeConfig = observer(function RecipeConfig() {
                   <div className="level-info">
                     Lv.{recipe.job_level} {stars(recipe.stars)}
                   </div>
+                  {!recipe.jobs.has(PlayerState.job) && (
+                    <div className="job-swap-prompt">
+                      Swap to {recipe.jobs.values().next().value}
+                    </div>
+                  )}
                 </li>
               ))}
           </ul>
         </div>
       </div>
+
+      {RecipeState.recipe && (
+        <button className="link clear-recipe" onClick={handleReset}>
+          Clear recipe
+        </button>
+      )}
     </section>
   );
 });
@@ -118,7 +143,7 @@ function HighlightedText({ needle, haystack }: { needle: string; haystack: strin
   }
 
   return (
-    <div>
+    <div className="HighlightedText">
       {chunks.map(({ highlight, text }, index) => (
         <span key={index} className={c({ highlight })}>
           {text}

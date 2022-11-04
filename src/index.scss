@@ -299,14 +299,34 @@ section {
 }
 
 .RecipeConfig {
+  align-items: flex-start;
+
   .field,
   .combobox,
   input {
     width: 100%;
   }
 
-  .level-info {
-    color: var(--grey-300);
+  li {
+    display: flex;
+    flex-wrap: wrap;
+
+    .HighlightedText {
+      width: 100%;
+    }
+
+    .level-info,
+    .job-swap-prompt {
+      color: var(--grey-300);
+    }
+
+    .job-swap-prompt {
+      margin-left: auto;
+    }
+  }
+
+  .clear-recipe {
+    font-size: var(--small-font-size);
   }
 }
 

@@ -26,15 +26,15 @@ const statConfig = [
 ] as const;
 
 const PlayerConfig = observer(function PlayerConfig() {
+  type CopyMenuState = "inactive" | "copying" | "copying-all";
+  const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
+
   const handleJobChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
     // TODO: add warning dialog before clearing recipe
     PlayerState.job = event.target.value as Job;
     RecipeState.recipe = null;
     setCopyMenuState("inactive");
   });
-
-  type CopyMenuState = "inactive" | "copying" | "copying-all";
-  const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
 
   const handleStatsCopy = action((job: Job) => {
     const stats = PlayerState.statsByJob[job];

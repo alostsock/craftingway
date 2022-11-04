@@ -41,11 +41,14 @@ class _RecipeState {
     const matches = [];
 
     for (const recipe of this.recipes) {
-      if (!recipe.jobs.has(job)) continue;
-
-      const score = fuzzysearch(query, recipe.name.toLowerCase());
+      let score = fuzzysearch(query, recipe.name.toLowerCase());
 
       if (!score) continue;
+
+      // grant a small boost if the recipe is relevant to the current job
+      if (recipe.jobs.has(job)) {
+        score += 0.2;
+      }
 
       matches.push({ recipe, score });
     }

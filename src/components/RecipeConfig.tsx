@@ -89,9 +89,11 @@ const RecipeConfig = observer(function RecipeConfig() {
                   {...getItemProps({ item: recipe, index })}
                 >
                   <HighlightedText needle={query} haystack={recipe.name} />
+
                   <div className="level-info">
                     Lv.{recipe.job_level} {stars(recipe.stars)}
                   </div>
+
                   {!recipe.jobs.has(PlayerState.job) && (
                     <div className="job-swap-prompt">
                       Swap to {recipe.jobs.values().next().value}
@@ -104,7 +106,7 @@ const RecipeConfig = observer(function RecipeConfig() {
       </div>
 
       {RecipeState.recipe && (
-        <button className="link clear-recipe" onClick={handleReset}>
+        <button className="link prompt" onClick={handleReset}>
           Clear recipe
         </button>
       )}

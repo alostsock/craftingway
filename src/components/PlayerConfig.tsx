@@ -3,20 +3,9 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
 import Emoji from "./Emoji";
-import { Job, JOBS } from "../lib/jobs";
+import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
-
-const jobEmojis: Record<Job, string> = {
-  CRP: "🪚",
-  BSM: "⚔️",
-  ARM: "🛡️",
-  GSM: "💎",
-  LTW: "🥾",
-  WVR: "🧦",
-  ALC: "☕",
-  CUL: "🍞",
-};
 
 const statConfig = [
   { name: "job_level", label: "Level", min: 1, max: 90 },
@@ -61,13 +50,13 @@ const PlayerConfig = observer(function PlayerConfig() {
                 className="visually-hidden"
                 type="radio"
                 name="job"
-                checked={PlayerState.job === job}
+                defaultChecked={PlayerState.job === job}
                 value={job}
                 onChange={handleJobChange}
                 autoComplete="off"
               />
               <label htmlFor={id} tabIndex={-1}>
-                <Emoji emoji={jobEmojis[job]} />
+                <Emoji emoji={JOB_EMOJIS[job]} />
                 {job}
               </label>
             </React.Fragment>
@@ -128,7 +117,7 @@ const PlayerConfig = observer(function PlayerConfig() {
         </button>
       ) : (
         <div className="prompt">
-          Copying <Emoji emoji={jobEmojis[PlayerState.job]} />
+          Copying <Emoji emoji={JOB_EMOJIS[PlayerState.job]} />
           {PlayerState.job} stats to all other jobs… Are you sure?{" "}
           <button className="link" onClick={handleStatsCopyAll}>
             OK

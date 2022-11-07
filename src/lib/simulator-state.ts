@@ -1,9 +1,11 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
-import init, { simulateActions, SimulatorResult } from "crafty";
-import type { Recipe, Action, CraftState, SearchOptions, Player } from "crafty";
+import init, { simulateActions, recipesByJobLevel } from "crafty";
+import type { Action, CraftState, Player, Recipe, SearchOptions, SimulatorResult } from "crafty";
 
-import { RecipeState } from "./recipe-state";
+import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
+import { JOBS } from "./jobs";
+import { stars } from "./utils";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   iterations: 100_000,
@@ -57,6 +59,22 @@ class _SimulatorState {
 
   simulateActions(recipe: Recipe, player: Player, actions: Action[]): SimulatorResult {
     return simulateActions(recipe, player, DEFAULT_SEARCH_OPTIONS, actions);
+  }
+
+  recipesByLevel(jobLevel: number): RecipeData[] {
+    return recipesByJobLevel(jobLevel).map((recipe) => ({
+      name: [
+        `Lv.${recipe.job_level}`,
+        stars(recipe.stars),
+        `(Recipe Level ${recipe.recipe_level})`,
+        `${recipe.progress} / ${recipe.quality} / ${recipe.durability}`,
+      ].join(" "),
+      jobs: new Set(JOBS),
+      item_level: 0,
+      equip_level: 0,
+      is_specialist: false,
+      ...recipe,
+    }));
   }
 }
 

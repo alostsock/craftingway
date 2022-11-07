@@ -2,60 +2,89 @@ import c from "clsx";
 import { useCombobox } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import React, { useState } from "react";
 
-import { useAutorun, useReaction } from "../lib/hooks";
+import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
+import { SimulatorState } from "../lib/simulator-state";
+import { stars } from "../lib/utils";
 
 const RESULT_COUNT = 5;
 
-const stars = (n: number) => Array(n).fill("★").join("");
-
 const RecipeConfig = observer(function RecipeConfig() {
+  const modes = ["name", "level"] as const;
+  type Mode = typeof modes[number];
+  const [selectedMode, selectMode] = useState<Mode>("name");
+
+  const handleModeChange = (mode: Mode) => {
+    selectMode(mode);
+    handleReset();
+  };
+
+  const handleReset = action(() => (RecipeState.recipe = null));
+
+  return (
+    <section className="RecipeConfig">
+      {!RecipeState.recipe && (
+        <fieldset>
+          {/* <legend> on its own doesn't respect display: flex for some reason */}
+          <span className="legend">
+            <legend>Search for a recipe…</legend>
+          </span>
+
+          {modes.map((mode) => {
+            const id = `input-mode-${mode}`;
+            return (
+              <React.Fragment key={mode}>
+                <input
+                  id={id}
+                  className="visually-hidden"
+                  type="radio"
+                  name="mode"
+                  defaultChecked={selectedMode === mode}
+                  value={mode}
+                  onChange={() => handleModeChange(mode)}
+                  autoComplete="off"
+                />
+                <label htmlFor={id} tabIndex={-1}>
+                  by {mode}
+                </label>
+              </React.Fragment>
+            );
+          })}
+        </fieldset>
+      )}
+
+      {!RecipeState.recipe && selectedMode === "name" && <RecipesByName />}
+      {!RecipeState.recipe && selectedMode === "level" && <RecipesByLevel />}
+
+      {RecipeState.recipe && (
+        <React.Fragment>
+          <div className="recipe-display">
+            <h2 className="name">{RecipeState.recipe.name}</h2>
+            <div className="job level">
+              Lv.{RecipeState.recipe.job_level} {stars(RecipeState.recipe.stars)}
+            </div>
+            <div className="recipe level">Recipe Lv.{RecipeState.recipe.recipe_level}</div>
+            <div className="equip level">Equip Lv.{RecipeState.recipe.equip_level}</div>
+            <div className="item level">Item Lv.{RecipeState.recipe.item_level}</div>
+          </div>
+
+          <button className="link prompt" onClick={handleReset}>
+            Change recipe
+          </button>
+        </React.Fragment>
+      )}
+    </section>
+  );
+});
+
+export default RecipeConfig;
+
+const RecipesByName = observer(function RecipesByName() {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
-
-  const inputId = "recipe-search";
-  const inputPrompt = "Search for a recipe";
-
-  useReaction(
-    () => PlayerState.job,
-    () => setQuery("")
-  );
-
-  useAutorun(() => {
-    if (query.length >= 1) {
-      const result = RecipeState.searchRecipes(query.toLowerCase(), PlayerState.job, RESULT_COUNT);
-      setQueryResults(result);
-    } else {
-      setQueryResults([]);
-    }
-  }, [query]);
-
-  const {
-    getComboboxProps,
-    getLabelProps,
-    getInputProps,
-    getMenuProps,
-    getItemProps,
-    isOpen,
-    highlightedIndex,
-    reset: resetCombobox,
-  } = useCombobox({
-    inputId,
-    inputValue: query,
-    onInputValueChange({ inputValue }) {
-      setQuery(inputValue || "");
-    },
-    items: queryResults,
-    itemToString(item) {
-      return item?.name || "";
-    },
-    onSelectedItemChange({ selectedItem }) {
-      setRecipe(selectedItem || null);
-    },
-  });
 
   const setRecipe = action((recipe: RecipeData | null) => {
     if (recipe && !recipe.jobs.has(PlayerState.job)) {
@@ -64,57 +93,48 @@ const RecipeConfig = observer(function RecipeConfig() {
     RecipeState.recipe = recipe;
   });
 
-  const handleReset = action(() => {
-    RecipeState.recipe = null;
-    setQuery("");
-    resetCombobox();
+  useAutorun(() => {
+    setQueryResults(query.length >= 1 ? RecipeState.searchRecipes(query, RESULT_COUNT) : []);
+  }, [query]);
+
+  const cb = useCombobox({
+    inputValue: query,
+    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    items: queryResults,
+    itemToString: (item) => item?.name || "",
+    onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
   });
 
   return (
-    <section className="RecipeConfig">
-      <div className="field">
-        <label htmlFor={inputId} {...getLabelProps()}>
-          Recipe
-        </label>
+    <div className="RecipesByName field">
+      <label {...cb.getLabelProps()}>Name</label>
+      <div className="combobox" {...cb.getComboboxProps()}>
+        <input placeholder="Orphanage Donation" spellCheck="false" {...cb.getInputProps()} />
 
-        <div className="combobox" {...getComboboxProps()}>
-          <input id={inputId} placeholder={inputPrompt} spellCheck="false" {...getInputProps()} />
+        <ul {...cb.getMenuProps()}>
+          {cb.isOpen &&
+            queryResults.map((recipe, index) => (
+              <li
+                key={`${recipe.name}-${index}`}
+                className={c({ selected: cb.highlightedIndex === index })}
+                {...cb.getItemProps({ item: recipe, index })}
+              >
+                <HighlightedText needle={query} haystack={recipe.name} />
 
-          <ul {...getMenuProps()}>
-            {isOpen &&
-              queryResults.map((recipe, index) => (
-                <li
-                  key={recipe.name}
-                  className={c({ selected: highlightedIndex === index })}
-                  {...getItemProps({ item: recipe, index })}
-                >
-                  <HighlightedText needle={query} haystack={recipe.name} />
+                <div className="level-info">
+                  Lv.{recipe.job_level} {stars(recipe.stars)}
+                </div>
 
-                  <div className="level-info">
-                    Lv.{recipe.job_level} {stars(recipe.stars)}
-                  </div>
-
-                  {!recipe.jobs.has(PlayerState.job) && (
-                    <div className="job-swap-prompt">
-                      Swap to {recipe.jobs.values().next().value}
-                    </div>
-                  )}
-                </li>
-              ))}
-          </ul>
-        </div>
+                {!recipe.jobs.has(PlayerState.job) && (
+                  <div className="job-swap-prompt">Swap to {recipe.jobs.values().next().value}</div>
+                )}
+              </li>
+            ))}
+        </ul>
       </div>
-
-      {RecipeState.recipe && (
-        <button className="link prompt" onClick={handleReset}>
-          Clear recipe
-        </button>
-      )}
-    </section>
+    </div>
   );
 });
-
-export default RecipeConfig;
 
 function HighlightedText({ needle, haystack }: { needle: string; haystack: string }) {
   type Chunk = { highlight: boolean; text: string };
@@ -154,3 +174,44 @@ function HighlightedText({ needle, haystack }: { needle: string; haystack: strin
     </div>
   );
 }
+
+const RecipesByLevel = observer(function RecipesByLevel() {
+  const [level, setLevel] = useState<number | null>(null);
+  const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
+
+  const setRecipe = action((recipe: RecipeData | null) => (RecipeState.recipe = recipe));
+
+  useAutorun(() => {
+    setQueryResults(level != null ? SimulatorState.recipesByLevel(level) : []);
+  }, [level]);
+
+  const cb = useCombobox({
+    inputValue: level?.toString() || "",
+    onInputValueChange: ({ inputValue }) => setLevel((inputValue && parseInt(inputValue)) || null),
+    items: queryResults,
+    itemToString: (item) => item?.name || "",
+    onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
+  });
+
+  return (
+    <div className="RecipesByLevel field">
+      <label {...cb.getLabelProps()}>Level</label>
+      <div className="combobox" {...cb.getComboboxProps()}>
+        <input type="number" placeholder="00" spellCheck="false" {...cb.getInputProps()} />
+
+        <ul {...cb.getMenuProps()}>
+          {cb.isOpen &&
+            queryResults.map((recipe, index) => (
+              <li
+                key={`${recipe.name}-${index}`}
+                className={c({ selected: cb.highlightedIndex === index })}
+                {...cb.getItemProps({ item: recipe, index })}
+              >
+                <div>{recipe.name}</div>
+              </li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  );
+});

@@ -27,7 +27,7 @@ import Emoji from "./Emoji";
 import { ACTIONS } from "../lib/actions";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
-import { generateId } from "../lib/generate-id";
+import { generateId } from "../lib/utils";
 
 type DragData = { action?: Action };
 

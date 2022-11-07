@@ -1,6 +1,7 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type { Recipe } from "crafty";
 
+import { PlayerState } from "./player-state";
 import { fuzzysearch } from "./fuzzysearch";
 import { Job } from "./jobs";
 
@@ -11,7 +12,7 @@ interface RawRecipeData extends Recipe {
   item_level: number;
   equip_level: number;
   stars: number;
-  is_specialist: number;
+  is_specialist: boolean;
 }
 
 export interface RecipeData extends Omit<RawRecipeData, "jobs"> {
@@ -37,7 +38,9 @@ class _RecipeState {
     this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
   }
 
-  searchRecipes(query: string, job: Job, limit = 10) {
+  searchRecipes(query: string, limit = 10) {
+    query = query.toLowerCase();
+
     const matches = [];
 
     for (const recipe of this.recipes) {
@@ -46,7 +49,7 @@ class _RecipeState {
       if (!score) continue;
 
       // grant a small boost if the recipe is relevant to the current job
-      if (recipe.jobs.has(job)) {
+      if (recipe.jobs.has(PlayerState.job)) {
         score += 0.2;
       }
 

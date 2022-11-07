@@ -11,8 +11,6 @@ const CraftState = observer(function CraftState() {
 
   return (
     <section className="CraftState">
-      <h2>{RecipeState.recipe.name}</h2>
-
       <div className="bars">
         <Progress label="Progress" value="progress" target="progress_target" />
         <Progress label="Quality" value="quality" target="quality_target" />

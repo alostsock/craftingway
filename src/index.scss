@@ -191,7 +191,7 @@ section {
   img.emoji {
     height: 1em;
     width: 1em;
-    vertical-align: -0.125em;
+    vertical-align: -0.15em;
   }
 }
 
@@ -233,7 +233,7 @@ section {
     position: absolute;
     width: 100%;
     text-align: center;
-    bottom: -0.75em;
+    bottom: -1em;
   }
 }
 
@@ -398,30 +398,49 @@ section {
 
 .BuffList {
   margin-top: calc(-1 * var(--1));
+  margin-bottom: var(--025);
   display: flex;
   gap: var(--025);
   min-height: var(--status-icon-height);
 }
 
-.ActionList {
+.ActionPlaylist {
   display: flex;
   flex-direction: column;
   gap: var(--15);
 
-  .playlist,
-  .actions {
+  .PersistentList,
+  .MutableList {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: var(--05);
+
+    .Icon.action img {
+      transition: filter 70ms;
+      filter: brightness(1);
+
+      &:hover {
+        filter: brightness(1.25);
+      }
+    }
   }
 
-  .actions [aria-disabled="true"] .Icon {
-    opacity: 0.3;
-    cursor: not-allowed;
+  .PersistentList {
+    button.action {
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+
+      &[disabled] {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+    }
   }
 
-  .playlist {
+  .MutableList {
     background: var(--grey-800);
     min-height: calc(var(--action-icon-height) + var(--1));
     padding: var(--05);
@@ -431,14 +450,15 @@ section {
     margin: 0 calc(-1 * var(--05));
   }
 
-  .Icon {
-    cursor: grab;
-  }
-
   .SortableIcon {
+    cursor: grab;
     position: relative;
 
-    button {
+    &[aria-pressed] {
+      cursor: grabbing;
+    }
+
+    button.remove {
       position: absolute;
       top: 0;
       right: 0;
@@ -458,7 +478,7 @@ section {
       transition: opacity 70ms;
     }
 
-    &:hover button {
+    &:hover:not([aria-pressed]) button.remove {
       opacity: 1;
     }
   }

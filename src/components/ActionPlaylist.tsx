@@ -17,9 +17,10 @@ import {
   sortableKeyboardCoordinates,
   useSortable,
 } from "@dnd-kit/sortable";
+import c from "clsx";
 
 import type { PointerEvent, KeyboardEvent } from "react";
-import type { DragEndEvent } from "@dnd-kit/core";
+import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
 import Icon from "./Icon";
@@ -28,8 +29,6 @@ import { ACTIONS } from "../lib/actions";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
 import { generateId } from "../lib/utils";
-
-type DragData = { action?: Action };
 
 function idFromAction(action: Action) {
   return `${action}-${generateId()}`;
@@ -54,15 +53,15 @@ const ActionPlaylist = observer(function ActionPlaylist() {
     SimulatorState.actions = items.map(actionFromId);
   }, [items]);
 
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setIsDragging(true);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
+    setIsDragging(false);
     const { over, active } = event;
-    const { action } = active.data.current as DragData;
-    // icon was dragged in from the persistent list
-    if (over && action) {
-      const itemToAdd = idFromAction(action);
-      setItems([...items, itemToAdd]);
-      return;
-    }
     // icon is being rearranged
     if (over && over.id !== active.id) {
       setItems((items) => {
@@ -74,17 +73,27 @@ const ActionPlaylist = observer(function ActionPlaylist() {
     }
   };
 
+  const addItem = (action: Action) => {
+    const itemToAdd = idFromAction(action);
+    setItems([...items, itemToAdd]);
+  };
+
   const removeItem = (id: string) => {
     const index = items.indexOf(id);
     setItems([...items.slice(0, index), ...items.slice(index + 1)]);
   };
 
   return (
-    <div className="ActionList">
-      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+    <div className="ActionPlaylist">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <SortableContext items={items} strategy={rectSortingStrategy}>
-          <MutableList id={id} items={items} onRemove={removeItem} />
-          <PersistentList />
+          <MutableList id={id} items={items} showAddOverlay={isDragging} onRemove={removeItem} />
+          <PersistentList onAdd={addItem} />
         </SortableContext>
       </DndContext>
     </div>
@@ -93,13 +102,25 @@ const ActionPlaylist = observer(function ActionPlaylist() {
 
 export default ActionPlaylist;
 
-const PersistentList = observer(function PersistentList() {
+type PersistentListProps = {
+  onAdd: (action: Action) => void;
+};
+
+const PersistentList = observer(function PersistentList({ onAdd }: PersistentListProps) {
   const activeActions = new Set(SimulatorState.craftState?.available_moves);
 
   return (
-    <div className="actions">
-      {ACTIONS.map(({ name }) => (
-        <DraggableIcon key={name} id={idFromAction(name)} disabled={!activeActions.has(name)} />
+    <div className="PersistentList">
+      {ACTIONS.map(({ name, label }) => (
+        <button
+          key={name}
+          className="action"
+          title={label}
+          onClick={() => onAdd(name)}
+          disabled={!activeActions.has(name)}
+        >
+          <Icon name={label} job={PlayerState.job} type="action" />
+        </button>
       ))}
     </div>
   );
@@ -108,43 +129,23 @@ const PersistentList = observer(function PersistentList() {
 type MutableListProps = {
   id: string;
   items: string[];
+  showAddOverlay: boolean;
   onRemove: (id: string) => void;
 };
 
-const MutableList = observer(function MutableList({ id, items, onRemove }: MutableListProps) {
+const MutableList = observer(function MutableList({
+  id,
+  items,
+  showAddOverlay,
+  onRemove,
+}: MutableListProps) {
   const { setNodeRef } = useDroppable({ id });
 
   return (
-    <div id={id} ref={setNodeRef} className="playlist">
+    <div id={id} ref={setNodeRef} className={c("MutableList", showAddOverlay && "overlay")}>
       {items.map((id) => (
         <SortableIcon key={id} id={id} onRemove={onRemove} />
       ))}
-    </div>
-  );
-});
-
-type DraggableIconProps = {
-  id: string;
-  disabled?: boolean;
-};
-
-const DraggableIcon = observer(function DraggableIcon({ id, disabled }: DraggableIconProps) {
-  const actionName = actionFromId(id);
-  const actionLabel = ACTIONS.find((action) => action.name === actionName)?.label;
-
-  if (!actionLabel) return null;
-
-  const data: DragData = { action: actionName };
-
-  const { setNodeRef, transform, attributes, listeners } = useDraggable({ id, data, disabled });
-
-  const style = transform
-    ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
-    : undefined;
-
-  return (
-    <div ref={setNodeRef} id={id} style={style} {...attributes} {...listeners}>
-      <Icon name={actionLabel} job={PlayerState.job} type="action" />
     </div>
   );
 });
@@ -178,7 +179,12 @@ const SortableIcon = observer(function SortableIcon({ id, onRemove }: SortableIc
       {...listeners}
     >
       <Icon name={actionLabel} job={PlayerState.job} type="action" />
-      <button title={`Remove ${actionLabel}`} onClick={() => onRemove(id)} data-no-dnd>
+      <button
+        className="remove"
+        title={`Remove ${actionLabel}`}
+        onClick={() => onRemove(id)}
+        data-no-dnd
+      >
         <Emoji emoji="❌" />
       </button>
     </div>

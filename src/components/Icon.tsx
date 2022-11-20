@@ -44,7 +44,7 @@ const Icon = ({ name, type, job, stacks, expiry }: Props) => {
     <div className={c("Icon", type, stacks && "with-stacks", expiry && "with-expiry")}>
       <picture>
         <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
-        <img src={encodeURI(`${url}.png`)} alt={name} />
+        <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />
       </picture>
       {type === "status" && expiry && <span className="expiry">{expiry}</span>}
     </div>

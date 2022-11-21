@@ -1,6 +1,6 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
 import init, { simulateActions, recipesByJobLevel } from "crafty";
-import type { Action, CraftState, Player, Recipe, SearchOptions, SimulatorResult } from "crafty";
+import type { Action, CraftState, Player, Recipe, SearchOptions, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
@@ -21,6 +21,7 @@ class _SimulatorState {
 
   private _actions: Action[] = [];
   private _craftState: CraftState | null = null;
+  private _completionReason: CompletionReason | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -29,12 +30,7 @@ class _SimulatorState {
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
-        const { craft_state, completion_reason } = this.simulateActions(
-          RecipeState.recipe,
-          PlayerState.stats,
-          this.actions
-        );
-        this.craftState = craft_state;
+        this.simulateActions(RecipeState.recipe, PlayerState.stats, this.actions);
       } else {
         this.craftState = null;
       }
@@ -57,8 +53,23 @@ class _SimulatorState {
     this._craftState = state;
   }
 
-  simulateActions(recipe: Recipe, player: Player, actions: Action[]): SimulatorResult {
-    return simulateActions(recipe, player, DEFAULT_SEARCH_OPTIONS, actions);
+  get completionReason() {
+    return this._completionReason;
+  }
+
+  set completionReason(reason: CompletionReason | null) {
+    this._completionReason = reason;
+  }
+
+  simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
+    const { craft_state, completion_reason } = simulateActions(
+      recipe,
+      player,
+      DEFAULT_SEARCH_OPTIONS,
+      actions
+    );
+    this.craftState = craft_state;
+    this.completionReason = completion_reason || null;
   }
 
   recipesByLevel(jobLevel: number): RecipeData[] {

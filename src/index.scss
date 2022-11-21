@@ -13,7 +13,7 @@
   min-height: 100vh;
 
   font-family: "Fira Mono", monospace;
-  font-weight: normal;
+  font-weight: 400;
   color-scheme: dark;
   color: var(--text-color);
   background-color: var(--grey-900);
@@ -44,8 +44,9 @@ button.link {
 }
 
 h1,
-h2 {
-  font-weight: normal;
+h2,
+h3 {
+  font-weight: 400;
   margin: 0;
 }
 
@@ -54,6 +55,10 @@ h1 {
 }
 
 h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
   font-size: 1.25rem;
 }
 
@@ -141,7 +146,7 @@ section {
   }
 
   .highlight {
-    font-weight: bold;
+    font-weight: 400;
   }
 }
 
@@ -365,20 +370,17 @@ section {
     grid-template-columns: repeat(4, auto);
     gap: 0 1.5em; // roughly 3 spaces
 
-    @media (max-width: 36em) {
+    @media (max-width: 38em) {
       grid-template-columns: repeat(2, auto);
     }
 
     .name {
-      color: var(--orange-200);
-      font-weight: bold;
       grid-column: 1 / -1;
       width: 100%;
     }
 
     .level {
       color: var(--text-muted-color);
-      font-size: var(--small-font-size);
     }
   }
 
@@ -388,6 +390,16 @@ section {
 }
 
 .CraftStateDisplay {
+  h3 {
+    &.success {
+      color: var(--blue-400);
+    }
+
+    &.failure {
+      color: var(--orange-600);
+    }
+  }
+
   .bars {
     display: flex;
     flex-direction: column;
@@ -427,7 +439,6 @@ section {
 }
 
 .BuffList {
-  margin-top: calc(-1 * var(--05));
   margin-bottom: var(--025);
   display: flex;
   gap: var(--025);

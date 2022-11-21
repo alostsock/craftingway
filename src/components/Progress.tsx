@@ -10,8 +10,6 @@ type Props = {
 };
 
 const Progress = observer(function Progress({ label, value, target }: Props) {
-  const id = `progress-${value}`;
-
   if (!SimulatorState.craftState) return null;
 
   const valueNum = SimulatorState.craftState[value];
@@ -19,20 +17,20 @@ const Progress = observer(function Progress({ label, value, target }: Props) {
 
   if (typeof valueNum != "number" || typeof targetNum != "number") return null;
 
-  const percentage = Math.floor(valueNum / targetNum);
+  const percentage = Math.floor((valueNum / targetNum) * 100) / 100;
 
   return (
     <div className="Progress">
-      <label htmlFor={id}>
-        {label}{" "}
+      <label>
+        <span className="name">{label}</span>
         <span>
           {valueNum} / {targetNum}
         </span>
       </label>
 
-      <progress id={id} value={valueNum} max={targetNum}>
-        {percentage} %
-      </progress>
+      <div className="progress">
+        <div className="bar" style={{ width: `${percentage * 100}%` }} />
+      </div>
     </div>
   );
 });

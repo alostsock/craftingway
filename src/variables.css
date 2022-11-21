@@ -11,7 +11,7 @@
   --text-color: var(--orange-050);
   --text-muted-color: var(--grey-300);
   --focus-color: var(--orange-400);
-  --link-hover-color: var(--indigo-300);
+  --link-hover-color: var(--blue-300);
 
   --small-font-size: 90%;
 
@@ -42,16 +42,16 @@
   --orange-800: hsl(8, 92%, 35%);
   --orange-900: hsl(6, 96%, 26%);
 
-  --indigo-050: hsl(221, 68%, 93%);
-  --indigo-100: hsl(221, 78%, 86%);
-  --indigo-200: hsl(224, 67%, 76%);
-  --indigo-300: hsl(225, 57%, 67%);
-  --indigo-400: hsl(227, 50%, 59%);
-  --indigo-500: hsl(227, 42%, 51%);
-  --indigo-600: hsl(228, 45%, 45%);
-  --indigo-700: hsl(230, 49%, 41%);
-  --indigo-800: hsl(232, 51%, 36%);
-  --indigo-900: hsl(234, 62%, 26%);
+  --blue-050: hsl(202, 100%, 95%);
+  --blue-100: hsl(204, 100%, 86%);
+  --blue-200: hsl(206, 93%, 73%);
+  --blue-300: hsl(208, 88%, 62%);
+  --blue-400: hsl(210, 83%, 53%);
+  --blue-500: hsl(212, 92%, 43%);
+  --blue-600: hsl(214, 95%, 36%);
+  --blue-700: hsl(215, 96%, 32%);
+  --blue-800: hsl(216, 98%, 25%);
+  --blue-900: hsl(218, 100%, 17%);
 
   --yellow-050: #fffaeb;
   --yellow-100: #fcefc7;

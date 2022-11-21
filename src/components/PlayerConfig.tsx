@@ -88,45 +88,47 @@ const PlayerConfig = observer(function PlayerConfig() {
         })}
       </div>
 
-      {copyMenuState !== "copying" && (
-        <button className="link prompt" onClick={() => setCopyMenuState("copying")}>
-          Copy stats <strong>from</strong> another job
-        </button>
-      )}
-
-      {copyMenuState === "copying" && (
-        <div className="prompt">
-          Copy stats from…
-          {JOBS.map((job) => (
-            <React.Fragment>
-              {" "}
-              <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
-                {job}
-              </button>
-            </React.Fragment>
-          ))}{" "}
-          <button className="link" onClick={() => setCopyMenuState("inactive")}>
-            Cancel
+      <div className="prompts">
+        {copyMenuState !== "copying" && (
+          <button className="link" onClick={() => setCopyMenuState("copying")}>
+            Copy stats <strong>from</strong> another job
           </button>
-        </div>
-      )}
+        )}
 
-      {copyMenuState !== "copying-all" ? (
-        <button className="link prompt" onClick={() => setCopyMenuState("copying-all")}>
-          Copy stats <strong>to</strong> all other jobs
-        </button>
-      ) : (
-        <div className="prompt">
-          Copying <Emoji emoji={JOB_EMOJIS[PlayerState.job]} />
-          {PlayerState.job} stats to all other jobs… Are you sure?{" "}
-          <button className="link" onClick={handleStatsCopyAll}>
-            OK
-          </button>{" "}
-          <button className="link" onClick={() => setCopyMenuState("inactive")}>
-            Cancel
+        {copyMenuState === "copying" && (
+          <div>
+            Copy stats from…
+            {JOBS.map((job) => (
+              <React.Fragment key={job}>
+                {" "}
+                <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
+                  {job}
+                </button>
+              </React.Fragment>
+            ))}{" "}
+            <button className="link" onClick={() => setCopyMenuState("inactive")}>
+              Cancel
+            </button>
+          </div>
+        )}
+
+        {copyMenuState !== "copying-all" ? (
+          <button className="link" onClick={() => setCopyMenuState("copying-all")}>
+            Copy stats <strong>to</strong> all other jobs
           </button>
-        </div>
-      )}
+        ) : (
+          <div>
+            Copying <Emoji emoji={JOB_EMOJIS[PlayerState.job]} />
+            {PlayerState.job} stats to all other jobs… Are you sure?{" "}
+            <button className="link" onClick={handleStatsCopyAll}>
+              OK
+            </button>{" "}
+            <button className="link" onClick={() => setCopyMenuState("inactive")}>
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
     </section>
   );
 });

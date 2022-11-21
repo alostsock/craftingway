@@ -7,8 +7,12 @@ import { BUFFS } from "../lib/buffs";
 const BuffList = observer(function BuffList() {
   if (!SimulatorState.craftState) return null;
 
+  const hasActiveBuffs = Object.values(SimulatorState.craftState.buffs).some(Boolean);
+
   return (
     <div className="BuffList">
+      {!hasActiveBuffs && <div className="no-buffs">No buffs active</div>}
+
       {Object.entries(SimulatorState.craftState.buffs).map(([buffName, stacksOrExpiry]) => {
         if (!stacksOrExpiry) return null;
 

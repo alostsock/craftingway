@@ -25,7 +25,7 @@ import type { Action } from "crafty";
 
 import Icon from "./Icon";
 import Emoji from "./Emoji";
-import { ACTIONS } from "../lib/actions";
+import { ACTIONS, ACTIONS_BY_GROUP } from "../lib/actions";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
 import { generateId } from "../lib/utils";
@@ -111,16 +111,22 @@ const PersistentList = observer(function PersistentList({ onAdd }: PersistentLis
 
   return (
     <div className="PersistentList">
-      {ACTIONS.map(({ name, label }) => (
-        <button
-          key={name}
-          className="action"
-          title={label}
-          onClick={() => onAdd(name)}
-          disabled={!activeActions.has(name)}
-        >
-          <Icon name={label} job={PlayerState.job} type="action" />
-        </button>
+      {Object.entries(ACTIONS_BY_GROUP).map(([group, actions]) => (
+        <div key={group} className="group">
+          <div className="name">{group}</div>
+          <div className="actions">
+            {actions.map(({ name, label }) => (
+              <button
+                key={name}
+                title={label}
+                onClick={() => onAdd(name)}
+                disabled={!activeActions.has(name)}
+              >
+                <Icon name={label} job={PlayerState.job} type="action" />
+              </button>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );

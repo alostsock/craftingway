@@ -17,12 +17,12 @@ const RecipeConfig = observer(function RecipeConfig() {
   type Mode = typeof modes[number];
   const [selectedMode, selectMode] = useState<Mode>("name");
 
+  const handleReset = action(() => (RecipeState.recipe = null));
+
   const handleModeChange = (mode: Mode) => {
     selectMode(mode);
     handleReset();
   };
-
-  const handleReset = action(() => (RecipeState.recipe = null));
 
   return (
     <section className="RecipeConfig">
@@ -109,7 +109,12 @@ const RecipesByName = observer(function RecipesByName() {
     <div className="RecipesByName field">
       <label {...cb.getLabelProps()}>Name</label>
       <div className="combobox" {...cb.getComboboxProps()}>
-        <input placeholder="Orphanage Donation" spellCheck="false" {...cb.getInputProps()} />
+        <input
+          autoFocus
+          placeholder="Orphanage Donation"
+          spellCheck="false"
+          {...cb.getInputProps()}
+        />
 
         <ul {...cb.getMenuProps()}>
           {cb.isOpen &&
@@ -197,7 +202,13 @@ const RecipesByLevel = observer(function RecipesByLevel() {
     <div className="RecipesByLevel field">
       <label {...cb.getLabelProps()}>Level</label>
       <div className="combobox" {...cb.getComboboxProps()}>
-        <input type="number" placeholder="00" spellCheck="false" {...cb.getInputProps()} />
+        <input
+          autoFocus
+          type="number"
+          placeholder="00"
+          spellCheck="false"
+          {...cb.getInputProps()}
+        />
 
         <ul {...cb.getMenuProps()}>
           {cb.isOpen &&

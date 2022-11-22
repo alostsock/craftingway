@@ -50,7 +50,7 @@ const PlayerConfig = observer(function PlayerConfig() {
                 className="visually-hidden"
                 type="radio"
                 name="job"
-                defaultChecked={PlayerState.job === job}
+                checked={PlayerState.job === job}
                 value={job}
                 onChange={handleJobChange}
                 autoComplete="off"

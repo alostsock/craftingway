@@ -42,7 +42,7 @@ const RecipeConfig = observer(function RecipeConfig() {
                   className="visually-hidden"
                   type="radio"
                   name="mode"
-                  defaultChecked={selectedMode === mode}
+                  checked={selectedMode === mode}
                   value={mode}
                   onChange={() => handleModeChange(mode)}
                   autoComplete="off"

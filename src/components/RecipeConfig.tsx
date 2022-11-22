@@ -24,6 +24,10 @@ const RecipeConfig = observer(function RecipeConfig() {
     handleReset();
   };
 
+  const otherJobs = Array.from(RecipeState.recipe?.jobs.values() || []).filter(
+    (job) => job !== PlayerState.job
+  );
+
   return (
     <section className="RecipeConfig">
       {!RecipeState.recipe && (
@@ -70,6 +74,17 @@ const RecipeConfig = observer(function RecipeConfig() {
             <div className="equip level">Equip Lv.{RecipeState.recipe.equip_level}</div>
             <div className="item level">Item Lv.{RecipeState.recipe.item_level}</div>
           </div>
+
+          {otherJobs.length > 0 && (
+            <div className="prompt">
+              Craft as{" "}
+              {otherJobs.map((job) => (
+                <button key={job} className="link" onClick={action(() => (PlayerState.job = job))}>
+                  {job}
+                </button>
+              ))}
+            </div>
+          )}
 
           <button className="link prompt" onClick={handleReset}>
             Change recipe

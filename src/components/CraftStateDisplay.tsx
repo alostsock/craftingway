@@ -9,7 +9,7 @@ import { SimulatorState } from "../lib/simulator-state";
 const CraftStateDisplay = observer(function CraftStateDisplay() {
   if (!RecipeState.recipe || !SimulatorState.craftState) return null;
 
-  const Status = () => {
+  const Status = observer(() => {
     switch (SimulatorState.completionReason) {
       case null:
         return <h3>Crafting…</h3>;
@@ -22,7 +22,7 @@ const CraftStateDisplay = observer(function CraftStateDisplay() {
       case "MaxStepsFailure":
         return <h3 className="failure">The step limit has been reached.</h3>;
     }
-  };
+  });
 
   return (
     <section className="CraftStateDisplay">

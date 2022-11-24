@@ -99,14 +99,13 @@ section {
     top: 0;
     left: calc(-1 * var(--15));
     height: 100%;
-    width: var(--05);
+    width: var(--025);
     border-radius: var(--border-radius);
     background-color: var(--grey-800);
-    opacity: 0.75;
-    transition: background-color 70ms;
+    transition: background-color 140ms ease-in-out;
   }
 
-  &:focus-within::before {
+  &:hover::before {
     background-color: var(--orange-200);
   }
 }
@@ -393,12 +392,21 @@ section {
 }
 
 .CraftStateDisplay {
-  h3 {
-    &.success {
+  h2 {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 0.5em;
+
+    .step {
+      color: var(--text-muted-color);
+    }
+
+    .success {
       color: var(--blue-400);
     }
 
-    &.failure {
+    .failure {
       color: var(--orange-600);
     }
   }
@@ -406,7 +414,7 @@ section {
   .bars {
     display: flex;
     flex-direction: column;
-    gap: var(--1);
+    gap: var(--05);
   }
 }
 
@@ -524,6 +532,27 @@ section {
 
     &[aria-pressed] {
       cursor: grabbing;
+    }
+
+    &.disabled {
+      opacity: 0.4;
+    }
+
+    .step {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      text-align: center;
+      font-size: var(--small-font-size);
+      line-height: 1.25;
+      height: 1.25em;
+      padding: 0 0.25em;
+      // --grey-900, but with alpha transparency
+      background: rgba(25, 26, 26, 0.75);
+      border-radius: 0 var(--border-radius) 0 0;
+      user-select: none;
+      pointer-events: none;
     }
 
     button.remove {

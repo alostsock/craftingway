@@ -149,8 +149,8 @@ const MutableList = observer(function MutableList({
 
   return (
     <div id={id} ref={setNodeRef} className={c("MutableList", showAddOverlay && "overlay")}>
-      {items.map((id) => (
-        <SortableIcon key={id} id={id} onRemove={onRemove} />
+      {items.map((id, index) => (
+        <SortableIcon key={id} id={id} step={index + 1} onRemove={onRemove} />
       ))}
     </div>
   );
@@ -158,10 +158,11 @@ const MutableList = observer(function MutableList({
 
 type SortableIconProps = {
   id: string;
+  step: number;
   onRemove: (id: string) => void;
 };
 
-const SortableIcon = observer(function SortableIcon({ id, onRemove }: SortableIconProps) {
+const SortableIcon = observer(function SortableIcon({ id, step, onRemove }: SortableIconProps) {
   const actionName = actionFromId(id);
   const actionLabel = ACTIONS.find((action) => action.name === actionName)?.label;
 
@@ -175,16 +176,23 @@ const SortableIcon = observer(function SortableIcon({ id, onRemove }: SortableIc
       }
     : undefined;
 
+  const disabled = SimulatorState.craftState != null && step >= SimulatorState.craftState.step;
+
   return (
     <div
       ref={setNodeRef}
       id={id}
-      className="SortableIcon"
+      className={c("SortableIcon", { disabled })}
       style={style}
       {...attributes}
       {...listeners}
     >
       <Icon name={actionLabel} job={PlayerState.job} type="action" />
+
+      <div className="step" data-no-dnd>
+        {step}
+      </div>
+
       <button
         className="remove"
         title={`Remove ${actionLabel}`}

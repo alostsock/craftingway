@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import type { CompletionReason } from "crafty";
 
 import ActionPlaylist from "./ActionPlaylist";
 import BuffList from "./BuffList";
@@ -6,27 +7,28 @@ import Progress from "./Progress";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 
+type Status = { type: string | undefined; text: string };
+
+const statuses = new Map<CompletionReason | null, Status>([
+  [null, { type: undefined, text: "Crafting…" }],
+  ["Finished", { type: "success", text: "Synthesis is complete." }],
+  ["DurabilityFailure", { type: "failure", text: "No durability remains." }],
+  ["NoMovesFailure", { type: "failure", text: "No good moves are available." }],
+  ["MaxStepsFailure", { type: "failure", text: "The step limit has been reached." }],
+]);
+
 const CraftStateDisplay = observer(function CraftStateDisplay() {
   if (!RecipeState.recipe || !SimulatorState.craftState) return null;
 
-  const Status = observer(() => {
-    switch (SimulatorState.completionReason) {
-      case null:
-        return <h3>Crafting…</h3>;
-      case "Finished":
-        return <h3 className="success">Synthesis complete.</h3>;
-      case "DurabilityFailure":
-        return <h3 className="failure">No durability remains.</h3>;
-      case "NoMovesFailure":
-        return <h3 className="failure">No good moves are available.</h3>;
-      case "MaxStepsFailure":
-        return <h3 className="failure">The step limit has been reached.</h3>;
-    }
-  });
+  const status = statuses.get(SimulatorState.completionReason);
+  const step = SimulatorState.craftState.step;
 
   return (
     <section className="CraftStateDisplay">
-      <Status />
+      <h2>
+        <span className="step">Step {step}</span>
+        <span className={status?.type}>{status?.text}</span>
+      </h2>
 
       <div className="bars">
         <Progress label="Progress" value="progress" target="progress_target" />

@@ -9,7 +9,6 @@ import { stars } from "./utils";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   iterations: 100_000,
-  max_steps: 30,
   rng_seed: undefined,
   exploration_constant: undefined,
   max_score_weighting_constant: undefined,
@@ -62,12 +61,7 @@ class _SimulatorState {
   }
 
   simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
-    const { craft_state, completion_reason } = simulateActions(
-      recipe,
-      player,
-      DEFAULT_SEARCH_OPTIONS,
-      actions
-    );
+    const { craft_state, completion_reason } = simulateActions(recipe, player, actions);
     this.craftState = craft_state;
     this.completionReason = completion_reason || null;
   }

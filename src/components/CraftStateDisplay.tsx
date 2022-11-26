@@ -13,7 +13,7 @@ const statuses = new Map<CompletionReason | null, Status>([
   [null, { type: undefined, text: "Crafting…" }],
   ["Finished", { type: "success", text: "Synthesis is complete." }],
   ["DurabilityFailure", { type: "failure", text: "No durability remains." }],
-  ["NoMovesFailure", { type: "failure", text: "No good moves are available." }],
+  ["InvalidActionFailure", { type: "failure", text: "A bad move was made." }],
   ["MaxStepsFailure", { type: "failure", text: "The step limit has been reached." }],
 ]);
 

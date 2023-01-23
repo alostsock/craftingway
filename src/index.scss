@@ -306,8 +306,10 @@ section {
   }
 }
 
-.RecipeConfig {
-  align-items: flex-start;
+.ModeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--1);
 
   fieldset {
     display: flex;
@@ -337,6 +339,10 @@ section {
       opacity: 1;
     }
   }
+}
+
+.RecipeConfig {
+  align-items: flex-start;
 
   .field {
     width: 100%;

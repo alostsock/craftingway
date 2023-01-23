@@ -9,20 +9,12 @@ import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import { stars } from "../lib/utils";
+import ModeSelector from "./ModeSelector";
 
 const RESULT_COUNT = 5;
 
 const RecipeConfig = observer(function RecipeConfig() {
-  const modes = ["name", "level"] as const;
-  type Mode = typeof modes[number];
-  const [selectedMode, selectMode] = useState<Mode>("name");
-
   const handleReset = action(() => (RecipeState.recipe = null));
-
-  const handleModeChange = (mode: Mode) => {
-    selectMode(mode);
-    handleReset();
-  };
 
   const otherJobs = Array.from(RecipeState.recipe?.jobs.values() || []).filter(
     (job) => job !== PlayerState.job
@@ -31,37 +23,16 @@ const RecipeConfig = observer(function RecipeConfig() {
   return (
     <section className="RecipeConfig">
       {!RecipeState.recipe && (
-        <fieldset>
-          {/* <legend> on its own doesn't respect display: flex for some reason */}
-          <span className="legend">
-            <legend>Search for a recipe…</legend>
-          </span>
-
-          {modes.map((mode) => {
-            const id = `input-mode-${mode}`;
-            return (
-              <React.Fragment key={mode}>
-                <input
-                  id={id}
-                  className="visually-hidden"
-                  type="radio"
-                  name="mode"
-                  checked={selectedMode === mode}
-                  value={mode}
-                  onChange={() => handleModeChange(mode)}
-                  autoComplete="off"
-                />
-                <label htmlFor={id} tabIndex={-1}>
-                  by {mode}
-                </label>
-              </React.Fragment>
-            );
-          })}
-        </fieldset>
+        <ModeSelector
+          prompt="Search for a recipe…"
+          defaultMode="name"
+          modeOptions={[
+            { mode: "name", label: "by name", component: RecipesByName },
+            { mode: "level", label: "by level", component: RecipesByLevel },
+          ]}
+          onChange={handleReset}
+        />
       )}
-
-      {!RecipeState.recipe && selectedMode === "name" && <RecipesByName />}
-      {!RecipeState.recipe && selectedMode === "level" && <RecipesByLevel />}
 
       {RecipeState.recipe && (
         <React.Fragment>

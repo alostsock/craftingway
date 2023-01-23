@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   DndContext,
@@ -16,11 +17,13 @@ import {
 } from "@dnd-kit/sortable";
 
 import type { PointerEvent, KeyboardEvent } from "react";
-import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
 import MutableList from "./MutableList";
 import PersistentList from "./PersistentList";
+import SearchPanel from "./SearchPanel";
+import ModeSelector from "../ModeSelector";
 import { SimulatorState } from "../../lib/simulator-state";
 import { generateId } from "../../lib/utils";
 
@@ -68,12 +71,32 @@ const RotationEditor = observer(function RotationEditor() {
     setItems([...items.slice(0, index), ...items.slice(index + 1)]);
   };
 
+  const replaceItems = (actions: Action[]) => {
+    setItems(actions.map(idFromAction));
+  };
+
   return (
     <div className="RotationEditor">
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={rectSortingStrategy}>
           <MutableList items={items} onRemove={removeItem} />
-          <PersistentList onAdd={addItem} />
+
+          <ModeSelector
+            defaultMode="manual"
+            modeOptions={[
+              {
+                mode: "manual",
+                label: "Manual",
+                component: () => <PersistentList onAdd={addItem} />,
+              },
+              {
+                mode: "auto",
+                label: "Auto",
+                component: () => <SearchPanel onSearch={replaceItems} />,
+              },
+            ]}
+            onChange={() => {}}
+          />
         </SortableContext>
       </DndContext>
     </div>

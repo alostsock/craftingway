@@ -82,10 +82,11 @@ class _SimulatorState {
     this.completionReason = completion_reason || null;
   }
 
-  searchStepwise(recipe: Recipe, player: Player, action_history: Action[]) {
+  searchStepwise(recipe: Recipe, player: Player, action_history: Action[]): Action[] {
     // TODO: run in worker
     const actions = searchStepwise(recipe, player, action_history, DEFAULT_SEARCH_OPTIONS);
     this.simulateActions(recipe, player, actions);
+    return actions;
   }
 }
 

@@ -42,7 +42,7 @@ const Icon = ({ name, type, job, stacks, expiry }: Props) => {
 
   return (
     <div className={clsx("Icon", type, stacks && "with-stacks", expiry && "with-expiry")}>
-      <picture>
+      <picture title={name}>
         <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
         <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />
       </picture>

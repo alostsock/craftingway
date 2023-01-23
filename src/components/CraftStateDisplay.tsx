@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import type { CompletionReason } from "crafty";
 
-import ActionPlaylist from "./ActionPlaylist";
+import RotationEditor from "./rotation-editor/RotationEditor";
 import BuffList from "./BuffList";
 import Progress from "./Progress";
 import { RecipeState } from "../lib/recipe-state";
@@ -39,7 +39,7 @@ const CraftStateDisplay = observer(function CraftStateDisplay() {
 
       <BuffList />
 
-      <ActionPlaylist />
+      <RotationEditor />
     </section>
   );
 });

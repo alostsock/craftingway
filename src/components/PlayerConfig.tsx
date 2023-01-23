@@ -7,12 +7,19 @@ import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 
-const statConfig = [
+type StatConfig = {
+  name: string;
+  label: string;
+  min: number;
+  max: number;
+};
+
+const STATS = [
   { name: "job_level", label: "Level", min: 1, max: 90 },
   { name: "craftsmanship", label: "Craftsmanship", min: 0, max: 4000 },
   { name: "control", label: "Control", min: 0, max: 4000 },
   { name: "cp", label: "CP", min: 180, max: 800 },
-] as const;
+] as const satisfies readonly StatConfig[];
 
 const PlayerConfig = observer(function PlayerConfig() {
   type CopyMenuState = "inactive" | "copying" | "copying-all";
@@ -65,7 +72,7 @@ const PlayerConfig = observer(function PlayerConfig() {
       </fieldset>
 
       <div className="stats">
-        {statConfig.map(({ name, label, min, max }) => {
+        {STATS.map(({ name, label, min, max }) => {
           const id = `input-${name}`;
 
           return (

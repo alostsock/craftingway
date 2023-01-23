@@ -10,7 +10,7 @@ type ActionData = {
   group: ActionGroup;
 };
 
-export const ACTIONS: ActionData[] = [
+export const ACTIONS: readonly ActionData[] = [
   // generally sorted in order of level, except when there are related actions
   { level: 54, name: "MuscleMemory", label: "Muscle Memory", group: "Starter" },
   { level: 69, name: "Reflect", label: "Reflect", group: "Starter" },
@@ -50,6 +50,6 @@ export const ACTIONS: ActionData[] = [
   // precise touch
   // intensive synthesis
   // trained eye
-];
+] as const;
 
-export const ACTIONS_BY_GROUP = groupBy(ACTIONS, "group");
+export const ACTIONS_BY_GROUP = groupBy(ACTIONS.slice(), "group");

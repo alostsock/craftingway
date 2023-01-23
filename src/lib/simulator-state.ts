@@ -1,5 +1,5 @@
 import { autorun, makeAutoObservable, runInAction } from "mobx";
-import init, { simulateActions, recipesByJobLevel } from "crafty";
+import init, { recipesByJobLevel, simulateActions, searchStepwise } from "crafty";
 import type { Action, CraftState, Player, Recipe, SearchOptions, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
@@ -60,12 +60,6 @@ class _SimulatorState {
     this._completionReason = reason;
   }
 
-  simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
-    const { craft_state, completion_reason } = simulateActions(recipe, player, actions);
-    this.craftState = craft_state;
-    this.completionReason = completion_reason || null;
-  }
-
   recipesByLevel(jobLevel: number): RecipeData[] {
     return recipesByJobLevel(jobLevel).map((recipe) => ({
       name: [
@@ -80,6 +74,18 @@ class _SimulatorState {
       is_specialist: false,
       ...recipe,
     }));
+  }
+
+  simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
+    const { craft_state, completion_reason } = simulateActions(recipe, player, actions);
+    this.craftState = craft_state;
+    this.completionReason = completion_reason || null;
+  }
+
+  searchStepwise(recipe: Recipe, player: Player, action_history: Action[]) {
+    // TODO: run in worker
+    const actions = searchStepwise(recipe, player, action_history, DEFAULT_SEARCH_OPTIONS);
+    this.simulateActions(recipe, player, actions);
   }
 }
 

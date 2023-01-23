@@ -1,4 +1,4 @@
-import c from "clsx";
+import clsx from "clsx";
 import { useCombobox } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -136,7 +136,7 @@ const RecipesByName = observer(function RecipesByName() {
             queryResults.map((recipe, index) => (
               <li
                 key={`${recipe.name}-${index}`}
-                className={c({ selected: cb.highlightedIndex === index })}
+                className={clsx({ selected: cb.highlightedIndex === index })}
                 {...cb.getItemProps({ item: recipe, index })}
               >
                 <HighlightedText needle={query} haystack={recipe.name} />
@@ -187,7 +187,7 @@ function HighlightedText({ needle, haystack }: { needle: string; haystack: strin
   return (
     <div className="HighlightedText">
       {chunks.map(({ highlight, text }, index) => (
-        <span key={index} className={c({ highlight })}>
+        <span key={index} className={clsx({ highlight })}>
           {text}
         </span>
       ))}
@@ -230,7 +230,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
             queryResults.map((recipe, index) => (
               <li
                 key={`${recipe.name}-${index}`}
-                className={c({ selected: cb.highlightedIndex === index })}
+                className={clsx({ selected: cb.highlightedIndex === index })}
                 {...cb.getItemProps({ item: recipe, index })}
               >
                 <div>{recipe.name}</div>

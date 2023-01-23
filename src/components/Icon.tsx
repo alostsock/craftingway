@@ -1,4 +1,4 @@
-import c from "clsx";
+import clsx from "clsx";
 
 import { actionIcons, statusIcons } from "../lib/assets";
 
@@ -41,7 +41,7 @@ const Icon = ({ name, type, job, stacks, expiry }: Props) => {
   const url = `icon/${type}/${name}`;
 
   return (
-    <div className={c("Icon", type, stacks && "with-stacks", expiry && "with-expiry")}>
+    <div className={clsx("Icon", type, stacks && "with-stacks", expiry && "with-expiry")}>
       <picture>
         <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
         <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />

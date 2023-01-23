@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useDroppable } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
-import c from "clsx";
+import clsx from "clsx";
 
 import { actionFromId } from "./RotationEditor";
 import Icon from "../Icon";
@@ -55,7 +55,7 @@ const SortableIcon = observer(function SortableIcon({ id, step, onRemove }: Sort
     <div
       ref={setNodeRef}
       id={id}
-      className={c("SortableIcon", { disabled })}
+      className={clsx("SortableIcon", { disabled })}
       style={style}
       {...attributes}
       {...listeners}

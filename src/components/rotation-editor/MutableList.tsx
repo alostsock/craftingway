@@ -12,21 +12,16 @@ import { PlayerState } from "../../lib/player-state";
 
 type MutableListProps = {
   items: string[];
-  showAddOverlay: boolean;
   onRemove: (id: string) => void;
 };
 
-const MutableList = observer(function MutableList({
-  items,
-  showAddOverlay,
-  onRemove,
-}: MutableListProps) {
+const MutableList = observer(function MutableList({ items, onRemove }: MutableListProps) {
   const id = "droppable-mutable-list";
 
   const { setNodeRef } = useDroppable({ id });
 
   return (
-    <div id={id} ref={setNodeRef} className={c("MutableList", showAddOverlay && "overlay")}>
+    <div id={id} ref={setNodeRef} className="MutableList">
       {items.map((id, index) => (
         <SortableIcon key={id} id={id} step={index + 1} onRemove={onRemove} />
       ))}

@@ -45,14 +45,7 @@ const RotationEditor = observer(function RotationEditor() {
     SimulatorState.actions = items.map(actionFromId);
   }, [items]);
 
-  const [isDragging, setIsDragging] = useState(false);
-
-  const handleDragStart = (event: DragStartEvent) => {
-    setIsDragging(true);
-  };
-
   const handleDragEnd = (event: DragEndEvent) => {
-    setIsDragging(false);
     const { over, active } = event;
     // icon is being rearranged
     if (over && over.id !== active.id) {
@@ -77,14 +70,9 @@ const RotationEditor = observer(function RotationEditor() {
 
   return (
     <div className="RotationEditor">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
+      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={rectSortingStrategy}>
-          <MutableList items={items} showAddOverlay={isDragging} onRemove={removeItem} />
+          <MutableList items={items} onRemove={removeItem} />
           <PersistentList onAdd={addItem} />
         </SortableContext>
       </DndContext>

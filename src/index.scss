@@ -110,45 +110,6 @@ section {
   }
 }
 
-.combobox {
-  width: 100%;
-  position: relative;
-
-  input {
-    width: 100%;
-  }
-
-  ul {
-    position: absolute;
-    width: 100%;
-    color: var(--text-color);
-    background: var(--grey-800);
-    border-radius: var(--border-radius);
-
-    list-style: none;
-    padding: 0;
-    margin: var(--05) 0 0 0;
-    user-select: none;
-    z-index: 1;
-  }
-
-  li {
-    font-size: var(--small-font-size);
-    cursor: pointer;
-    padding: var(--025) var(--05);
-    margin: var(--05) 0;
-
-    &.selected,
-    &:hover {
-      background: var(--grey-600);
-    }
-  }
-
-  .highlight {
-    font-weight: 400;
-  }
-}
-
 .field {
   display: flex;
   align-items: baseline;
@@ -197,7 +158,6 @@ section {
 .Icon {
   picture {
     display: block;
-    overflow: hidden;
   }
 
   img {
@@ -209,9 +169,30 @@ section {
   // ...and I'm too lazy to fix them.
   // as a hacky workaround, use border-radius and clip-path
 
-  &.action picture {
-    height: var(--action-icon-height);
+  &.action {
     border-radius: 12.5%;
+    overflow: hidden;
+
+    picture {
+      height: var(--action-icon-height);
+    }
+
+    .step {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      text-align: center;
+      font-size: var(--small-font-size);
+      line-height: 1.25;
+      height: 1.25em;
+      padding: 0 0.25em;
+      // --grey-900, but with alpha transparency
+      background: rgba(25, 26, 26, 0.75);
+      border-radius: 0 var(--border-radius) 0 calc(var(--action-icon-height) * 0.125);
+      user-select: none;
+      pointer-events: none;
+    }
   }
 
   &.status picture {
@@ -284,8 +265,19 @@ section {
       grid-row: 1 / -1;
     }
 
+    @media (max-width: 26em) {
+      align-self: flex-start;
+      grid-template-columns: auto;
+      grid-template-rows: repeat(4, auto);
+
+      .field:first-child {
+        grid-row: unset;
+      }
+    }
+
     #input-job_level {
       width: 2.5em;
+      margin-right: 1.5em;
     }
 
     #input-craftsmanship,
@@ -307,6 +299,7 @@ section {
 }
 
 .ModeSelector {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--1);
@@ -348,21 +341,68 @@ section {
     width: 100%;
   }
 
-  li {
-    display: flex;
-    flex-wrap: wrap;
+  .combobox {
+    width: 100%;
+    position: relative;
 
-    .HighlightedText {
+    input {
       width: 100%;
     }
 
-    .level-info,
-    .job-swap-prompt {
-      color: var(--text-muted-color);
+    ul {
+      position: absolute;
+
+      width: 100%;
+      max-height: 20em;
+      overflow-y: scroll;
+
+      color: var(--text-color);
+      background: var(--grey-800);
+      border-radius: var(--border-radius);
+
+      list-style: none;
+      padding: 0;
+      user-select: none;
+      z-index: 1;
     }
 
-    .job-swap-prompt {
-      margin-left: auto;
+    li {
+      display: flex;
+      flex-wrap: wrap;
+      cursor: pointer;
+
+      font-size: var(--small-font-size);
+      padding: var(--025) var(--05);
+
+      &:not(:first-child) {
+        margin-top: 0.5em;
+      }
+
+      &.selected,
+      &:hover {
+        background: var(--grey-600);
+      }
+
+      .HighlightedText {
+        width: 100%;
+
+        span {
+          opacity: 0.7;
+
+          &.highlight {
+            font-weight: 500;
+            opacity: 1;
+          }
+        }
+      }
+
+      .subtext {
+        color: var(--text-muted-color);
+      }
+
+      .job-swap-prompt {
+        margin-left: auto;
+      }
     }
   }
 
@@ -443,7 +483,7 @@ section {
     width: 100%;
     height: 0.5em;
     border-radius: var(--border-radius);
-    // the same blue as the bar, but with 25% opacity
+    // --blue-400, but with 25% opacity
     background-color: hsl(210, 47%, 21%);
 
     .bar {
@@ -542,23 +582,6 @@ section {
 
     &.disabled {
       opacity: 0.4;
-    }
-
-    .step {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-
-      text-align: center;
-      font-size: var(--small-font-size);
-      line-height: 1.25;
-      height: 1.25em;
-      padding: 0 0.25em;
-      // --grey-900, but with alpha transparency
-      background: rgba(25, 26, 26, 0.75);
-      border-radius: 0 var(--border-radius) 0 0;
-      user-select: none;
-      pointer-events: none;
     }
 
     button.remove {

@@ -8,10 +8,11 @@ type Props = {
   job?: string;
   stacks?: number;
   expiry?: number;
+  step?: number;
 };
 
 // component is possibly a bit bloated (split it into ActionIcon/StatusIcon?)
-const Icon = ({ name, type, job, stacks, expiry }: Props) => {
+const Icon = ({ name, type, job, stacks, expiry, step }: Props) => {
   const noImage = <span>NO IMAGE</span>;
 
   if (type === "action") {
@@ -46,6 +47,8 @@ const Icon = ({ name, type, job, stacks, expiry }: Props) => {
         <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
         <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />
       </picture>
+
+      {type === "action" && step && <div className="step">{step}</div>}
       {type === "status" && expiry && <span className="expiry">{expiry}</span>}
     </div>
   );

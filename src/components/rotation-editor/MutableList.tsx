@@ -60,11 +60,7 @@ const SortableIcon = observer(function SortableIcon({ id, step, onRemove }: Sort
       {...attributes}
       {...listeners}
     >
-      <Icon name={actionLabel} job={PlayerState.job} type="action" />
-
-      <div className="step" data-no-dnd>
-        {step}
-      </div>
+      <Icon name={actionLabel} job={PlayerState.job} type="action" step={step} />
 
       <button
         className="remove"

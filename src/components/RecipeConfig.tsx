@@ -4,14 +4,12 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
+import ModeSelector from "./ModeSelector";
 import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import { stars } from "../lib/utils";
-import ModeSelector from "./ModeSelector";
-
-const RESULT_COUNT = 5;
 
 const RecipeConfig = observer(function RecipeConfig() {
   const handleReset = action(() => (RecipeState.recipe = null));
@@ -80,7 +78,7 @@ const RecipesByName = observer(function RecipesByName() {
   });
 
   useAutorun(() => {
-    setQueryResults(query.length >= 1 ? RecipeState.searchRecipes(query, RESULT_COUNT) : []);
+    setQueryResults(query.length >= 1 ? RecipeState.searchRecipes(query, 10) : []);
   }, [query]);
 
   const cb = useCombobox({
@@ -89,6 +87,7 @@ const RecipesByName = observer(function RecipesByName() {
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
+    defaultHighlightedIndex: 0,
   });
 
   return (
@@ -103,24 +102,25 @@ const RecipesByName = observer(function RecipesByName() {
         />
 
         <ul {...cb.getMenuProps()}>
-          {cb.isOpen &&
-            queryResults.map((recipe, index) => (
-              <li
-                key={`${recipe.name}-${index}`}
-                className={clsx({ selected: cb.highlightedIndex === index })}
-                {...cb.getItemProps({ item: recipe, index })}
-              >
-                <HighlightedText needle={query} haystack={recipe.name} />
+          {queryResults.map((recipe, index) => (
+            <li
+              key={`${recipe.name}-${index}`}
+              className={clsx({ selected: cb.highlightedIndex === index })}
+              {...cb.getItemProps({ item: recipe, index })}
+            >
+              <HighlightedText needle={query} haystack={recipe.name} />
 
-                <div className="level-info">
-                  Lv.{recipe.job_level} {stars(recipe.stars)}
+              <div className="subtext">
+                Lv.{recipe.job_level} {stars(recipe.stars)}
+              </div>
+
+              {!recipe.jobs.has(PlayerState.job) && (
+                <div className="subtext job-swap-prompt">
+                  Swap to {recipe.jobs.values().next().value}
                 </div>
-
-                {!recipe.jobs.has(PlayerState.job) && (
-                  <div className="job-swap-prompt">Swap to {recipe.jobs.values().next().value}</div>
-                )}
-              </li>
-            ))}
+              )}
+            </li>
+          ))}
         </ul>
       </div>
     </div>
@@ -182,6 +182,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
+    defaultHighlightedIndex: 0,
   });
 
   return (
@@ -197,16 +198,21 @@ const RecipesByLevel = observer(function RecipesByLevel() {
         />
 
         <ul {...cb.getMenuProps()}>
-          {cb.isOpen &&
-            queryResults.map((recipe, index) => (
-              <li
-                key={`${recipe.name}-${index}`}
-                className={clsx({ selected: cb.highlightedIndex === index })}
-                {...cb.getItemProps({ item: recipe, index })}
-              >
-                <div>{recipe.name}</div>
-              </li>
-            ))}
+          {queryResults.map((recipe, index) => (
+            <li
+              key={`${recipe.name}-${index}`}
+              className={clsx({ selected: cb.highlightedIndex === index })}
+              {...cb.getItemProps({ item: recipe, index })}
+            >
+              <div>
+                Lv.{recipe.job_level} {stars(recipe.stars)} (Recipe Level {recipe.recipe_level})
+              </div>
+
+              <div className="subtext">
+                {recipe.progress} progress, {recipe.quality} quality, {recipe.durability} durability
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

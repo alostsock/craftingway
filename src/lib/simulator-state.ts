@@ -76,10 +76,29 @@ class _SimulatorState {
     this.completionReason = completion_reason || null;
   }
 
-  searchStepwise(recipe: Recipe, player: Player, action_history: Action[]): Action[] {
-    // TODO: run in worker
-    const actions = searchStepwise(recipe, player, action_history, DEFAULT_SEARCH_OPTIONS);
+  searchStepwise(
+    recipe: Recipe,
+    player: Player,
+    actionHistory: Action[],
+    onActionFound: (action: Action) => void
+  ): Action[] {
+    const start = performance.now();
+
+    const actions = searchStepwise(
+      recipe,
+      player,
+      actionHistory,
+      {
+        ...DEFAULT_SEARCH_OPTIONS,
+        iterations: 500_000,
+      },
+      onActionFound
+    );
+
+    console.log(`found a solution in ${performance.now() - start}ms`);
+
     this.simulateActions(recipe, player, actions);
+
     return actions;
   }
 }

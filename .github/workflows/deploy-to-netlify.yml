@@ -27,28 +27,27 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'
         cache: 'yarn'
-
-    - name: Install wasm-pack, netlify-cli
-      run: yarn global add wasm-pack netlify-cli
 
     - name: Get submodule commit hash
       id: get-submodule-hash
-      run: echo "::set-output name=hash::$(git submodule)"
+      run: echo "SUBMODULE_HASH=$(git submodule)" >> $GITHUB_OUTPUT
 
     - uses: actions/cache@v3
       id: submodule-cache
       with:
         path: crafty/web/pkg
-        key: ${{ steps.get-submodule-hash.outputs.hash }}
+        key: ${{ steps.get-submodule-hash.outputs.SUBMODULE_HASH }}
 
     - name: Build submodule
       if: steps.submodule-cache.outputs.cache-hit != 'true'
-      run: yarn run build-submodule
+      run: |
+        yarn global add wasm-pack@0.10.3
+        yarn run build-submodule
 
     - name: Install Node.js dependencies
-      run: yarn install
+      run: yarn install --frozen-lockfile
 
     - name: Build static files
       run: yarn run build
@@ -59,5 +58,5 @@ jobs:
         SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       # https://cli.netlify.com/commands/deploy
       run: |
-        netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
+        yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
           --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"

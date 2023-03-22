@@ -34,7 +34,8 @@ jobs:
       id: get-submodule-hash
       run: echo "SUBMODULE_HASH=$(git submodule)" >> $GITHUB_OUTPUT
 
-    - uses: actions/cache@v3
+    - name: Check if submodule build is cached
+      uses: actions/cache@v3
       id: submodule-cache
       with:
         path: crafty/web/pkg
@@ -42,6 +43,7 @@ jobs:
 
     - name: Build submodule
       if: steps.submodule-cache.outputs.cache-hit != 'true'
+      # TODO: Update wasm-pack when install bug is fixed
       run: |
         yarn global add wasm-pack@0.10.3
         yarn run build-submodule

@@ -7,11 +7,7 @@ import { PlayerState } from "../../lib/player-state";
 import { RecipeState } from "../../lib/recipe-state";
 import { SimulatorState } from "../../lib/simulator-state";
 
-type Props = {
-  onSearch: (actions: Action[]) => void;
-};
-
-const SearchPanel = observer(function SearchPanel({ onSearch }: Props) {
+const SearchPanel = observer(function SearchPanel() {
   const search = action(() => {
     if (!RecipeState.recipe) {
       return;
@@ -24,7 +20,7 @@ const SearchPanel = observer(function SearchPanel({ onSearch }: Props) {
       (action) => console.log(action)
     );
 
-    onSearch(actions);
+    SimulatorState.actions = actions;
   });
 
   return <button onClick={search}>Search</button>;

@@ -88,16 +88,11 @@ class _SimulatorState {
       recipe,
       player,
       actionHistory,
-      {
-        ...DEFAULT_SEARCH_OPTIONS,
-        iterations: 500_000,
-      },
+      { ...DEFAULT_SEARCH_OPTIONS, iterations: 20_000 },
       onActionFound
     );
 
     console.log(`found a solution in ${performance.now() - start}ms`);
-
-    this.simulateActions(recipe, player, actions);
 
     return actions;
   }

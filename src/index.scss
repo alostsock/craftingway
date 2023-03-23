@@ -174,7 +174,8 @@ section {
     overflow: hidden;
 
     picture {
-      height: var(--action-icon-height);
+      width: var(--action-icon-size);
+      height: var(--action-icon-size);
     }
 
     .step {
@@ -188,8 +189,8 @@ section {
       height: 1.25em;
       padding: 0 0.25em;
       // --grey-900, but with alpha transparency
-      background: rgba(25, 26, 26, 0.75);
-      border-radius: 0 var(--border-radius) 0 calc(var(--action-icon-height) * 0.125);
+      background: rgba(25, 26, 26, 0.85);
+      border-radius: 0 var(--border-radius) 0 calc(var(--action-icon-size) * 0.125);
       user-select: none;
       pointer-events: none;
     }
@@ -564,7 +565,7 @@ section {
 
   .MutableList {
     background: var(--grey-800);
-    min-height: calc(var(--action-icon-height) + var(--1));
+    min-height: calc(var(--action-icon-size) + var(--1));
     padding: var(--05);
     border-radius: var(--border-radius);
     // overflow into the gutter for better vertical alignment
@@ -589,8 +590,8 @@ section {
       top: 0;
       right: 0;
 
-      width: 1.25em;
-      height: 1.25em;
+      width: 1.3em;
+      height: 1.3em;
       display: flex;
       justify-content: center;
       align-items: center;

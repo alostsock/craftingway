@@ -9,10 +9,22 @@ import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
+import Storage from "../lib/storage";
 import { stars } from "../lib/utils";
 
+type Mode = "name" | "level";
+
+const MODE_STORE = "recipeMode";
+
 const RecipeConfig = observer(function RecipeConfig() {
-  const handleReset = action(() => (RecipeState.recipe = null));
+  const resetRecipe = action(() => {
+    RecipeState.recipe = null;
+  });
+
+  const onModeChange = (mode: Mode) => {
+    Storage.store(MODE_STORE, JSON.stringify(mode));
+    resetRecipe();
+  };
 
   const otherJobs = Array.from(RecipeState.recipe?.jobs.values() || []).filter(
     (job) => job !== PlayerState.job
@@ -23,12 +35,12 @@ const RecipeConfig = observer(function RecipeConfig() {
       {!RecipeState.recipe && (
         <ModeSelector
           prompt="Search for a recipe…"
-          defaultMode="name"
+          defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "name"}
           modeOptions={[
             { mode: "name", label: "by name", component: RecipesByName },
             { mode: "level", label: "by level", component: RecipesByLevel },
           ]}
-          onChange={handleReset}
+          onChange={onModeChange}
         />
       )}
 
@@ -36,12 +48,12 @@ const RecipeConfig = observer(function RecipeConfig() {
         <React.Fragment>
           <div className="recipe-display">
             <h2 className="name">{RecipeState.recipe.name}</h2>
-            <div className="job level">
+            <div className="info">
               Lv.{RecipeState.recipe.job_level} {stars(RecipeState.recipe.stars)}
             </div>
-            <div className="recipe level">Recipe Lv.{RecipeState.recipe.recipe_level}</div>
-            <div className="equip level">Equip Lv.{RecipeState.recipe.equip_level}</div>
-            <div className="item level">Item Lv.{RecipeState.recipe.item_level}</div>
+            <div className="info">Recipe Lv.{RecipeState.recipe.recipe_level}</div>
+            <div className="info">Equip Lv.{RecipeState.recipe.equip_level}</div>
+            <div className="info">Item Lv.{RecipeState.recipe.item_level}</div>
           </div>
 
           {otherJobs.length > 0 && (
@@ -55,7 +67,7 @@ const RecipeConfig = observer(function RecipeConfig() {
             </div>
           )}
 
-          <button className="link prompt" onClick={handleReset}>
+          <button className="link prompt" onClick={resetRecipe}>
             Change recipe
           </button>
         </React.Fragment>

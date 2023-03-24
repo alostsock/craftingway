@@ -23,9 +23,16 @@ import MutableList from "./MutableList";
 import PersistentList from "./PersistentList";
 import SearchPanel from "./SearchPanel";
 import ModeSelector from "../ModeSelector";
+import Emoji from "../Emoji";
+
 import { SimulatorState } from "../../lib/simulator-state";
+import Storage from "../../lib/storage";
 import { generateId } from "../../lib/utils";
 import { useReaction } from "../../lib/hooks";
+
+const MODE_STORE = "rotationEditorMode";
+
+type Mode = "manual" | "auto";
 
 function idFromAction(action: Action) {
   return `${action}-${generateId()}`;
@@ -73,6 +80,24 @@ const RotationEditor = observer(function RotationEditor() {
     }
   };
 
+  const onModeChange = (mode: Mode) => {
+    Storage.store(MODE_STORE, JSON.stringify(mode));
+  };
+
+  const manualModeLabel = (
+    <span className="mode-label">
+      <Emoji emoji="⚒️" />
+      Craft manually
+    </span>
+  );
+
+  const autoModeLabel = (
+    <span className="mode-label auto">
+      <Emoji emoji="✨" />
+      Find a rotation
+    </span>
+  );
+
   return (
     <div className="RotationEditor">
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
@@ -80,19 +105,20 @@ const RotationEditor = observer(function RotationEditor() {
           <MutableList items={itemIds} onRemove={removeItem} />
 
           <ModeSelector
-            defaultMode="manual"
+            defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "manual"}
             modeOptions={[
               {
                 mode: "manual",
-                label: "Manual",
+                label: manualModeLabel,
                 component: () => <PersistentList onAdd={addItem} />,
               },
               {
                 mode: "auto",
-                label: "Auto",
+                label: autoModeLabel,
                 component: () => <SearchPanel />,
               },
             ]}
+            onChange={onModeChange}
           />
         </SortableContext>
       </DndContext>

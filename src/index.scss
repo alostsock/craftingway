@@ -425,7 +425,7 @@ section {
       width: 100%;
     }
 
-    .level {
+    .info {
       color: var(--text-muted-color);
     }
   }
@@ -513,6 +513,16 @@ section {
   display: flex;
   flex-direction: column;
   gap: var(--15);
+
+  .mode-label {
+    .Emoji {
+      margin-right: 0.25em;
+    }
+
+    &.auto {
+      color: var(--orange-300);
+    }
+  }
 
   .PersistentList,
   .MutableList {

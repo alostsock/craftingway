@@ -3,7 +3,7 @@ import { generateId } from "../lib/utils";
 
 type ModeOption<Mode extends string> = {
   mode: Mode;
-  label: string;
+  label: string | React.ReactNode;
   component: React.ComponentType;
 };
 
@@ -24,9 +24,7 @@ export default function ModeSelector<Mode extends string>({
 
   const handleModeChange = (mode: Mode) => {
     setMode(mode);
-    if (onChange) {
-      onChange(mode);
-    }
+    onChange?.(mode);
   };
 
   const ModeComponent =

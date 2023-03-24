@@ -67,7 +67,7 @@ class _SimulatorState {
 
   recipesByLevel(jobLevel: number): RecipeData[] {
     return recipesByJobLevel(jobLevel).map((recipe) => ({
-      name: "",
+      name: "Generic Recipe",
       jobs: new Set(JOBS),
       item_level: 0,
       equip_level: 0,

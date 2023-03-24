@@ -2,6 +2,7 @@ import { autorun, makeAutoObservable } from "mobx";
 import type { Player as PlayerStats } from "crafty";
 
 import { Job, JOBS } from "./jobs";
+import Storage from "./storage";
 
 type JobStats = Record<Job, PlayerStats>;
 
@@ -22,23 +23,21 @@ class _PlayerState {
   constructor() {
     makeAutoObservable(this);
 
-    this.job = retrieve(JOB_STORE) || "CRP";
+    this.job = Storage.retrieve(JOB_STORE) || "CRP";
 
     this.statsByJob =
-      retrieve(STATS_STORE) ||
+      Storage.retrieve(STATS_STORE) ||
       JOBS.reduce((obj, job) => {
         obj[job] = DEFAULT_STATS;
         return obj;
       }, {} as JobStats);
 
     autorun(() => {
-      console.log("caching player job");
-      store(JOB_STORE, JSON.stringify(this.job));
+      Storage.store(JOB_STORE, JSON.stringify(this.job));
     });
 
     autorun(() => {
-      console.log("caching player stats");
-      store(STATS_STORE, JSON.stringify(this.statsByJob));
+      Storage.store(STATS_STORE, JSON.stringify(this.statsByJob));
     });
   }
 
@@ -61,15 +60,3 @@ class _PlayerState {
 }
 
 export const PlayerState = new _PlayerState();
-
-function store(key: string, item: string) {
-  localStorage.setItem(key, item);
-}
-
-function retrieve<T>(key: string): T | null {
-  const item = localStorage.getItem(key);
-
-  if (!item) return null;
-
-  return JSON.parse(item) as T;
-}

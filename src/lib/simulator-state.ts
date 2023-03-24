@@ -1,10 +1,14 @@
-import { autorun, makeAutoObservable, runInAction } from "mobx";
-import init, { recipesByJobLevel, simulateActions, searchStepwise } from "crafty";
+import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
+import init, { recipesByJobLevel, simulateActions } from "crafty";
 import type { Action, CraftState, Player, Recipe, SearchOptions, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
 import { JOBS } from "./jobs";
+import { checkAttrs } from "./utils";
+
+import searchWorkerUrl from "./search.worker?worker&url";
+import type { SearchRequestMessage, SearchResponseMessage } from "./search.worker";
 
 const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
   iterations: 100_000,
@@ -20,6 +24,8 @@ class _SimulatorState {
   private _actions: Action[] = [];
   private _craftState: CraftState | null = null;
   private _completionReason: CompletionReason | null = null;
+
+  private worker: Worker | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -70,31 +76,59 @@ class _SimulatorState {
     }));
   }
 
-  simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
+  private simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
     const { craft_state, completion_reason } = simulateActions(recipe, player, actions);
     this.craftState = craft_state;
     this.completionReason = completion_reason || null;
   }
 
-  searchStepwise(
-    recipe: Recipe,
-    player: Player,
-    actionHistory: Action[],
-    onActionFound: (action: Action) => void
-  ): Action[] {
-    const start = performance.now();
+  get searchInProgress() {
+    return !!this.worker;
+  }
 
-    const actions = searchStepwise(
-      recipe,
-      player,
-      actionHistory,
-      { ...DEFAULT_SEARCH_OPTIONS, iterations: 20_000 },
-      onActionFound
-    );
+  stopSearch() {
+    if (this.worker) {
+      this.worker.terminate();
+      console.log("worker killed");
+      this.worker = null;
+    }
+  }
 
-    console.log(`found a solution in ${performance.now() - start}ms`);
+  searchStepwise() {
+    this.stopSearch();
 
-    return actions;
+    if (!RecipeState.recipe) {
+      return;
+    }
+
+    const startedAt = performance.now();
+
+    this.worker = new Worker(searchWorkerUrl, { type: "module" });
+    console.log("worker started");
+
+    this.worker.onmessage = (event) => {
+      const { type } = event.data;
+
+      if (type === "search-response") {
+        const { actions } = checkAttrs<SearchResponseMessage>(event.data, ["actions"]);
+        this.actions = actions;
+      } else if (type === "search-complete") {
+        console.log(`search completed in ${performance.now() - startedAt}ms`);
+        this.stopSearch();
+      } else {
+        throw new TypeError(`invalid message type: ${type}`);
+      }
+    };
+
+    // mobx objects aren't serializable across the wire, so we have to convert
+    // them to normal JS objects first
+    this.worker.postMessage({
+      type: "search-request",
+      recipe: toJS(RecipeState.recipe),
+      player: toJS(PlayerState.stats),
+      actionHistory: toJS(this.actions),
+      searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 20_000 },
+    } satisfies SearchRequestMessage);
   }
 }
 

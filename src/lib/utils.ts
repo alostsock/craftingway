@@ -22,3 +22,10 @@ export function groupBy<Item extends Record<Key, string | number | symbol>, Key 
     return groups;
   }, {} as Record<Item[Key], Item[]>);
 }
+
+export function checkAttrs<M>(obj: Partial<M>, attrs: (keyof M)[]): M {
+  for (const attr of attrs) {
+    if (!(attr in obj)) throw new TypeError(`missing attribute: ${String(attr)}`);
+  }
+  return obj as M;
+}

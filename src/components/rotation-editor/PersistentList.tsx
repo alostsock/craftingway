@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import type { Action } from "crafty";
 
@@ -24,7 +25,7 @@ const PersistentList = observer(function PersistentList({ onAdd }: PersistentLis
                 key={name}
                 title={label}
                 onClick={() => onAdd(name)}
-                disabled={!activeActions.has(name)}
+                className={clsx({ disabled: !activeActions.has(name) })}
               >
                 <Icon name={label} job={PlayerState.job} type="action" />
               </button>

@@ -564,9 +564,8 @@ section {
           padding: 0;
           cursor: pointer;
 
-          &[disabled] {
+          &.disabled {
             opacity: 0.3;
-            cursor: not-allowed;
           }
         }
       }

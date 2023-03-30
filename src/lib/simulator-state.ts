@@ -127,7 +127,7 @@ class _SimulatorState {
       recipe: toJS(RecipeState.recipe),
       player: toJS(PlayerState.stats),
       actionHistory: toJS(this.actions),
-      searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 20_000 },
+      searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 100_000 },
     } satisfies SearchRequestMessage);
   }
 }

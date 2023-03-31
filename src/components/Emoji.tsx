@@ -1,3 +1,5 @@
+import "./Emoji.scss";
+
 import { memo } from "react";
 import twemoji from "twemoji";
 

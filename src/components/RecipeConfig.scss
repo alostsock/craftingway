@@ -1,0 +1,102 @@
+.RecipeConfig {
+  align-items: flex-start;
+
+  .field {
+    width: 100%;
+  }
+
+  .combobox {
+    width: 100%;
+    position: relative;
+
+    input {
+      width: 100%;
+    }
+
+    ul {
+      position: absolute;
+
+      width: 100%;
+      max-height: 20em;
+      overflow-y: scroll;
+
+      color: var(--text-color);
+      background: var(--grey-800);
+      border-radius: var(--border-radius);
+
+      list-style: none;
+      padding: 0;
+      user-select: none;
+      z-index: 1;
+    }
+
+    li {
+      display: flex;
+      flex-wrap: wrap;
+      cursor: pointer;
+
+      font-size: var(--small-font-size);
+      padding: var(--025) var(--05);
+
+      &:not(:first-child) {
+        margin-top: 0.5em;
+      }
+
+      &.selected,
+      &:hover {
+        background: var(--grey-700);
+      }
+
+      .HighlightedText {
+        width: 100%;
+
+        span {
+          opacity: 0.7;
+
+          &.highlight {
+            font-weight: 500;
+            opacity: 1;
+          }
+        }
+      }
+
+      .subtext {
+        color: var(--text-muted-color);
+      }
+
+      .job-swap-prompt {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .RecipesByLevel input {
+    width: 2.5em;
+  }
+
+  .recipe-display {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 0 1.5em; // roughly 3 spaces
+
+    @media (max-width: 38em) {
+      grid-template-columns: repeat(2, auto);
+    }
+
+    .name {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .info {
+      color: var(--text-muted-color);
+    }
+  }
+
+  .prompt {
+    color: var(--text-muted-color);
+    font-size: var(--small-font-size);
+    display: flex;
+    column-gap: 0.5em;
+  }
+}

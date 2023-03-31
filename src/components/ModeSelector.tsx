@@ -1,3 +1,5 @@
+import "./ModeSelector.scss";
+
 import React, { useState } from "react";
 import { generateId } from "../lib/utils";
 

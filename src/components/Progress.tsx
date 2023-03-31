@@ -1,3 +1,5 @@
+import "./Progress.scss";
+
 import type { CraftState } from "crafty";
 import { observer } from "mobx-react-lite";
 

@@ -1,3 +1,5 @@
+import "./Icon.scss";
+
 import clsx from "clsx";
 
 import { actionIcons, statusIcons } from "../lib/assets";

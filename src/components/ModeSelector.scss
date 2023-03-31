@@ -1,0 +1,35 @@
+.ModeSelector {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--1);
+
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.5em;
+    padding: 0;
+    margin: 0;
+    border: 0;
+
+    > * {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 26em) {
+      .legend {
+        width: 100%;
+      }
+    }
+
+    input + label {
+      cursor: pointer;
+      opacity: 0.45;
+      transition: opacity 70ms;
+    }
+
+    input:checked + label {
+      opacity: 1;
+    }
+  }
+}

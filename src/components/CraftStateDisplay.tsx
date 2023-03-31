@@ -1,3 +1,5 @@
+import "./CraftStateDisplay.scss";
+
 import { observer } from "mobx-react-lite";
 import type { CompletionReason } from "crafty";
 

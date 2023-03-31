@@ -1,0 +1,65 @@
+.Icon {
+  user-select: none;
+
+  picture {
+    display: block;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  // these icons are supersampled, so normal transparency is lost
+  // ...and I'm too lazy to fix them.
+  // as a hacky workaround, use border-radius and clip-path
+
+  &.action {
+    border-radius: 12.5%;
+    overflow: hidden;
+    position: relative;
+
+    picture {
+      width: var(--action-icon-size);
+      height: var(--action-icon-size);
+    }
+
+    .step {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+
+      text-align: center;
+      font-size: var(--small-font-size);
+      line-height: 1.25;
+      height: 1.25em;
+      padding: 0 0.25em;
+      // --grey-900, but with alpha transparency
+      background: rgba(25, 26, 26, 0.85);
+      border-radius: 0 var(--border-radius) 0 calc(var(--action-icon-size) * 0.125);
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+
+  &.status picture {
+    height: var(--status-icon-height);
+    clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 91% 20%, 92% 81%);
+  }
+
+  // ensure numerals in the top right don't get cut off
+  &.status.with-stacks picture {
+    clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 65% 12%, 80% 10%, 91% 9%, 93% 20%, 91% 31%, 92% 81%);
+  }
+
+  &.status.with-expiry {
+    position: relative;
+  }
+
+  &.status.with-expiry .expiry {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: -1em;
+  }
+}

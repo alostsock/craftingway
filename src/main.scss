@@ -1,0 +1,130 @@
+@import "normalize.css";
+@import "variables.css";
+
+@import "@fontsource/fira-mono/latin-400.css";
+@import "@fontsource/fira-mono/latin-500.css";
+@import "@fontsource/fira-mono/latin-700.css";
+
+* {
+  line-height: 1.5;
+}
+
+:root {
+  min-height: 100vh;
+
+  font-family: "Fira Mono", monospace;
+  font-weight: 400;
+  color-scheme: dark;
+  color: var(--text-color);
+  background-color: var(--grey-900);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+button.link {
+  color: var(--text-muted-color);
+  background: none;
+  text-decoration: underline;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    color: var(--link-hover-color);
+    cursor: pointer;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  margin: 0;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+input {
+  color: var(--text-color);
+  background-color: var(--grey-800);
+  padding: var(--025) var(--05);
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+input:focus {
+  outline: 1px solid var(--focus-color);
+}
+
+input[type="number"] {
+  appearance: textfield;
+  text-align: right;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+section {
+  width: 100%;
+  padding: var(--1) var(--05);
+  display: flex;
+  flex-direction: column;
+  gap: var(--1);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(-1 * var(--15));
+    height: 100%;
+    width: var(--025);
+    border-radius: var(--border-radius);
+    background-color: var(--grey-800);
+    transition: background-color 140ms ease-in-out;
+  }
+
+  &:hover::before {
+    background-color: var(--orange-200);
+  }
+}
+
+.field {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  word-wrap: normal;
+  white-space: nowrap;
+}

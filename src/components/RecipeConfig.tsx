@@ -1,3 +1,5 @@
+import "./RecipeConfig.scss";
+
 import clsx from "clsx";
 import { useCombobox } from "downshift";
 import { action } from "mobx";

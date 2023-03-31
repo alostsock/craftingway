@@ -1,3 +1,5 @@
+import "./BuffList.scss";
+
 import { observer } from "mobx-react-lite";
 
 import Icon from "./Icon";

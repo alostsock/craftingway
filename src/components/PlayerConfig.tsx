@@ -1,3 +1,5 @@
+import "./PlayerConfig.scss";
+
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";

@@ -1,3 +1,5 @@
+import "./Header.scss";
+
 import { observer } from "mobx-react-lite";
 
 const Header = observer(function Header() {

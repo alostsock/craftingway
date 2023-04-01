@@ -2,14 +2,7 @@ import "./RotationEditor.scss";
 
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import {
-  DndContext,
-  PointerSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
-  closestCorners,
-} from "@dnd-kit/core";
+import { DndContext, useSensor, useSensors, closestCorners } from "@dnd-kit/core";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -17,7 +10,6 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 
-import type { PointerEvent, KeyboardEvent } from "react";
 import type { DragEndEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
@@ -28,6 +20,11 @@ import RotationControls from "../RotationControls";
 import ModeSelector from "../ModeSelector";
 import Emoji from "../Emoji";
 
+import {
+  CustomPointerSensor,
+  CustomKeyboardSensor,
+  CustomTouchSensor,
+} from "../../lib/custom-dnd-sensors";
 import { SimulatorState } from "../../lib/simulator-state";
 import Storage from "../../lib/storage";
 import { generateId } from "../../lib/utils";
@@ -51,7 +48,8 @@ const RotationEditor = observer(function RotationEditor() {
 
   const sensors = useSensors(
     useSensor(CustomPointerSensor),
-    useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    useSensor(CustomTouchSensor)
   );
 
   useReaction(
@@ -134,38 +132,3 @@ const RotationEditor = observer(function RotationEditor() {
 });
 
 export default RotationEditor;
-
-class CustomPointerSensor extends PointerSensor {
-  static activators = [
-    {
-      eventName: "onPointerDown" as const,
-      handler: ({ nativeEvent: event }: PointerEvent) => {
-        return shouldHandleEvent(event.target as HTMLElement);
-      },
-    },
-  ];
-}
-
-class CustomKeyboardSensor extends KeyboardSensor {
-  static activators = [
-    {
-      eventName: "onKeyDown" as const,
-      handler: ({ nativeEvent: event }: KeyboardEvent) => {
-        return shouldHandleEvent(event.target as HTMLElement);
-      },
-    },
-  ];
-}
-
-function shouldHandleEvent(element: HTMLElement | null) {
-  let current = element;
-
-  while (current) {
-    if (current.dataset.noDnd) {
-      return false;
-    }
-    current = current.parentElement;
-  }
-
-  return true;
-}

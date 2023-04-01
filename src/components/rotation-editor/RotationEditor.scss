@@ -50,6 +50,7 @@
     .SortableIcon {
       height: fit-content;
       cursor: grab;
+      touch-action: none;
       position: relative;
 
       &[aria-pressed] {

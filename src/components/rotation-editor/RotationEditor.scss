@@ -48,10 +48,10 @@
     min-height: calc(2 * var(--action-icon-size) + var(--05));
 
     .SortableIcon {
+      position: relative;
       height: fit-content;
       cursor: grab;
       touch-action: none;
-      position: relative;
 
       &[aria-pressed] {
         cursor: grabbing;
@@ -102,6 +102,7 @@
 
       .actions {
         display: flex;
+        flex-wrap: wrap;
         gap: var(--05);
 
         button {

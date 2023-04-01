@@ -21,6 +21,7 @@ const MODE_STORE = "recipeMode";
 const RecipeConfig = observer(function RecipeConfig() {
   const resetRecipe = action(() => {
     RecipeState.recipe = null;
+    SimulatorState.actions = [];
   });
 
   const onModeChange = (mode: Mode) => {

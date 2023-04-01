@@ -1,5 +1,5 @@
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
-import init, { recipesByJobLevel, simulateActions } from "crafty";
+import init, { recipesByJobLevel, simulateActions, generateMacroText } from "crafty";
 import type { Action, CraftState, Player, Recipe, SearchOptions, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
@@ -63,6 +63,26 @@ class _SimulatorState {
 
   set completionReason(reason: CompletionReason | null) {
     this._completionReason = reason;
+  }
+
+  get macroTextParts(): string[][] {
+    const lineLimit = 15;
+    const alarmText = "/e <se.8>";
+
+    const latestValidStep = SimulatorState.craftState?.step ?? 0;
+    const validActions = this.actions.slice(0, latestValidStep - 1);
+    const lines = generateMacroText(validActions);
+
+    const parts: string[][] = [];
+    while (lines.length > 0) {
+      if (lines.length <= lineLimit) {
+        parts.push(lines.splice(0, lines.length));
+      } else {
+        parts.push(lines.splice(0, lineLimit - 1).concat(alarmText));
+      }
+    }
+
+    return parts;
   }
 
   recipesByLevel(jobLevel: number): RecipeData[] {

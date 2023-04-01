@@ -17,15 +17,16 @@
       position: absolute;
 
       width: 100%;
-      max-height: 20em;
+      max-height: 16em;
       overflow-y: scroll;
 
       color: var(--text-color);
       background: var(--grey-800);
       border-radius: var(--border-radius);
+      padding: 0;
+      margin: var(--border-radius) 0;
 
       list-style: none;
-      padding: 0;
       user-select: none;
       z-index: 1;
     }
@@ -37,10 +38,6 @@
 
       font-size: var(--small-font-size);
       padding: var(--025) var(--05);
-
-      &:not(:first-child) {
-        margin-top: 0.5em;
-      }
 
       &.selected,
       &:hover {

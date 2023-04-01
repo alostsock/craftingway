@@ -1,0 +1,19 @@
+.RotationControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1.5em;
+  color: var(--text-muted-color);
+  font-size: var(--small-font-size);
+  min-height: 1.15em;
+
+  * {
+    // match button line height
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .copy-macro-buttons {
+    display: flex;
+    gap: 0.5em;
+  }
+}

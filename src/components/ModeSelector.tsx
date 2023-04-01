@@ -1,6 +1,8 @@
 import "./ModeSelector.scss";
 
 import React, { useState } from "react";
+
+import EmptyComponent from "./EmptyComponent";
 import { generateId } from "../lib/utils";
 
 type ModeOption<Mode extends string> = {
@@ -67,8 +69,4 @@ export default function ModeSelector<Mode extends string>({
       <ModeComponent />
     </div>
   );
-}
-
-function EmptyComponent() {
-  return null;
 }

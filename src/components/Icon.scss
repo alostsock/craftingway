@@ -36,7 +36,6 @@
       padding: 0 0.25em;
       // --grey-900, but with alpha transparency
       background: rgba(25, 26, 26, 0.85);
-      border-radius: 0 var(--border-radius) 0 calc(var(--action-icon-size) * 0.125);
       user-select: none;
       pointer-events: none;
     }

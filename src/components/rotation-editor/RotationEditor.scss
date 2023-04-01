@@ -13,8 +13,21 @@
     }
   }
 
-  .PersistentList,
-  .MutableList {
+  .rotation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--1);
+
+    background: var(--grey-800);
+    padding: var(--05);
+
+    // overflow into the gutter for better horizontal alignment
+    width: calc(100% + var(--1));
+    margin: 0 calc(-1 * var(--05));
+  }
+
+  .MutableList,
+  .PersistentList {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -26,6 +39,49 @@
 
       &:hover {
         filter: brightness(1.25);
+      }
+    }
+  }
+
+  .MutableList {
+    border-radius: var(--border-radius);
+    min-height: calc(2 * var(--action-icon-size) + var(--05));
+
+    .SortableIcon {
+      height: fit-content;
+      cursor: grab;
+      position: relative;
+
+      &[aria-pressed] {
+        cursor: grabbing;
+      }
+
+      &.disabled {
+        opacity: 0.4;
+      }
+
+      button.remove {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        width: 1.3em;
+        height: 1.3em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: var(--grey-800);
+        padding: 0;
+        border: 0;
+        border-radius: 0 0 0 var(--border-radius);
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 70ms;
+      }
+
+      &:hover:not([aria-pressed]) button.remove {
+        opacity: 1;
       }
     }
   }
@@ -58,54 +114,6 @@
           }
         }
       }
-    }
-  }
-
-  .MutableList {
-    background: var(--grey-800);
-    padding: var(--05);
-    border-radius: var(--border-radius);
-    min-height: calc(2 * var(--action-icon-size) + 3 * var(--05));
-    // overflow into the gutter for better horizontal alignment
-    width: calc(100% + var(--1));
-    margin: 0 calc(-1 * var(--05));
-  }
-
-  .SortableIcon {
-    height: fit-content;
-    cursor: grab;
-    position: relative;
-
-    &[aria-pressed] {
-      cursor: grabbing;
-    }
-
-    &.disabled {
-      opacity: 0.4;
-    }
-
-    button.remove {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      width: 1.3em;
-      height: 1.3em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      background: var(--grey-800);
-      padding: 0;
-      border: 0;
-      border-radius: 0 0 0 var(--border-radius);
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 70ms;
-    }
-
-    &:hover:not([aria-pressed]) button.remove {
-      opacity: 1;
     }
   }
 }

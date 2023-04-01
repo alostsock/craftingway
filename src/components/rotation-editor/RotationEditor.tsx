@@ -24,6 +24,7 @@ import type { Action } from "crafty";
 import MutableList from "./MutableList";
 import PersistentList from "./PersistentList";
 import SearchPanel from "./SearchPanel";
+import RotationControls from "../RotationControls";
 import ModeSelector from "../ModeSelector";
 import Emoji from "../Emoji";
 
@@ -104,7 +105,11 @@ const RotationEditor = observer(function RotationEditor() {
     <div className="RotationEditor">
       <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
-          <MutableList items={itemIds} onRemove={removeItem} />
+          <div className="rotation">
+            <MutableList items={itemIds} onRemove={removeItem} />
+
+            <RotationControls />
+          </div>
 
           <ModeSelector
             defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "manual"}

@@ -1,8 +1,8 @@
-import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import type { Action } from "crafty";
 
-import Icon from "../Icon";
+import DraggableIcon from "./DraggableIcon";
+import { idFromAction } from "./converters";
 import { traitedActions } from "../../lib/actions";
 import { SimulatorState } from "../../lib/simulator-state";
 import { PlayerState } from "../../lib/player-state";
@@ -25,14 +25,14 @@ const PersistentList = observer(function PersistentList({ onAdd }: PersistentLis
 
           <div className="actions">
             {actions.map(({ name, label }) => (
-              <button
+              <DraggableIcon
                 key={name}
-                title={label}
+                id={idFromAction(name)}
+                name={name}
+                label={label}
                 onClick={() => onAdd(name)}
-                className={clsx({ disabled: !activeActions.has(name) })}
-              >
-                <Icon name={label} job={PlayerState.job} type="action" />
-              </button>
+                disabled={!activeActions.has(name)}
+              />
             ))}
           </div>
         </div>

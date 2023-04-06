@@ -5,10 +5,15 @@ import SortableIcon from "./SortableIcon";
 
 type MutableListProps = {
   items: string[];
+  activeItemId: string | null;
   onRemove: (id: string) => void;
 };
 
-const MutableList = observer(function MutableList({ items, onRemove }: MutableListProps) {
+const MutableList = observer(function MutableList({
+  items,
+  activeItemId,
+  onRemove,
+}: MutableListProps) {
   const id = "droppable-mutable-list";
 
   const { setNodeRef } = useDroppable({ id });
@@ -16,7 +21,13 @@ const MutableList = observer(function MutableList({ items, onRemove }: MutableLi
   return (
     <div id={id} ref={setNodeRef} className="MutableList">
       {items.map((id, index) => (
-        <SortableIcon key={id} id={id} step={index + 1} onRemove={onRemove} />
+        <SortableIcon
+          key={id}
+          id={id}
+          step={index + 1}
+          onRemove={onRemove}
+          active={id === activeItemId}
+        />
       ))}
     </div>
   );

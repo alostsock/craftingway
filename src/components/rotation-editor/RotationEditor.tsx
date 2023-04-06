@@ -2,7 +2,7 @@ import "./RotationEditor.scss";
 
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { DndContext, useSensor, useSensors, closestCorners } from "@dnd-kit/core";
+import { DndContext, useSensor, useSensors, closestCorners, DragOverlay } from "@dnd-kit/core";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -10,13 +10,15 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 
-import type { DragEndEvent } from "@dnd-kit/core";
+import type { DragStartEvent, DragMoveEvent, DragEndEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
 import MutableList from "./MutableList";
 import PersistentList from "./PersistentList";
-import SearchPanel from "./SearchPanel";
+import { actionFromId, idFromAction } from "./converters";
+import Icon from "../Icon";
 import RotationControls from "../RotationControls";
+import SearchPanel from "../SearchPanel";
 import ModeSelector from "../ModeSelector";
 import Emoji from "../Emoji";
 
@@ -27,29 +29,21 @@ import {
 } from "../../lib/custom-dnd-sensors";
 import { SimulatorState } from "../../lib/simulator-state";
 import Storage from "../../lib/storage";
-import { generateId } from "../../lib/utils";
 import { useReaction } from "../../lib/hooks";
+import { ACTIONS } from "../../lib/actions";
 
 const MODE_STORE = "rotationEditorMode";
 
 type Mode = "manual" | "auto";
 
-function idFromAction(action: Action) {
-  return `${action}-${generateId()}`;
-}
-
-export function actionFromId(id: string) {
-  let [_, action] = id.match(/(\w+)-\d+/)!;
-  return action as Action;
-}
-
 const RotationEditor = observer(function RotationEditor() {
   const [itemIds, setItemIds] = useState<string[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
-    useSensor(CustomPointerSensor),
+    useSensor(CustomPointerSensor, { activationConstraint: { distance: 10 } }),
     useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-    useSensor(CustomTouchSensor)
+    useSensor(CustomTouchSensor, { activationConstraint: { distance: 10 } })
   );
 
   useReaction(
@@ -71,13 +65,38 @@ const RotationEditor = observer(function RotationEditor() {
     save([...itemIds.slice(0, i), ...itemIds.slice(i + 1)]);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id.toString());
+  };
+
+  const handleDragMove = (event: DragMoveEvent) => {
     const { over, active } = event;
-    // icon is being rearranged
+
+    // Note that this will temporarily desync itemIds with
+    // SimulatorState.actions until the drag end event is triggered.
+    if (over && over.id !== active.id) {
+      const oldIndex = itemIds.indexOf(active.id.toString());
+      const newIndex = itemIds.indexOf(over.id.toString());
+
+      if (oldIndex === -1) {
+        setItemIds(arrayMove([...itemIds, active.id.toString()], itemIds.length, newIndex));
+        return;
+      }
+
+      setItemIds(arrayMove(itemIds, oldIndex, newIndex));
+    }
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    setActiveId(null);
+    const { over, active } = event;
+
     if (over && over.id !== active.id) {
       const oldIndex = itemIds.indexOf(active.id.toString());
       const newIndex = itemIds.indexOf(over.id.toString());
       save(arrayMove(itemIds, oldIndex, newIndex));
+    } else {
+      save(itemIds);
     }
   };
 
@@ -99,12 +118,25 @@ const RotationEditor = observer(function RotationEditor() {
     </span>
   );
 
+  const activeActionLabel = () => {
+    if (!activeId) return "";
+
+    return ACTIONS.find((action) => action.name === actionFromId(activeId))?.label ?? "";
+  };
+
   return (
     <div className="RotationEditor">
-      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        autoScroll={{ layoutShiftCompensation: false }}
+        onDragStart={handleDragStart}
+        onDragMove={handleDragMove}
+        onDragEnd={handleDragEnd}
+      >
         <SortableContext items={itemIds} strategy={rectSortingStrategy}>
           <div className="rotation">
-            <MutableList items={itemIds} onRemove={removeItem} />
+            <MutableList items={itemIds} activeItemId={activeId} onRemove={removeItem} />
 
             <RotationControls />
           </div>
@@ -125,6 +157,9 @@ const RotationEditor = observer(function RotationEditor() {
             ]}
             onChange={onModeChange}
           />
+          <DragOverlay>
+            {activeId ? <Icon name={activeActionLabel()} type="action" /> : null}
+          </DragOverlay>
         </SortableContext>
       </DndContext>
     </div>

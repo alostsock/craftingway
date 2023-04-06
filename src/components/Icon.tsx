@@ -1,21 +1,24 @@
 import "./Icon.scss";
 
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 
 import { actionIcons, statusIcons } from "../lib/assets";
+import { PlayerState } from "../lib/player-state";
 
 type Props = {
   name: string;
   type: "action" | "status";
-  job?: string;
   stacks?: number;
   expiry?: number;
   step?: number;
 };
 
 // component is possibly a bit bloated (split it into ActionIcon/StatusIcon?)
-const Icon = ({ name, type, job, stacks, expiry, step }: Props) => {
+const Icon = observer(({ name, type, stacks, expiry, step }: Props) => {
   const noImage = <span>NO IMAGE</span>;
+
+  const job = PlayerState.job;
 
   if (type === "action") {
     const nameWithJob = `${name}-${job}`;
@@ -54,6 +57,6 @@ const Icon = ({ name, type, job, stacks, expiry, step }: Props) => {
       {type === "status" && expiry && <span className="expiry">{expiry}</span>}
     </div>
   );
-};
+});
 
 export default Icon;

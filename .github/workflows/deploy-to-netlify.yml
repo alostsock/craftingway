@@ -52,7 +52,7 @@ jobs:
       run: yarn install --frozen-lockfile
 
     - name: Build static files
-      run: yarn run build
+      run: VITE_REVISION=$GITHUB_SHA yarn run build
 
     # https://cli.netlify.com/commands/deploy
 

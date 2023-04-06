@@ -6,6 +6,7 @@ import Header from "./Header";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
 import CraftStateDisplay from "./CraftStateDisplay";
+import Footer from "./Footer";
 
 const App = observer(function App() {
   return (
@@ -17,6 +18,8 @@ const App = observer(function App() {
       <RecipeConfig />
 
       <CraftStateDisplay />
+
+      <Footer />
     </div>
   );
 });

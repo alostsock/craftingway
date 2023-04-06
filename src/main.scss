@@ -27,6 +27,8 @@
 #root {
   display: flex;
   justify-content: center;
+
+  min-height: 100vh;
 }
 
 button.link {
@@ -108,6 +110,17 @@ section {
   &:hover::before {
     background-color: var(--orange-200);
   }
+}
+
+footer {
+  text-align: right;
+  color: var(--text-muted-color);
+  font-size: var(--small-font-size);
+  opacity: 0.3;
+
+  width: 100%;
+  padding: var(--05);
+  margin-top: auto;
 }
 
 .field {

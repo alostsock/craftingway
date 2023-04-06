@@ -3,7 +3,7 @@ name: 'Deploy to Netlify'
 on:
   workflow_dispatch:
   push:
-    branches: [ 'main' ]
+    branches: [ 'main', 'preview' ]
 
 permissions:
   contents: read
@@ -54,11 +54,22 @@ jobs:
     - name: Build static files
       run: yarn run build
 
+    # https://cli.netlify.com/commands/deploy
+
     - name: Deploy to Netlify
+      if: ${{ github.ref_name == 'main' }}
       env:
         AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-      # https://cli.netlify.com/commands/deploy
       run: |
         yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
+          --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"
+
+    - name: Deploy to Netlify (preview)
+      if: ${{ github.ref_name == 'preview' }}
+      env:
+        AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      run: |
+        yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --dir dist \
           --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"

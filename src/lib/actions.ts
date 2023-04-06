@@ -16,9 +16,12 @@ export const ACTIONS: readonly ActionData[] = [
   { level: 69, name: "Reflect", label: "Reflect", group: "Starter" },
 
   { level: 1, name: "BasicSynthesis", label: "Basic Synthesis", group: "Progress" },
+  { level: 31, name: "BasicSynthesisTraited", label: "Basic Synthesis", group: "Progress" },
   { level: 62, name: "CarefulSynthesis", label: "Careful Synthesis", group: "Progress" },
+  { level: 82, name: "CarefulSynthesisTraited", label: "Careful Synthesis", group: "Progress" },
   { level: 88, name: "PrudentSynthesis", label: "Prudent Synthesis", group: "Progress" },
   { level: 72, name: "Groundwork", label: "Groundwork", group: "Progress" },
+  { level: 86, name: "GroundworkTraited", label: "Groundwork", group: "Progress" },
 
   { level: 5, name: "BasicTouch", label: "Basic Touch", group: "Quality" },
   { level: 18, name: "StandardTouch", label: "Standard Touch", group: "Quality" },
@@ -53,3 +56,25 @@ export const ACTIONS: readonly ActionData[] = [
 ] as const;
 
 export const ACTIONS_BY_GROUP = groupBy(ACTIONS.slice(), "group");
+
+export function traitedActions(jobLevel: number): ActionData[] {
+  let actions: ActionData[] = [];
+
+  for (const action of ACTIONS) {
+    if (
+      jobLevel < action.level ||
+      (action.name === "BasicSynthesis" && jobLevel >= 31) ||
+      (action.name === "BasicSynthesisTraited" && jobLevel < 31) ||
+      (action.name === "CarefulSynthesis" && jobLevel >= 82) ||
+      (action.name === "CarefulSynthesisTraited" && jobLevel < 82) ||
+      (action.name === "Groundwork" && jobLevel >= 86) ||
+      (action.name === "GroundworkTraited" && jobLevel < 86)
+    ) {
+      continue;
+    }
+
+    actions.push(action);
+  }
+
+  return actions;
+}

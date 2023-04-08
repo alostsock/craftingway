@@ -1,3 +1,5 @@
+import "./Select.scss";
+
 import clsx from "clsx";
 import { useSelect, UseSelectStateChange } from "downshift";
 import { observer } from "mobx-react-lite";
@@ -31,7 +33,8 @@ const Select = observer(function Select<Item>({
   return (
     <div className={clsx("Select field", className)}>
       <label {...select.getLabelProps()}>{label}</label>
-      <div className="select">
+
+      <div className="dropdown-list">
         <button
           className={clsx({ placeholder: !select.selectedItem })}
           {...select.getToggleButtonProps()}

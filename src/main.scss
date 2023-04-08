@@ -150,15 +150,12 @@ footer {
   gap: 0.5em;
 }
 
-.combobox,
-.select {
-  width: 100%;
+.dropdown-list {
   position: relative;
 
   ul {
     position: absolute;
 
-    max-height: 16em;
     overflow-y: scroll;
 
     color: var(--text-color);
@@ -188,38 +185,5 @@ footer {
     & > *:first-child {
       width: 100%;
     }
-  }
-}
-
-.combobox {
-  input {
-    width: 100%;
-  }
-
-  ul {
-    width: 100%;
-  }
-}
-
-.select {
-  button {
-    // match <input /> styling
-    color: var(--text-color);
-    background-color: var(--grey-800);
-    padding: var(--025) var(--05);
-    border: none;
-    border-radius: var(--border-radius);
-
-    &:focus {
-      outline: 1px solid var(--focus-color);
-    }
-
-    &.placeholder {
-      color: var(--placeholder-color);
-    }
-  }
-
-  li {
-    white-space: nowrap;
   }
 }

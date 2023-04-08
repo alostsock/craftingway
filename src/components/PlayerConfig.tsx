@@ -132,29 +132,6 @@ const PlayerConfig = observer(function PlayerConfig() {
       </Select>
 
       <div className="prompts">
-        {copyMenuState !== "copying" && (
-          <button className="link" onClick={() => setCopyMenuState("copying")}>
-            Copy stats <strong>from</strong> another job
-          </button>
-        )}
-
-        {copyMenuState === "copying" && (
-          <div>
-            Copy stats from…
-            {JOBS.map((job) => (
-              <React.Fragment key={job}>
-                {" "}
-                <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
-                  {job}
-                </button>
-              </React.Fragment>
-            ))}{" "}
-            <button className="link" onClick={() => setCopyMenuState("inactive")}>
-              Cancel
-            </button>
-          </div>
-        )}
-
         {copyMenuState !== "copying-all" ? (
           <button className="link" onClick={() => setCopyMenuState("copying-all")}>
             Copy stats <strong>to</strong> all other jobs
@@ -165,6 +142,27 @@ const PlayerConfig = observer(function PlayerConfig() {
             <button className="link" onClick={handleStatsCopyAll}>
               OK
             </button>{" "}
+            <button className="link" onClick={() => setCopyMenuState("inactive")}>
+              Cancel
+            </button>
+          </div>
+        )}
+
+        {copyMenuState !== "copying" ? (
+          <button className="link" onClick={() => setCopyMenuState("copying")}>
+            Copy stats <strong>from</strong> another job
+          </button>
+        ) : (
+          <div>
+            Copy stats from…
+            {JOBS.map((job) => (
+              <React.Fragment key={job}>
+                {" "}
+                <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
+                  {job}
+                </button>
+              </React.Fragment>
+            ))}{" "}
             <button className="link" onClick={() => setCopyMenuState("inactive")}>
               Cancel
             </button>

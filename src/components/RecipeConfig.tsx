@@ -108,7 +108,7 @@ const RecipesByName = observer(function RecipesByName() {
   return (
     <div className="RecipesByName field">
       <label {...cb.getLabelProps()}>Name</label>
-      <div className="combobox" {...cb.getComboboxProps()}>
+      <div className="dropdown-list" {...cb.getComboboxProps()}>
         <input
           autoFocus
           placeholder="Orphanage Donation"
@@ -128,7 +128,7 @@ const RecipesByName = observer(function RecipesByName() {
 
                 {!recipe.jobs.has(PlayerState.job) && (
                   <div className="subtext job-swap-prompt">
-                    Swap to {recipe.jobs.values().next().value}
+                    Swaps to {recipe.jobs.values().next().value}
                   </div>
                 )}
               </li>
@@ -161,7 +161,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
   return (
     <div className="RecipesByLevel field">
       <label {...cb.getLabelProps()}>Level</label>
-      <div className="combobox" {...cb.getComboboxProps()}>
+      <div className="dropdown-list" {...cb.getComboboxProps()}>
         <input
           autoFocus
           type="number"

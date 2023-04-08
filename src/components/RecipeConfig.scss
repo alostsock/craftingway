@@ -5,14 +5,25 @@
     width: 100%;
   }
 
-  .combobox {
+  .dropdown-list {
+    width: 100%;
+
+    ul {
+      width: 100%;
+    }
+
     .subtext {
       color: var(--text-muted-color);
     }
 
     .job-swap-prompt {
+      color: var(--orange-300);
       margin-left: auto;
     }
+  }
+
+  .RecipesByName input {
+    width: 100%;
   }
 
   .RecipesByLevel input {

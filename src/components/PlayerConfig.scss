@@ -1,11 +1,9 @@
 .PlayerConfig {
-  align-items: center;
-
   .Emoji {
     margin-right: 0.25em;
   }
 
-  fieldset {
+  .jobs {
     width: 100%;
     padding: 0;
     margin: 0;
@@ -34,69 +32,79 @@
     }
   }
 
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: repeat(3, auto);
-    justify-items: flex-end;
-    column-gap: var(--2);
-    row-gap: var(--05);
+  .configs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--1);
+    padding: var(--05) 0;
 
-    .field:first-child {
-      grid-row: 1 / -1;
+    @media (max-width: 42em) {
+      flex-direction: column;
+      width: min-content;
+      align-self: center;
     }
 
-    @media (max-width: 26em) {
-      align-self: flex-start;
-      grid-template-columns: auto;
-      grid-template-rows: repeat(4, auto);
+    .stats,
+    .consumables {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--05);
+    }
 
-      .field:first-child {
-        grid-row: unset;
+    .stats {
+      #input-job_level {
+        width: 2.5em;
+        margin-left: 1.5em;
+        margin-right: 6.5em;
+      }
+
+      input {
+        width: 4em;
+      }
+
+      .bonuses {
+        display: flex;
+        gap: var(--05);
+        min-width: 6em; // enough space for "+000 +000"
+
+        .food {
+          color: var(--food-color);
+        }
+
+        .potion {
+          color: var(--potion-color);
+        }
       }
     }
 
-    #input-job_level {
-      width: 2.5em;
-      margin-right: 1.5em;
-    }
-
-    #input-craftsmanship,
-    #input-control,
-    #input-cp {
-      width: 4em;
-    }
-
-    .bonuses {
-      display: flex;
-      gap: var(--05);
-      min-width: 6em; // enough space for "+000 +000"
+    .consumables {
+      .food,
+      .potion {
+        button {
+          width: 15em;
+        }
+      }
 
       .food {
-        color: var(--food-color);
+        &.active label {
+          color: var(--food-color);
+        }
       }
 
       .potion {
-        color: var(--potion-color);
+        &.active label {
+          color: var(--potion-color);
+        }
       }
     }
   }
 
-  .food-select label {
-    color: var(--food-color);
-  }
-
-  .potion-select label {
-    color: var(--potion-color);
-  }
-
   .prompts {
-    align-self: flex-start;
-
     font-size: var(--small-font-size);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: inherit;
+    gap: var(--05);
   }
 }

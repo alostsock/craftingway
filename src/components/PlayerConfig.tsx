@@ -10,6 +10,7 @@ import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { Consumable, MEALS, POTIONS } from "../lib/consumables";
+import clsx from "clsx";
 
 type StatConfig = {
   name: string;
@@ -50,7 +51,7 @@ const PlayerConfig = observer(function PlayerConfig() {
 
   return (
     <section className="PlayerConfig">
-      <fieldset>
+      <fieldset className="jobs">
         {JOBS.map((job) => {
           const id = `radio-${job}`;
 
@@ -75,61 +76,65 @@ const PlayerConfig = observer(function PlayerConfig() {
         })}
       </fieldset>
 
-      <div className="stats">
-        {STATS.map(({ name, label, min, max }) => {
-          const id = `input-${name}`;
+      <div className="configs">
+        <div className="stats">
+          {STATS.map(({ name, label, min, max }) => {
+            const id = `input-${name}`;
 
-          return (
-            <div className="field" key={name}>
-              <label htmlFor={id}>{label}</label>
-              <input
-                id={id}
-                key={name}
-                type="number"
-                min={min}
-                max={max}
-                value={PlayerState.stats[name].toString()}
-                onChange={(e) => {
-                  const value = parseInt(e.target.value) || 0;
-                  PlayerState.setStats({ [name]: value });
-                }}
-              />
-              {name != "job_level" && (
-                <div className="bonuses">
-                  {PlayerState.foodBonus[name] > 0 && (
-                    <span className="food">+{PlayerState.foodBonus[name]}</span>
-                  )}
-                  {PlayerState.potionBonus[name] > 0 && (
-                    <span className="potion">+{PlayerState.potionBonus[name]}</span>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            return (
+              <div className="field" key={name}>
+                <label htmlFor={id}>{label}</label>
+                <input
+                  id={id}
+                  key={name}
+                  type="number"
+                  min={min}
+                  max={max}
+                  value={PlayerState.stats[name].toString()}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value) || 0;
+                    PlayerState.setStats({ [name]: value });
+                  }}
+                />
+                {name !== "job_level" && (
+                  <div className="bonuses">
+                    {PlayerState.foodBonus[name] > 0 && (
+                      <span className="food">+{PlayerState.foodBonus[name]}</span>
+                    )}
+                    {PlayerState.potionBonus[name] > 0 && (
+                      <span className="potion">+{PlayerState.potionBonus[name]}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="consumables">
+          <Select<Consumable>
+            className={clsx("food", { active: !!PlayerState.food })}
+            label="Food"
+            placeholder="No food"
+            items={MEALS.slice()}
+            itemToString={(food) => food?.name || ""}
+            onChange={action((selectedItem) => (PlayerState.food = selectedItem))}
+          >
+            {(food) => <span>{food.name}</span>}
+          </Select>
+
+          <Select<Consumable>
+            className={clsx("potion", { active: !!PlayerState.potion })}
+            label="Potion"
+            placeholder="No potion"
+            items={POTIONS.slice()}
+            itemToString={(potion) => potion?.name || ""}
+            onChange={action((selectedItem) => (PlayerState.potion = selectedItem))}
+          >
+            {(potion) => <span>{potion.name}</span>}
+          </Select>
+        </div>
       </div>
-
-      <Select<Consumable>
-        className={PlayerState.food ? "food-select" : undefined}
-        label="Food"
-        placeholder="No food"
-        items={MEALS.slice()}
-        itemToString={(food) => food?.name || ""}
-        onChange={action((selectedItem) => (PlayerState.food = selectedItem))}
-      >
-        {(food) => <span>{food.name}</span>}
-      </Select>
-
-      <Select<Consumable>
-        className={PlayerState.potion ? "potion-select" : undefined}
-        label="Potion"
-        placeholder="No potion"
-        items={POTIONS.slice()}
-        itemToString={(potion) => potion?.name || ""}
-        onChange={action((selectedItem) => (PlayerState.potion = selectedItem))}
-      >
-        {(potion) => <span>{potion.name}</span>}
-      </Select>
 
       <div className="prompts">
         {copyMenuState !== "copying-all" ? (

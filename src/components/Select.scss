@@ -1,6 +1,7 @@
 .Select {
   button {
     // match <input /> styling
+    text-align: left;
     color: var(--text-color);
     background-color: var(--grey-800);
     padding: var(--025) var(--05);

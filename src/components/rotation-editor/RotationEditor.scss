@@ -27,6 +27,10 @@
     margin: 0 calc(-1 * var(--05));
   }
 
+  .ModeSelector fieldset {
+    gap: 0 1em;
+  }
+
   .MutableList,
   .PersistentList {
     width: 100%;

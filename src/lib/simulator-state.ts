@@ -1,6 +1,6 @@
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
 import init, { recipesByJobLevel, simulateActions, generateMacroText } from "crafty";
-import type { Action, CraftState, Player, Recipe, SearchOptions, CompletionReason } from "crafty";
+import type { Action, CraftState, SearchOptions, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
@@ -34,7 +34,13 @@ class _SimulatorState {
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
-        this.simulateActions(RecipeState.recipe, PlayerState.stats, this.actions);
+        const { craft_state, completion_reason } = simulateActions(
+          RecipeState.recipe,
+          PlayerState.statsWithBonuses,
+          this.actions
+        );
+        this.craftState = craft_state;
+        this.completionReason = completion_reason || null;
       } else {
         this.craftState = null;
       }
@@ -65,27 +71,9 @@ class _SimulatorState {
     this._completionReason = reason;
   }
 
-  get macroTextParts(): string[][] {
-    const lineLimit = 15;
-    const alarmText = "/e <se.8>";
-
-    const latestValidStep = SimulatorState.craftState?.step ?? 0;
-    const validActions = this.actions.slice(0, latestValidStep - 1);
-    const lines = generateMacroText(validActions);
-
-    const parts: string[][] = [];
-    while (lines.length > 0) {
-      if (lines.length <= lineLimit) {
-        parts.push(lines.splice(0, lines.length));
-      } else {
-        parts.push(lines.splice(0, lineLimit - 1).concat(alarmText));
-      }
-    }
-
-    return parts;
-  }
-
   recipesByLevel(jobLevel: number): RecipeData[] {
+    if (!this.loaded) return [];
+
     return recipesByJobLevel(jobLevel).map((recipe) => ({
       name: "Generic Recipe",
       jobs: new Set(JOBS),
@@ -94,12 +82,6 @@ class _SimulatorState {
       is_specialist: false,
       ...recipe,
     }));
-  }
-
-  private simulateActions(recipe: Recipe, player: Player, actions: Action[]) {
-    const { craft_state, completion_reason } = simulateActions(recipe, player, actions);
-    this.craftState = craft_state;
-    this.completionReason = completion_reason || null;
   }
 
   get searchInProgress() {
@@ -117,9 +99,7 @@ class _SimulatorState {
   searchStepwise() {
     this.stopSearch();
 
-    if (!RecipeState.recipe) {
-      return;
-    }
+    if (!RecipeState.recipe || !this.loaded) return;
 
     const startedAt = performance.now();
 
@@ -149,6 +129,26 @@ class _SimulatorState {
       actionHistory: toJS(this.actions),
       searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 100_000 },
     } satisfies SearchRequestMessage);
+  }
+
+  get macroTextParts(): string[][] {
+    const lineLimit = 15;
+    const alarmText = "/e <se.8>";
+
+    const latestValidStep = SimulatorState.craftState?.step ?? 0;
+    const validActions = this.actions.slice(0, latestValidStep - 1);
+    const lines = generateMacroText(validActions);
+
+    const parts: string[][] = [];
+    while (lines.length > 0) {
+      if (lines.length <= lineLimit) {
+        parts.push(lines.splice(0, lines.length));
+      } else {
+        parts.push(lines.splice(0, lineLimit - 1).concat(alarmText));
+      }
+    }
+
+    return parts;
   }
 }
 

@@ -10,8 +10,11 @@
 
   --text-color: var(--orange-050);
   --text-muted-color: var(--grey-300);
+  --placeholder-color: var(--grey-500);
   --focus-color: var(--orange-400);
   --link-hover-color: var(--blue-300);
+  --food-color: var(--orange-200);
+  --potion-color: var(--blue-200);
 
   --small-font-size: 0.9rem;
 

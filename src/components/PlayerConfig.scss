@@ -66,6 +66,28 @@
     #input-cp {
       width: 4em;
     }
+
+    .bonuses {
+      display: flex;
+      gap: var(--05);
+      min-width: 6em; // enough space for "+000 +000"
+
+      .food {
+        color: var(--food-color);
+      }
+
+      .potion {
+        color: var(--potion-color);
+      }
+    }
+  }
+
+  .food-select label {
+    color: var(--food-color);
+  }
+
+  .potion-select label {
+    color: var(--potion-color);
   }
 
   .prompts {

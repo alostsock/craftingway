@@ -1,0 +1,10 @@
+.Highlighter {
+  span {
+    opacity: 0.7;
+
+    &.highlight {
+      font-weight: 500;
+      opacity: 1;
+    }
+  }
+}

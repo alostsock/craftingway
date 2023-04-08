@@ -1,11 +1,42 @@
-type ConsumableStatValue = readonly [value: number, max: number, hq_value: number, hq_max: number];
+import type { Player } from "crafty";
 
-interface Consumable {
+export type ConsumableStatValues = readonly [
+  value: number,
+  max: number,
+  hq_value: number,
+  hq_max: number
+];
+
+export interface Consumable {
   item_level: number;
   name: string;
-  craftsmanship: ConsumableStatValue | null;
-  control: ConsumableStatValue | null;
-  cp: ConsumableStatValue | null;
+  craftsmanship: ConsumableStatValues | null;
+  control: ConsumableStatValues | null;
+  cp: ConsumableStatValues | null;
+}
+
+export interface ConsumableBonus {
+  craftsmanship: number;
+  control: number;
+  cp: number;
+}
+
+export function calculateConsumableBonus(
+  stats: Player,
+  consumable: Consumable,
+  isHq: boolean
+): ConsumableBonus {
+  const bonus = (stat: number, values: ConsumableStatValues | null) => {
+    if (!values) return 0;
+    let [multiplier, max] = isHq ? [values[2], values[3]] : [values[0], values[1]];
+    return Math.min(Math.floor((stat * multiplier) / 100), max);
+  };
+
+  return {
+    craftsmanship: bonus(stats.craftsmanship, consumable.craftsmanship),
+    control: bonus(stats.control, consumable.control),
+    cp: bonus(stats.cp, consumable.cp),
+  };
 }
 
 // prettier-ignore

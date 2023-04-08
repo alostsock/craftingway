@@ -4,10 +4,12 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
+import Select from "./Select";
 import Emoji from "./Emoji";
 import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
+import { Consumable, MEALS, POTIONS } from "../lib/consumables";
 
 type StatConfig = {
   name: string;
@@ -92,10 +94,42 @@ const PlayerConfig = observer(function PlayerConfig() {
                   PlayerState.setStats({ [name]: value });
                 }}
               />
+              {name != "job_level" && (
+                <div className="bonuses">
+                  {PlayerState.foodBonus[name] > 0 && (
+                    <span className="food">+{PlayerState.foodBonus[name]}</span>
+                  )}
+                  {PlayerState.potionBonus[name] > 0 && (
+                    <span className="potion">+{PlayerState.potionBonus[name]}</span>
+                  )}
+                </div>
+              )}
             </div>
           );
         })}
       </div>
+
+      <Select<Consumable>
+        className={PlayerState.food ? "food-select" : undefined}
+        label="Food"
+        placeholder="No food"
+        items={MEALS.slice()}
+        itemToString={(food) => food?.name || ""}
+        onChange={action((selectedItem) => (PlayerState.food = selectedItem))}
+      >
+        {(food) => <span>{food.name}</span>}
+      </Select>
+
+      <Select<Consumable>
+        className={PlayerState.potion ? "potion-select" : undefined}
+        label="Potion"
+        placeholder="No potion"
+        items={POTIONS.slice()}
+        itemToString={(potion) => potion?.name || ""}
+        onChange={action((selectedItem) => (PlayerState.potion = selectedItem))}
+      >
+        {(potion) => <span>{potion.name}</span>}
+      </Select>
 
       <div className="prompts">
         {copyMenuState !== "copying" && (
@@ -127,8 +161,7 @@ const PlayerConfig = observer(function PlayerConfig() {
           </button>
         ) : (
           <div>
-            Copying <Emoji emoji={JOB_EMOJIS[PlayerState.job]} />
-            {PlayerState.job} stats to all other jobs… Are you sure?{" "}
+            Copying {PlayerState.job} stats to all other jobs… Are you sure?{" "}
             <button className="link" onClick={handleStatsCopyAll}>
               OK
             </button>{" "}

@@ -3,6 +3,7 @@ import type { Player as PlayerStats } from "crafty";
 
 import { Job, JOBS } from "./jobs";
 import Storage from "./storage";
+import { Consumable, calculateConsumableBonus, ConsumableBonus } from "./consumables";
 
 type JobStats = Record<Job, PlayerStats>;
 
@@ -19,6 +20,10 @@ const STATS_STORE = "statsByJob";
 class _PlayerState {
   job: Job;
   statsByJob: JobStats;
+  food?: Consumable;
+  foodIsHq: boolean = false;
+  potion?: Consumable;
+  potionIsHq: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -43,6 +48,28 @@ class _PlayerState {
 
   get stats(): PlayerStats {
     return this.statsByJob[this.job];
+  }
+
+  get statsWithBonuses(): PlayerStats {
+    let food = this.foodBonus;
+    let potion = this.potionBonus;
+    return {
+      job_level: this.stats.job_level,
+      craftsmanship: this.stats.craftsmanship + food.craftsmanship + potion.craftsmanship,
+      control: this.stats.control + food.control + potion.control,
+      cp: this.stats.cp + food.cp + potion.cp,
+    };
+  }
+
+  get foodBonus(): ConsumableBonus {
+    if (!this.food) return { craftsmanship: 0, control: 0, cp: 0 };
+    return calculateConsumableBonus(this.stats, this.food, this.foodIsHq);
+  }
+
+  get potionBonus(): ConsumableBonus {
+    if (!this.potion) return { craftsmanship: 0, control: 0, cp: 0 };
+
+    return calculateConsumableBonus(this.stats, this.potion, this.potionIsHq);
   }
 
   setStats(stats: Partial<PlayerStats>) {

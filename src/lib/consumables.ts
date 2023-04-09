@@ -34,18 +34,22 @@ function variantValues(
   return isHq ? [values[2], values[3]] : [values[0], values[1]];
 }
 
-function generateConsumableVariants(consumables: Consumable[]): ConsumableVariant[] {
-  return consumables
-    .sort((a, b) => b.item_level - a.item_level)
-    .flatMap((consumable) =>
-      [true, false].map((isHq) => ({
-        name: isHq ? `${consumable.name} HQ` : consumable.name,
-        craftsmanship: variantValues(consumable.craftsmanship, isHq),
-        control: variantValues(consumable.control, isHq),
-        cp: variantValues(consumable.cp, isHq),
-        isHq,
-      }))
-    );
+function generateConsumableVariants(
+  consumables: Consumable[],
+  shouldSort: boolean
+): ConsumableVariant[] {
+  const consumableToVariants = (consumable: Consumable) =>
+    [true, false].map((isHq) => ({
+      name: isHq ? `${consumable.name} HQ` : consumable.name,
+      craftsmanship: variantValues(consumable.craftsmanship, isHq),
+      control: variantValues(consumable.control, isHq),
+      cp: variantValues(consumable.cp, isHq),
+      isHq,
+    }));
+
+  return shouldSort
+    ? consumables.sort((a, b) => b.item_level - a.item_level).flatMap(consumableToVariants)
+    : consumables.flatMap(consumableToVariants);
 }
 
 export function calculateConsumableBonus(
@@ -115,16 +119,21 @@ const MEALS: Consumable[] = [
 
 // prettier-ignore
 const POTIONS: Consumable[] = [
-  { item_level: 273, name: "Competent Craftsman's Tea", craftsmanship: [2, 20, 3, 25], control: null, cp: null },
-  { item_level: 276, name: "Commanding Craftsman's Tea", craftsmanship: null, control: [2, 20, 3, 25], cp: null },
-  { item_level: 282, name: "Cunning Craftsman's Tea", craftsmanship: null, control: null, cp: [4, 10, 5, 13] },
-  { item_level: 406, name: "Competent Craftsman's Syrup", craftsmanship: [2, 33, 3, 41], control: null, cp: null },
-  { item_level: 412, name: "Commanding Craftsman's Syrup", craftsmanship: null, control: [2, 34, 3, 42], cp: null },
-  { item_level: 412, name: "Cunning Craftsman's Syrup", craftsmanship: null, control: null, cp: [5, 13, 6, 16] },
-  { item_level: 527, name: "Competent Craftsman's Draught", craftsmanship: [2, 40, 3, 50], control: null, cp: null },
-  { item_level: 540, name: "Commanding Craftsman's Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
-  { item_level: 554, name: "Cunning Craftsman's Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },
+  { item_level: 527, name: "Competent Draught", craftsmanship: [2, 40, 3, 50], control: null, cp: null },
+  { item_level: 540, name: "Commanding Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
+  { item_level: 554, name: "Cunning Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },
+
+  { item_level: 406, name: "Competent Syrup", craftsmanship: [2, 33, 3, 41], control: null, cp: null },
+  { item_level: 412, name: "Commanding Syrup", craftsmanship: null, control: [2, 34, 3, 42], cp: null },
+  { item_level: 412, name: "Cunning Syrup", craftsmanship: null, control: null, cp: [5, 13, 6, 16] },
+
+  { item_level: 273, name: "Competent Tea", craftsmanship: [2, 20, 3, 25], control: null, cp: null },
+  { item_level: 276, name: "Commanding Tea", craftsmanship: null, control: [2, 20, 3, 25], cp: null },
+  { item_level: 282, name: "Cunning Tea", craftsmanship: null, control: null, cp: [4, 10, 5, 13] },
 ];
 
-export const FOOD_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(MEALS);
-export const POTION_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(POTIONS);
+export const FOOD_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(MEALS, true);
+export const POTION_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(
+  POTIONS,
+  false
+);

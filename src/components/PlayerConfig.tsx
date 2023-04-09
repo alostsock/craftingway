@@ -270,7 +270,7 @@ const ConsumableVariantDisplay = observer(function ConsumableVariantDisplay({
       <div className="details">
         {craftsmanship && (
           <div>
-            Crafts. +{craftsmanship[0]}% (Max {craftsmanship[1]})
+            Craftsmanship +{craftsmanship[0]}% (Max {craftsmanship[1]})
           </div>
         )}
         {control && (

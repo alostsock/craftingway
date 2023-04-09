@@ -1,8 +1,4 @@
 .PlayerConfig {
-  .Emoji {
-    margin-right: 0.25em;
-  }
-
   .jobs {
     width: 100%;
     padding: 0;
@@ -15,6 +11,10 @@
     @media (max-width: 36em) {
       grid-template-columns: repeat(4, auto);
       grid-template-rows: repeat(2, auto);
+    }
+
+    .Emoji {
+      margin-right: 0.25em;
     }
 
     label {
@@ -35,6 +35,7 @@
   .configs {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     gap: var(--1);
     padding: var(--05) 0;
 
@@ -79,23 +80,20 @@
     }
 
     .consumables {
-      .food,
-      .potion {
-        button {
-          width: 15em;
-        }
+      .trigger {
+        width: 15em;
       }
 
-      .food {
-        &.active label {
-          color: var(--food-color);
-        }
+      .food.active label {
+        color: var(--food-color);
       }
 
-      .potion {
-        &.active label {
-          color: var(--potion-color);
-        }
+      .potion.active label {
+        color: var(--potion-color);
+      }
+
+      ul {
+        max-height: 12em;
       }
     }
   }

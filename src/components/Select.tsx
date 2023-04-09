@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { useSelect, UseSelectStateChange } from "downshift";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import Emoji from "./Emoji";
 
 interface Props<Item> {
   className?: string;
@@ -36,7 +37,7 @@ const Select = observer(function Select<Item>({
 
       <div className="dropdown-list">
         <button
-          className={clsx({ placeholder: !select.selectedItem })}
+          className={clsx("trigger", { placeholder: !select.selectedItem })}
           {...select.getToggleButtonProps()}
         >
           {select.selectedItem ? itemToString(select.selectedItem) : placeholder}
@@ -51,6 +52,12 @@ const Select = observer(function Select<Item>({
             ))}
         </ul>
       </div>
+
+      {select.selectedItem && (
+        <button className="link reset" onClick={() => select.reset()}>
+          <Emoji emoji="❌" />
+        </button>
+      )}
     </div>
   );
 });

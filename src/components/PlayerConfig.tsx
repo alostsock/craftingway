@@ -1,16 +1,17 @@
 import "./PlayerConfig.scss";
 
+import clsx from "clsx";
+import { useSelect } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
-import Select from "./Select";
 import Emoji from "./Emoji";
 import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
-import { Consumable, MEALS, POTIONS } from "../lib/consumables";
-import clsx from "clsx";
+import { ConsumableVariant, FOOD_VARIANTS, POTION_VARIANTS } from "../lib/consumables";
+import { useAutorun } from "../lib/hooks";
 
 type StatConfig = {
   name: string;
@@ -37,15 +38,15 @@ const PlayerConfig = observer(function PlayerConfig() {
     setCopyMenuState("inactive");
   });
 
-  const handleStatsCopy = action((job: Job) => {
-    const stats = PlayerState.statsByJob[job];
-    PlayerState.setStats(stats);
+  const handleConfigCopy = action((job: Job) => {
+    const config = PlayerState.configByJob[job];
+    PlayerState.setConfig(config);
     setCopyMenuState("inactive");
   });
 
-  const handleStatsCopyAll = action(() => {
-    const stats = PlayerState.stats;
-    PlayerState.setStatsForAllJobs(stats);
+  const handleConfigCopyAll = action(() => {
+    const config = PlayerState.config;
+    PlayerState.setConfigForAllJobs(config);
     setCopyMenuState("inactive");
   });
 
@@ -90,10 +91,10 @@ const PlayerConfig = observer(function PlayerConfig() {
                   type="number"
                   min={min}
                   max={max}
-                  value={PlayerState.stats[name].toString()}
+                  value={PlayerState.config[name].toString()}
                   onChange={(e) => {
                     const value = parseInt(e.target.value) || 0;
-                    PlayerState.setStats({ [name]: value });
+                    PlayerState.setConfig({ [name]: value });
                   }}
                 />
                 {name !== "job_level" && (
@@ -112,27 +113,8 @@ const PlayerConfig = observer(function PlayerConfig() {
         </div>
 
         <div className="consumables">
-          <Select<Consumable>
-            className={clsx("food", { active: !!PlayerState.food })}
-            label="Food"
-            placeholder="No food"
-            items={MEALS.slice()}
-            itemToString={(food) => food?.name || ""}
-            onChange={action((selectedItem) => (PlayerState.food = selectedItem))}
-          >
-            {(food) => <span>{food.name}</span>}
-          </Select>
-
-          <Select<Consumable>
-            className={clsx("potion", { active: !!PlayerState.potion })}
-            label="Potion"
-            placeholder="No potion"
-            items={POTIONS.slice()}
-            itemToString={(potion) => potion?.name || ""}
-            onChange={action((selectedItem) => (PlayerState.potion = selectedItem))}
-          >
-            {(potion) => <span>{potion.name}</span>}
-          </Select>
+          <FoodSelect />
+          <PotionSelect />
         </div>
       </div>
 
@@ -144,7 +126,7 @@ const PlayerConfig = observer(function PlayerConfig() {
         ) : (
           <div>
             Copying {PlayerState.job} stats to all other jobs… Are you sure?{" "}
-            <button className="link" onClick={handleStatsCopyAll}>
+            <button className="link" onClick={handleConfigCopyAll}>
               OK
             </button>{" "}
             <button className="link" onClick={() => setCopyMenuState("inactive")}>
@@ -163,7 +145,7 @@ const PlayerConfig = observer(function PlayerConfig() {
             {JOBS.map((job) => (
               <React.Fragment key={job}>
                 {" "}
-                <button key={job} className="link" onClick={() => handleStatsCopy(job)}>
+                <button key={job} className="link" onClick={() => handleConfigCopy(job)}>
                   {job}
                 </button>
               </React.Fragment>
@@ -179,3 +161,129 @@ const PlayerConfig = observer(function PlayerConfig() {
 });
 
 export default PlayerConfig;
+
+const FoodSelect = observer(function FoodSelect() {
+  const items = FOOD_VARIANTS.slice();
+
+  const select = useSelect({
+    items,
+    onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
+  });
+
+  const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
+
+  useAutorun(
+    () => (PlayerState.config.food ? select.selectItem(PlayerState.config.food) : select.reset()),
+    []
+  );
+
+  return (
+    <div className="FoodSelect field">
+      <label className={clsx({ active: PlayerState.config.food })} {...select.getLabelProps()}>
+        Food
+      </label>
+
+      <div className="dropdown-list">
+        <button
+          className={clsx("trigger", { placeholder: !PlayerState.config.food })}
+          {...select.getToggleButtonProps()}
+        >
+          {PlayerState.config.food?.name ?? "No food"}
+        </button>
+
+        <ul {...select.getMenuProps()}>
+          {select.isOpen &&
+            items.map((item, index) => (
+              <li key={index} {...select.getItemProps({ item, index })}>
+                <ConsumableVariantDisplay variant={item} />
+              </li>
+            ))}
+        </ul>
+      </div>
+
+      {PlayerState.config.food && (
+        <button className="link reset" onClick={() => setFood(null)}>
+          <Emoji emoji="❌" />
+        </button>
+      )}
+    </div>
+  );
+});
+
+const PotionSelect = observer(function PotionSelect() {
+  const items = POTION_VARIANTS.slice();
+
+  const select = useSelect({
+    items,
+    onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
+  });
+
+  const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
+
+  useAutorun(
+    () =>
+      PlayerState.config.potion ? select.selectItem(PlayerState.config.potion) : select.reset(),
+    []
+  );
+
+  return (
+    <div className="PotionSelect field">
+      <label className={clsx({ active: PlayerState.config.potion })} {...select.getLabelProps()}>
+        Potion
+      </label>
+
+      <div className="dropdown-list">
+        <button
+          className={clsx("trigger", { placeholder: !PlayerState.config.potion })}
+          {...select.getToggleButtonProps()}
+        >
+          {PlayerState.config.potion?.name ?? "No potion"}
+        </button>
+
+        <ul {...select.getMenuProps()}>
+          {select.isOpen &&
+            items.map((item, index) => (
+              <li key={index} {...select.getItemProps({ item, index })}>
+                <ConsumableVariantDisplay variant={item} />
+              </li>
+            ))}
+        </ul>
+      </div>
+
+      {PlayerState.config.potion && (
+        <button className="link reset" onClick={() => setPotion(null)}>
+          <Emoji emoji="❌" />
+        </button>
+      )}
+    </div>
+  );
+});
+
+const ConsumableVariantDisplay = observer(function ConsumableVariantDisplay({
+  variant: { name, craftsmanship, control, cp },
+}: {
+  variant: ConsumableVariant;
+}) {
+  return (
+    <React.Fragment>
+      <div className="name">{name}</div>
+      <div className="details">
+        {craftsmanship && (
+          <div>
+            Crafts. +{craftsmanship[0]}% (Max {craftsmanship[1]})
+          </div>
+        )}
+        {control && (
+          <div>
+            Control +{control[0]}% (Max {control[1]})
+          </div>
+        )}
+        {cp && (
+          <div>
+            CP +{cp[0]}% (Max {cp[1]})
+          </div>
+        )}
+      </div>
+    </React.Fragment>
+  );
+});

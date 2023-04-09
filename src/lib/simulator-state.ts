@@ -36,7 +36,7 @@ class _SimulatorState {
       if (this.loaded && RecipeState.recipe) {
         const { craft_state, completion_reason } = simulateActions(
           RecipeState.recipe,
-          PlayerState.statsWithBonuses,
+          PlayerState.playerWithBonuses,
           this.actions
         );
         this.craftState = craft_state;
@@ -125,7 +125,7 @@ class _SimulatorState {
     this.worker.postMessage({
       type: "search-request",
       recipe: toJS(RecipeState.recipe),
-      player: toJS(PlayerState.stats),
+      player: toJS(PlayerState.playerWithBonuses),
       actionHistory: toJS(this.actions),
       searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 100_000 },
     } satisfies SearchRequestMessage);

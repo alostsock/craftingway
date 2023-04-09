@@ -15,7 +15,7 @@ type PersistentListProps = {
 const PersistentList = observer(function PersistentList({ onAdd }: PersistentListProps) {
   const activeActions = new Set(SimulatorState.craftState?.available_moves);
 
-  const groupedActions = groupBy(traitedActions(PlayerState.stats.job_level), "group");
+  const groupedActions = groupBy(traitedActions(PlayerState.config.job_level), "group");
 
   return (
     <div className="PersistentList">

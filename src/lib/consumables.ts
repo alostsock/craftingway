@@ -1,11 +1,6 @@
 import type { Player } from "crafty";
 
-export type ConsumableStatValues = readonly [
-  value: number,
-  max: number,
-  hq_value: number,
-  hq_max: number
-];
+type ConsumableStatValues = readonly [value: number, max: number, hq_value: number, hq_max: number];
 
 export interface Consumable {
   item_level: number;
@@ -21,26 +16,56 @@ export interface ConsumableBonus {
   cp: number;
 }
 
-export function calculateConsumableBonus(
-  stats: Player,
-  consumable: Consumable,
+type ConsumableVariantStatValues = [value: number, max: number];
+
+export interface ConsumableVariant {
+  name: string;
+  craftsmanship: ConsumableVariantStatValues | null;
+  control: ConsumableVariantStatValues | null;
+  cp: ConsumableVariantStatValues | null;
+  isHq: boolean;
+}
+
+function variantValues(
+  values: ConsumableStatValues | null,
   isHq: boolean
+): ConsumableVariantStatValues | null {
+  if (!values) return null;
+  return isHq ? [values[2], values[3]] : [values[0], values[1]];
+}
+
+function generateConsumableVariants(consumables: Consumable[]): ConsumableVariant[] {
+  return consumables
+    .sort((a, b) => b.item_level - a.item_level)
+    .flatMap((consumable) =>
+      [true, false].map((isHq) => ({
+        name: isHq ? `${consumable.name} HQ` : consumable.name,
+        craftsmanship: variantValues(consumable.craftsmanship, isHq),
+        control: variantValues(consumable.control, isHq),
+        cp: variantValues(consumable.cp, isHq),
+        isHq,
+      }))
+    );
+}
+
+export function calculateConsumableBonus(
+  player: Player,
+  variant: ConsumableVariant
 ): ConsumableBonus {
-  const bonus = (stat: number, values: ConsumableStatValues | null) => {
+  const bonus = (stat: number, values: ConsumableVariantStatValues | null) => {
     if (!values) return 0;
-    let [multiplier, max] = isHq ? [values[2], values[3]] : [values[0], values[1]];
-    return Math.min(Math.floor((stat * multiplier) / 100), max);
+    return Math.min(Math.floor((stat * values[0]) / 100), values[1]);
   };
 
   return {
-    craftsmanship: bonus(stats.craftsmanship, consumable.craftsmanship),
-    control: bonus(stats.control, consumable.control),
-    cp: bonus(stats.cp, consumable.cp),
+    craftsmanship: bonus(player.craftsmanship, variant.craftsmanship),
+    control: bonus(player.control, variant.control),
+    cp: bonus(player.cp, variant.cp),
   };
 }
 
 // prettier-ignore
-export const MEALS: readonly Consumable[] = [
+const MEALS: Consumable[] = [
   { item_level: 4, name: "Frumenty", craftsmanship: null, control: null, cp: [10, 10, 13, 12] },
   { item_level: 9, name: "Salt Cod", craftsmanship: null, control: [8, 4, 10, 5], cp: null },
   { item_level: 10, name: "Mint Lassi", craftsmanship: [12, 8, 15, 10], control: null, cp: null },
@@ -89,7 +114,7 @@ export const MEALS: readonly Consumable[] = [
 ];
 
 // prettier-ignore
-export const POTIONS: readonly Consumable[] = [
+const POTIONS: Consumable[] = [
   { item_level: 273, name: "Competent Craftsman's Tea", craftsmanship: [2, 20, 3, 25], control: null, cp: null },
   { item_level: 276, name: "Commanding Craftsman's Tea", craftsmanship: null, control: [2, 20, 3, 25], cp: null },
   { item_level: 282, name: "Cunning Craftsman's Tea", craftsmanship: null, control: null, cp: [4, 10, 5, 13] },
@@ -100,3 +125,6 @@ export const POTIONS: readonly Consumable[] = [
   { item_level: 540, name: "Commanding Craftsman's Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
   { item_level: 554, name: "Cunning Craftsman's Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },
 ];
+
+export const FOOD_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(MEALS);
+export const POTION_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(POTIONS);

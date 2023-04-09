@@ -178,8 +178,11 @@ const FoodSelect = observer(function FoodSelect() {
   );
 
   return (
-    <div className="FoodSelect field">
-      <label className={clsx({ active: PlayerState.config.food })} {...select.getLabelProps()}>
+    <React.Fragment>
+      <label
+        className={clsx({ "food-active": PlayerState.config.food })}
+        {...select.getLabelProps()}
+      >
         Food
       </label>
 
@@ -199,14 +202,14 @@ const FoodSelect = observer(function FoodSelect() {
               </li>
             ))}
         </ul>
-      </div>
 
-      {PlayerState.config.food && (
-        <button className="link reset" onClick={() => setFood(null)}>
-          <Emoji emoji="❌" />
-        </button>
-      )}
-    </div>
+        {PlayerState.config.food && (
+          <button className="link reset" onClick={() => setFood(null)}>
+            <Emoji emoji="❌" />
+          </button>
+        )}
+      </div>
+    </React.Fragment>
   );
 });
 
@@ -227,8 +230,11 @@ const PotionSelect = observer(function PotionSelect() {
   );
 
   return (
-    <div className="PotionSelect field">
-      <label className={clsx({ active: PlayerState.config.potion })} {...select.getLabelProps()}>
+    <React.Fragment>
+      <label
+        className={clsx({ "potion-active": PlayerState.config.potion })}
+        {...select.getLabelProps()}
+      >
         Potion
       </label>
 
@@ -248,14 +254,14 @@ const PotionSelect = observer(function PotionSelect() {
               </li>
             ))}
         </ul>
-      </div>
 
-      {PlayerState.config.potion && (
-        <button className="link reset" onClick={() => setPotion(null)}>
-          <Emoji emoji="❌" />
-        </button>
-      )}
-    </div>
+        {PlayerState.config.potion && (
+          <button className="link reset" onClick={() => setPotion(null)}>
+            <Emoji emoji="❌" />
+          </button>
+        )}
+      </div>
+    </React.Fragment>
   );
 });
 
@@ -270,7 +276,7 @@ const ConsumableVariantDisplay = observer(function ConsumableVariantDisplay({
       <div className="details">
         {craftsmanship && (
           <div>
-            Craftsmanship +{craftsmanship[0]}% (Max {craftsmanship[1]})
+            Crafts. +{craftsmanship[0]}% (Max {craftsmanship[1]})
           </div>
         )}
         {control && (

@@ -8,6 +8,7 @@ export interface SearchRequestMessage {
   recipe: Recipe;
   player: Player;
   actionHistory: Action[];
+  maxSteps: number;
   searchOptions: SearchOptions;
 }
 
@@ -28,22 +29,32 @@ onmessage = (event) => {
       "recipe",
       "player",
       "actionHistory",
+      "maxSteps",
       "searchOptions",
     ]);
 
-    const { recipe, player, actionHistory, searchOptions } = message;
+    const { recipe, player, actionHistory, maxSteps, searchOptions } = message;
 
     init().then(() => {
       let actions: Action[] = [...actionHistory];
 
-      searchStepwise(recipe, player, actionHistory, searchOptions, (action) => {
+      let callback = (action: Action) => {
         actions.push(action);
 
         postMessage({
           type: "search-response",
           actions,
         } satisfies SearchResponseMessage);
-      });
+      };
+
+      searchStepwise(
+        recipe,
+        player,
+        actionHistory,
+        Math.min(maxSteps, 255),
+        searchOptions,
+        callback
+      );
 
       postMessage({
         type: "search-complete",

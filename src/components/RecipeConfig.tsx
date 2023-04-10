@@ -12,7 +12,8 @@ import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
-import { stars } from "../lib/utils";
+import { sanitizeIntFromText, stars } from "../lib/utils";
+import NumberInput from "./NumberInput";
 
 type Mode = "name" | "level";
 
@@ -140,18 +141,18 @@ const RecipesByName = observer(function RecipesByName() {
 });
 
 const RecipesByLevel = observer(function RecipesByLevel() {
-  const [level, setLevel] = useState<number | null>(null);
+  const [level, setLevel] = useState<number>(0);
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
 
   const setRecipe = action((recipe: RecipeData | null) => (RecipeState.recipe = recipe));
 
   useAutorun(() => {
-    setQueryResults(level != null ? SimulatorState.recipesByLevel(level) : []);
+    setQueryResults(SimulatorState.recipesByLevel(level));
   }, [level]);
 
   const cb = useCombobox({
-    inputValue: level?.toString() || "",
-    onInputValueChange: ({ inputValue }) => setLevel((inputValue && parseInt(inputValue)) || null),
+    inputValue: level.toString() || "",
+    onInputValueChange: ({ inputValue }) => setLevel(sanitizeIntFromText(inputValue || "", 90)),
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
@@ -162,13 +163,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
     <div className="RecipesByLevel field">
       <label {...cb.getLabelProps()}>Level</label>
       <div className="dropdown-list" {...cb.getComboboxProps()}>
-        <input
-          autoFocus
-          type="number"
-          placeholder="00"
-          spellCheck="false"
-          {...cb.getInputProps()}
-        />
+        <input autoFocus type="text" inputMode="numeric" placeholder="00" {...cb.getInputProps()} />
 
         <ul {...cb.getMenuProps()}>
           {cb.isOpen &&

@@ -1,0 +1,53 @@
+.SearchPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--1);
+  align-items: start;
+
+  p {
+    margin: 0;
+  }
+
+  .search {
+    font-weight: 500;
+    color: var(--grey-900);
+    background-color: var(--orange-050);
+  }
+
+  .link,
+  .config {
+    font-size: var(--small-font-size);
+  }
+
+  .config {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--1);
+
+    @media (max-width: 24em) {
+      .field {
+        flex-direction: column;
+        label {
+          line-height: 1.15;
+        }
+      }
+    }
+
+    .max-steps input {
+      width: 2.5em;
+    }
+
+    .iterations input {
+      width: 6.25em;
+    }
+
+    .max-score input {
+      width: 4.5em;
+    }
+
+    .exploration input {
+      width: 4.5em;
+    }
+  }
+}

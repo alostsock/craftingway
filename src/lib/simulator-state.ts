@@ -1,21 +1,30 @@
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
 import init, { recipesByJobLevel, simulateActions, generateMacroText } from "crafty";
-import type { Action, CraftState, SearchOptions, CompletionReason } from "crafty";
+import type { Action, CraftState, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
 import { JOBS } from "./jobs";
 import { checkAttrs } from "./utils";
+import Storage from "./storage";
 
 import searchWorkerUrl from "./search.worker?worker&url";
 import type { SearchRequestMessage, SearchResponseMessage } from "./search.worker";
 
-const DEFAULT_SEARCH_OPTIONS: SearchOptions = {
-  iterations: 100_000,
-  rng_seed: undefined,
-  exploration_constant: undefined,
-  max_score_weighting_constant: undefined,
-  score_storage_threshold: undefined,
+export interface Config {
+  maxSteps: number;
+  iterations: number;
+  maxScoreWeightingConstant: number;
+  explorationConstant: number;
+}
+
+const CONFIG_STORE = "simulatorConfig";
+
+export const DEFAULT_CONFIG: Config = {
+  maxSteps: 30,
+  iterations: 50_000,
+  maxScoreWeightingConstant: 0.1,
+  explorationConstant: 1.5,
 };
 
 class _SimulatorState {
@@ -25,12 +34,17 @@ class _SimulatorState {
   private _craftState: CraftState | null = null;
   private _completionReason: CompletionReason | null = null;
 
+  config: Config;
   private worker: Worker | null = null;
 
   constructor() {
     makeAutoObservable(this);
 
     init().then(() => runInAction(() => (this.loaded = true)));
+
+    this.config = Storage.retrieve(CONFIG_STORE) || DEFAULT_CONFIG;
+
+    autorun(() => Storage.store(CONFIG_STORE, JSON.stringify(this.config)));
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
@@ -84,6 +98,21 @@ class _SimulatorState {
     }));
   }
 
+  setConfig(attrs: Partial<Config>) {
+    if (this.searchInProgress) return;
+
+    for (const attr of Object.keys(attrs) as Array<keyof Config>) {
+      if (attr in this.config) {
+        let value = attrs[attr];
+        if (value != null) this.config[attr] = value;
+      }
+    }
+  }
+
+  resetConfig() {
+    this.config = DEFAULT_CONFIG;
+  }
+
   get searchInProgress() {
     return !!this.worker;
   }
@@ -127,7 +156,14 @@ class _SimulatorState {
       recipe: toJS(RecipeState.recipe),
       player: toJS(PlayerState.playerWithBonuses),
       actionHistory: toJS(this.actions),
-      searchOptions: { ...DEFAULT_SEARCH_OPTIONS, iterations: 100_000 },
+      maxSteps: this.config.maxSteps,
+      searchOptions: {
+        iterations: this.config.iterations,
+        max_score_weighting_constant: this.config.maxScoreWeightingConstant,
+        exploration_constant: this.config.explorationConstant,
+        rng_seed: undefined,
+        score_storage_threshold: undefined,
+      },
     } satisfies SearchRequestMessage);
   }
 

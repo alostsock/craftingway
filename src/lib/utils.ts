@@ -29,3 +29,8 @@ export function checkAttrs<M>(obj: Partial<M>, attrs: (keyof M)[]): M {
   }
   return obj as M;
 }
+
+export function sanitizeIntFromText(value: string, max: number) {
+  const parsedValue = parseInt(value) || 0;
+  return Math.min(Math.max(parsedValue, 0), max);
+}

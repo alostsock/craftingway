@@ -111,10 +111,6 @@
         border: none;
         border-radius: var(--border-radius);
 
-        &:focus {
-          outline: 1px solid var(--focus-color);
-        }
-
         &.placeholder {
           color: var(--placeholder-color);
         }

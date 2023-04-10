@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
 import Emoji from "./Emoji";
+import NumberInput from "./NumberInput";
 import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
@@ -85,17 +86,13 @@ const PlayerConfig = observer(function PlayerConfig() {
             return (
               <div className="field" key={name}>
                 <label htmlFor={id}>{label}</label>
-                <input
+                <NumberInput
                   id={id}
                   key={name}
-                  type="number"
                   min={min}
                   max={max}
-                  value={PlayerState.config[name].toString()}
-                  onChange={(e) => {
-                    const value = parseInt(e.target.value) || 0;
-                    PlayerState.setConfig({ [name]: value });
-                  }}
+                  numberValue={PlayerState.config[name]}
+                  onNumberChange={(value) => PlayerState.setConfig({ [name]: value })}
                 />
                 {name !== "job_level" && (
                   <div className="bonuses">

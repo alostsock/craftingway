@@ -45,8 +45,9 @@ export default function NumberInput({
   const resolveTextValue = () => {
     if (textValue.trim().length === 0) {
       setTextValue(min?.toString() || "0");
-    } else if (isFloatingPoint && textValue.endsWith(".")) {
-      onNumberChange(parseInt(textValue));
+    } else if ((isFloatingPoint && textValue.endsWith(".")) || !isFloatingPoint) {
+      // handle cases like "123." and "0123"
+      setTextValue(parseInt(textValue).toString());
     }
   };
 

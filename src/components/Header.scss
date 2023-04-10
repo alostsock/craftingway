@@ -1,9 +1,51 @@
 .Header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
   h1 {
-    margin-top: var(--1);
+    margin-top: var(--2);
 
     span {
       color: var(--orange-200);
+    }
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    gap: var(--05);
+
+    position: absolute;
+    top: 0;
+    right: calc(-1 * var(--1)); // overflow into the gutter
+
+    a {
+      line-height: 1;
+    }
+
+    img {
+      opacity: 0.3;
+      transition: opacity 70ms;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .ko-fi img {
+      height: 1.2rem;
+    }
+
+    .discord img {
+      height: 1rem;
+    }
+
+    .github img {
+      height: 1.3rem;
+      margin-top: -0.15rem;
+      padding: 0 0.15rem;
     }
   }
 }

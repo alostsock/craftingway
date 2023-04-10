@@ -15,11 +15,11 @@
   .links {
     display: flex;
     align-items: center;
-    gap: var(--05);
+    gap: var(--1);
 
     position: absolute;
     top: 0;
-    right: calc(-1 * var(--1)); // overflow into the gutter
+    right: 0;
 
     a {
       line-height: 1;

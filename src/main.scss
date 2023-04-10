@@ -58,7 +58,7 @@ button {
   border-radius: var(--border-radius);
 
   &:focus {
-    outline: 2px solid var(--focus-color);
+    outline: 1px solid var(--focus-color);
   }
 
   &.link {

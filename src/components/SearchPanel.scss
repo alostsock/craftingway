@@ -12,6 +12,10 @@
     font-weight: 500;
     color: var(--grey-900);
     background-color: var(--orange-050);
+
+    &:focus {
+      outline: 2px solid var(--orange-400);
+    }
   }
 
   .link,

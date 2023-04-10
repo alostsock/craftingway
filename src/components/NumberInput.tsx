@@ -18,7 +18,7 @@ export default function NumberInput({
   onNumberChange,
   ...props
 }: Props) {
-  const [textValue, setTextValue] = useState<string>("");
+  const [textValue, setTextValue] = useState<string>(numberValue.toString());
 
   useEffect(() => {
     if (parseFloat(textValue) === numberValue) return;

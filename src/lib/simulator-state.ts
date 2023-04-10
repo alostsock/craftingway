@@ -99,7 +99,7 @@ class _SimulatorState {
   }
 
   setConfig(attrs: Partial<Config>) {
-    if (this.searchInProgress) return;
+    if (this.isSearching) return;
 
     for (const attr of Object.keys(attrs) as Array<keyof Config>) {
       if (attr in this.config) {
@@ -113,7 +113,7 @@ class _SimulatorState {
     this.config = DEFAULT_CONFIG;
   }
 
-  get searchInProgress() {
+  get isSearching() {
     return !!this.worker;
   }
 

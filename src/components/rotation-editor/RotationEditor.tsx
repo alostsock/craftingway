@@ -100,8 +100,13 @@ const RotationEditor = observer(function RotationEditor() {
     }
   };
 
+  const [rotationEditorMode, setRotationEditorMode] = useState<Mode>(
+    Storage.retrieve<Mode>(MODE_STORE) || "manual"
+  );
+
   const onModeChange = (mode: Mode) => {
     Storage.store(MODE_STORE, JSON.stringify(mode));
+    setRotationEditorMode(mode);
   };
 
   const manualModeLabel = (
@@ -142,7 +147,7 @@ const RotationEditor = observer(function RotationEditor() {
           </div>
 
           <ModeSelector
-            defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "manual"}
+            defaultMode={rotationEditorMode}
             modeOptions={[
               {
                 mode: "manual",

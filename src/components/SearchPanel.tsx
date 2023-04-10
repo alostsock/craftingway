@@ -6,13 +6,22 @@ import { observer } from "mobx-react-lite";
 
 import NumberInput from "./NumberInput";
 import { SimulatorState } from "../lib/simulator-state";
+import Storage from "../lib/storage";
+
+const CONFIG_VISIBILITY_STORE = "showConfig";
 
 const SearchPanel = observer(function SearchPanel() {
-  const [showConfig, setShowConfig] = useState(false);
+  const [showConfig, setShowConfig] = useState(Storage.retrieve(CONFIG_VISIBILITY_STORE) || false);
 
-  const toggleConfig = () => setShowConfig((prev) => !prev);
+  const toggleConfig = () =>
+    setShowConfig((previous) => {
+      Storage.store(CONFIG_VISIBILITY_STORE, JSON.stringify(!previous));
+      return !previous;
+    });
 
   const search = action(() => SimulatorState.searchStepwise());
+
+  const isSearching = SimulatorState.isSearching;
 
   return (
     <div className="SearchPanel">
@@ -21,11 +30,11 @@ const SearchPanel = observer(function SearchPanel() {
         outcomes.
       </p>
 
-      <button className="search" onClick={search}>
-        Search
+      <button className="search" onClick={search} disabled={isSearching}>
+        {isSearching ? "Searching..." : "Search"}
       </button>
 
-      <button className="link" onClick={toggleConfig}>
+      <button className="link" onClick={toggleConfig} disabled={isSearching}>
         {showConfig ? "Hide" : "Show"} search settings
       </button>
 
@@ -38,6 +47,7 @@ const SearchPanel = observer(function SearchPanel() {
               max={40}
               numberValue={SimulatorState.config.maxSteps}
               onNumberChange={(value) => SimulatorState.setConfig({ maxSteps: value })}
+              disabled={isSearching}
             />
           </div>
 
@@ -48,6 +58,7 @@ const SearchPanel = observer(function SearchPanel() {
               max={10_000_000}
               numberValue={SimulatorState.config.iterations}
               onNumberChange={(value) => SimulatorState.setConfig({ iterations: value })}
+              disabled={isSearching}
             />
           </div>
 
@@ -61,6 +72,7 @@ const SearchPanel = observer(function SearchPanel() {
               onNumberChange={(value) =>
                 SimulatorState.setConfig({ maxScoreWeightingConstant: value })
               }
+              disabled={isSearching}
             />
           </div>
 
@@ -72,10 +84,15 @@ const SearchPanel = observer(function SearchPanel() {
               max={100}
               numberValue={SimulatorState.config.explorationConstant}
               onNumberChange={(value) => SimulatorState.setConfig({ explorationConstant: value })}
+              disabled={isSearching}
             />
           </div>
 
-          <button className="link" onClick={() => SimulatorState.resetConfig()}>
+          <button
+            className="link"
+            onClick={() => SimulatorState.resetConfig()}
+            disabled={isSearching}
+          >
             Reset settings to default
           </button>
         </div>

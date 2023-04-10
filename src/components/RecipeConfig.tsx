@@ -71,7 +71,11 @@ const RecipeConfig = observer(function RecipeConfig() {
             </div>
           )}
 
-          <button className="link prompt" onClick={resetRecipe}>
+          <button
+            className="link prompt"
+            onClick={resetRecipe}
+            disabled={SimulatorState.isSearching}
+          >
             Change recipe
           </button>
         </React.Fragment>

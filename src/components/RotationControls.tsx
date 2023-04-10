@@ -4,7 +4,6 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import { SimulatorState } from "../lib/simulator-state";
-import React from "react";
 
 const RotationControls = observer(function RotationControls() {
   const reset = action(() => {
@@ -19,14 +18,20 @@ const RotationControls = observer(function RotationControls() {
     return <div className="RotationControls" />;
   }
 
+  const isSearching = SimulatorState.isSearching;
+
   return (
     <div className="RotationControls">
-      <button className="link reset" onClick={reset}>
+      <button className="link reset" onClick={reset} disabled={isSearching}>
         Reset
       </button>
 
       {SimulatorState.macroTextParts.length === 1 && (
-        <button className="link" onClick={() => copyToClipboard(SimulatorState.macroTextParts[0])}>
+        <button
+          className="link"
+          onClick={() => copyToClipboard(SimulatorState.macroTextParts[0])}
+          disabled={isSearching}
+        >
           Copy macro
         </button>
       )}
@@ -36,7 +41,12 @@ const RotationControls = observer(function RotationControls() {
           <span>Copy macro:</span>
 
           {SimulatorState.macroTextParts.map((macroTextLines, index) => (
-            <button key={index} className="link" onClick={() => copyToClipboard(macroTextLines)}>
+            <button
+              key={index}
+              className="link"
+              onClick={() => copyToClipboard(macroTextLines)}
+              disabled={isSearching}
+            >
               Part {index + 1}
             </button>
           ))}

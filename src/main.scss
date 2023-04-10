@@ -61,6 +61,11 @@ button {
     outline: 1px solid var(--focus-color);
   }
 
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
   &.link {
     font-weight: 400;
     color: var(--text-muted-color);
@@ -90,6 +95,11 @@ input {
   &::placeholder {
     color: var(--placeholder-color);
     opacity: 1;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
 
   &[inputmode="numeric"] {

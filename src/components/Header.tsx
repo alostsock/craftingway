@@ -9,14 +9,6 @@ const Header = observer(function Header() {
         crafting<span>way</span>
       </h1>
       <div className="links">
-        <a className="ko-fi" title="Ko-fi" href="https://ko-fi.com/alostsock" target="_blank">
-          <img src="/ko-fi.webp" alt="Buy Me a Coffee at ko-fi.com" />
-        </a>
-
-        <a className="discord" title="Discord" href="https://discord.gg/sKC4VxeMjY" target="_blank">
-          <img src="/discord.svg" alt="Join the Discord server" />
-        </a>
-
         <a
           className="github"
           title="Github"
@@ -24,6 +16,14 @@ const Header = observer(function Header() {
           target="_blank"
         >
           <img src="/github.svg" alt="Github repository" />
+        </a>
+
+        <a className="discord" title="Discord" href="https://discord.gg/sKC4VxeMjY" target="_blank">
+          <img src="/discord.svg" alt="Join the Discord server" />
+        </a>
+
+        <a className="ko-fi" title="Ko-fi" href="https://ko-fi.com/alostsock" target="_blank">
+          <img src="/ko-fi.webp" alt="Buy Me a Coffee at ko-fi.com" />
         </a>
       </div>
     </header>

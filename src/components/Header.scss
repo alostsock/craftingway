@@ -5,7 +5,7 @@
   position: relative;
 
   h1 {
-    margin-top: var(--2);
+    margin-top: var(--3);
 
     span {
       color: var(--orange-200);
@@ -14,6 +14,7 @@
 
   .links {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     gap: var(--1);
 
@@ -26,7 +27,7 @@
     }
 
     img {
-      opacity: 0.3;
+      opacity: 0.25;
       transition: opacity 70ms;
 
       &:hover {
@@ -34,18 +35,18 @@
       }
     }
 
-    .ko-fi img {
-      height: 1.2rem;
+    .github img {
+      height: 1.3rem;
+      margin-top: -0.15rem;
+      padding: 0 0.15rem;
     }
 
     .discord img {
       height: 1rem;
     }
 
-    .github img {
-      height: 1.3rem;
-      margin-top: -0.15rem;
-      padding: 0 0.15rem;
+    .ko-fi img {
+      height: 1.2rem;
     }
   }
 }

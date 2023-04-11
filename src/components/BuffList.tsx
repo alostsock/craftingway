@@ -2,7 +2,7 @@ import "./BuffList.scss";
 
 import { observer } from "mobx-react-lite";
 
-import Icon from "./Icon";
+import { StatusIcon } from "./Icons";
 import { SimulatorState } from "../lib/simulator-state";
 import { BUFFS } from "../lib/buffs";
 
@@ -25,10 +25,9 @@ const BuffList = observer(function BuffList() {
         const { name, label, stackable, expires } = buffData;
 
         return (
-          <Icon
+          <StatusIcon
             key={name}
             name={label}
-            type="status"
             stacks={stackable ? stacksOrExpiry : undefined}
             expiry={expires ? stacksOrExpiry : undefined}
           />

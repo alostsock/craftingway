@@ -16,7 +16,7 @@ import type { Action } from "crafty";
 import MutableList from "./MutableList";
 import PersistentList from "./PersistentList";
 import { actionFromId, idFromAction } from "./converters";
-import Icon from "../Icon";
+import { ActionIcon } from "../Icons";
 import RotationControls from "../RotationControls";
 import SearchPanel from "../SearchPanel";
 import ModeSelector from "../ModeSelector";
@@ -162,9 +162,7 @@ const RotationEditor = observer(function RotationEditor() {
             ]}
             onChange={onModeChange}
           />
-          <DragOverlay>
-            {activeId ? <Icon name={activeActionLabel()} type="action" /> : null}
-          </DragOverlay>
+          <DragOverlay>{activeId ? <ActionIcon name={activeActionLabel()} /> : null}</DragOverlay>
         </SortableContext>
       </DndContext>
     </div>

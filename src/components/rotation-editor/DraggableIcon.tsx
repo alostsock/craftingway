@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useDraggable } from "@dnd-kit/core";
 import type { Action } from "crafty";
 
-import Icon from "../Icon";
+import { ActionIcon } from "../Icons";
 
 interface Props {
   id: string;
@@ -34,7 +34,7 @@ export default function DraggableIcon({ id, name, label, onClick, disabled }: Pr
       {...attributes}
       {...listeners}
     >
-      <Icon name={label} type="action" />
+      <ActionIcon name={label} />
     </button>
   );
 }

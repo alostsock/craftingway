@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useSortable } from "@dnd-kit/sortable";
 
 import { actionFromId } from "./converters";
-import Icon from "../Icon";
+import { ActionIcon } from "../Icons";
 import Emoji from "../Emoji";
 import { ACTIONS } from "../../lib/actions";
 import { SimulatorState } from "../../lib/simulator-state";
@@ -49,7 +49,7 @@ const SortableIcon = observer(function SortableIcon({
       {...attributes}
       {...listeners}
     >
-      <Icon name={actionLabel} type="action" step={step} />
+      <ActionIcon name={actionLabel} step={step} />
 
       <button
         className="remove"

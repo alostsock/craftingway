@@ -76,6 +76,10 @@
           padding: 0;
           cursor: pointer;
 
+          &:focus {
+            outline: none;
+          }
+
           &.disabled {
             opacity: 0.3;
           }

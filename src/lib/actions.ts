@@ -13,6 +13,7 @@ type ActionData = {
 export const ACTIONS: readonly ActionData[] = [
   { level: 54, name: "MuscleMemory", label: "Muscle Memory", group: "Starter" },
   { level: 69, name: "Reflect", label: "Reflect", group: "Starter" },
+  { level: 80, name: "TrainedEye", label: "Trained Eye", group: "Starter" },
 
   { level: 7, name: "MastersMend", label: "Master's Mend", group: "Durability" },
   { level: 15, name: "WasteNot", label: "Waste Not", group: "Durability" },

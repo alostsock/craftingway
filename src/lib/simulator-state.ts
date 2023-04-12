@@ -21,10 +21,10 @@ export interface Config {
 const CONFIG_STORE = "simulatorConfig";
 
 export const DEFAULT_CONFIG: Config = {
-  maxSteps: 30,
-  iterations: 50_000,
+  maxSteps: 25,
+  iterations: 150_000,
   maxScoreWeightingConstant: 0.1,
-  explorationConstant: 1.5,
+  explorationConstant: 2.0,
 };
 
 class _SimulatorState {

@@ -200,3 +200,21 @@ footer {
     }
   }
 }
+
+[data-radix-popper-content-wrapper] {
+  // not ideal, but radix inlines "z-index: auto"
+  z-index: 1 !important;
+}
+
+.tooltip {
+  line-height: 1.15;
+  font-size: var(--small-font-size);
+  background: var(--grey-900);
+  padding: var(--05) var(--1);
+  border: 1px solid var(--grey-700);
+  border-radius: var(--border-radius);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--05);
+}

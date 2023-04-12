@@ -26,20 +26,27 @@
     height: var(--action-icon-size);
   }
 
-  .step {
+  .step,
+  .cp {
     position: absolute;
     bottom: 0;
     left: 0;
 
     text-align: center;
     font-size: var(--small-font-size);
-    line-height: 1.25;
+    line-height: 1.4;
     height: 1.25em;
     padding: 0 0.25em;
+    border-top-right-radius: var(--border-radius);
     // --grey-900, but with alpha transparency
     background: rgba(25, 26, 26, 0.85);
     user-select: none;
     pointer-events: none;
+  }
+
+  .cp {
+    font-weight: 400;
+    color: var(--orange-050);
   }
 }
 

@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 
 import { StatusIcon } from "./Icons";
 import { SimulatorState } from "../lib/simulator-state";
-import { BUFFS } from "../lib/buffs";
+import { Buff, BUFF_LOOKUP } from "../lib/buffs";
 
 const BuffList = observer(function BuffList() {
   if (!SimulatorState.craftState) return null;
@@ -18,9 +18,7 @@ const BuffList = observer(function BuffList() {
       {Object.entries(SimulatorState.craftState.buffs).map(([buffName, stacksOrExpiry]) => {
         if (!stacksOrExpiry) return null;
 
-        const buffData = BUFFS.find((buffData) => buffData.name === buffName);
-
-        if (!buffData) return null;
+        const buffData = BUFF_LOOKUP[buffName as Buff];
 
         const { name, label, stackable, expires } = buffData;
 

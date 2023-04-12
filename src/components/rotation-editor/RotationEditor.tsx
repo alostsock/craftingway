@@ -30,7 +30,6 @@ import {
 import { SimulatorState } from "../../lib/simulator-state";
 import Storage from "../../lib/storage";
 import { useReaction } from "../../lib/hooks";
-import { ACTIONS } from "../../lib/actions";
 
 const MODE_STORE = "rotationEditorMode";
 
@@ -123,12 +122,6 @@ const RotationEditor = observer(function RotationEditor() {
     </span>
   );
 
-  const activeActionLabel = () => {
-    if (!activeId) return "";
-
-    return ACTIONS.find((action) => action.name === actionFromId(activeId))?.label ?? "";
-  };
-
   return (
     <div className="RotationEditor">
       <DndContext
@@ -162,7 +155,9 @@ const RotationEditor = observer(function RotationEditor() {
             ]}
             onChange={onModeChange}
           />
-          <DragOverlay>{activeId ? <ActionIcon name={activeActionLabel()} /> : null}</DragOverlay>
+          <DragOverlay>
+            {activeId ? <ActionIcon name={actionFromId(activeId)} /> : null}
+          </DragOverlay>
         </SortableContext>
       </DndContext>
     </div>

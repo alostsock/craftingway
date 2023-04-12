@@ -124,10 +124,35 @@
       cursor: pointer;
       opacity: 0;
       transition: opacity 70ms;
+
+      &:focus {
+        outline: none;
+      }
     }
 
     &:hover:not([aria-pressed]) button.remove {
       opacity: 1;
+    }
+  }
+
+  .tooltip {
+    color: var(--text-muted-color);
+    max-width: 22em;
+
+    .action-label {
+      color: var(--text-color);
+    }
+
+    .progress {
+      color: var(--orange-050);
+    }
+
+    .quality {
+      color: var(--blue-050);
+    }
+
+    .progress-quality {
+      color: var(--grey-050);
     }
   }
 }

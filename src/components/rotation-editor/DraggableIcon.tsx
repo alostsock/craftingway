@@ -1,40 +1,52 @@
 import clsx from "clsx";
 import { useDraggable } from "@dnd-kit/core";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import type { Action } from "crafty";
 
+import { TOOLTIP_TEXT } from "../TooltipText";
 import { ActionIcon } from "../Icons";
+import { ACTION_LOOKUP } from "../../lib/actions";
 
 interface Props {
   id: string;
   name: Action;
-  label: string;
   onClick: (action: Action) => void;
   disabled: boolean;
 }
 
-export default function DraggableIcon({ id, name, label, onClick, disabled }: Props) {
+export default function DraggableIcon({ id, name, onClick, disabled }: Props) {
   const { setNodeRef, transform, attributes, listeners } = useDraggable({ id });
   const style = transform
     ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
     : undefined;
 
   return (
-    <button
-      key={name}
-      ref={(node) => {
-        setNodeRef(node);
-        if (node) {
-          node.scrollIntoView = () => {};
-        }
-      }}
-      title={label}
-      style={style}
-      className={clsx({ disabled })}
-      onClick={() => onClick(name)}
-      {...attributes}
-      {...listeners}
-    >
-      <ActionIcon name={label} />
-    </button>
+    <Tooltip.Root>
+      <Tooltip.Trigger asChild>
+        <button
+          key={name}
+          ref={(node) => {
+            setNodeRef(node);
+            if (node) {
+              node.scrollIntoView = () => {};
+            }
+          }}
+          style={style}
+          className={clsx({ disabled })}
+          onClick={() => onClick(name)}
+          {...attributes}
+          {...listeners}
+        >
+          <ActionIcon name={name} showCp />
+        </button>
+      </Tooltip.Trigger>
+
+      <Tooltip.Content asChild side="top" align="start" sideOffset={8}>
+        <div className="tooltip">
+          <span className="action-label">{ACTION_LOOKUP[name].label}</span>
+          {TOOLTIP_TEXT[name]}
+        </div>
+      </Tooltip.Content>
+    </Tooltip.Root>
   );
 }

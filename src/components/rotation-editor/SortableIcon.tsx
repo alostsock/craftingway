@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { actionFromId } from "./converters";
 import { ActionIcon } from "../Icons";
 import Emoji from "../Emoji";
-import { ACTIONS } from "../../lib/actions";
+import { ACTION_LOOKUP } from "../../lib/actions";
 import { SimulatorState } from "../../lib/simulator-state";
 
 type SortableIconProps = {
@@ -22,9 +22,6 @@ const SortableIcon = observer(function SortableIcon({
   active,
 }: SortableIconProps) {
   const actionName = actionFromId(id);
-  const actionLabel = ACTIONS.find((action) => action.name === actionName)?.label;
-
-  if (!actionLabel) return null;
 
   const { setNodeRef, transform, transition, attributes, listeners } = useSortable({ id });
   const style = transform
@@ -49,11 +46,11 @@ const SortableIcon = observer(function SortableIcon({
       {...attributes}
       {...listeners}
     >
-      <ActionIcon name={actionLabel} step={step} />
+      <ActionIcon name={actionName} step={step} />
 
       <button
         className="remove"
-        title={`Remove ${actionLabel}`}
+        title={`Remove ${ACTION_LOOKUP[actionName]}`}
         onClick={() => onRemove(id)}
         data-no-dnd
       >

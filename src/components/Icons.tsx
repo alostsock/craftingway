@@ -2,40 +2,45 @@ import "./Icons.scss";
 
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
+import type { Action } from "crafty";
 
 import { actionIcons, statusIcons } from "../lib/assets";
+import { ACTION_LOOKUP } from "../lib/actions";
 import { PlayerState } from "../lib/player-state";
-
-const noImage = <span>NO IMAGE</span>;
+import { SimulatorState } from "../lib/simulator-state";
 
 type ActionIconProps = {
-  name: string;
+  name: Action;
   step?: number;
+  showCp?: boolean;
 };
 
-export const ActionIcon = observer(function ActionIcon({ name, step }: ActionIconProps) {
+export const ActionIcon = observer(function ActionIcon({ name, step, showCp }: ActionIconProps) {
   const job = PlayerState.job;
 
-  const nameWithJob = `${name}-${job}`;
+  let { label, cp } = ACTION_LOOKUP[name];
 
+  const nameWithJob = `${label}-${job}`;
   if (job && actionIcons.has(nameWithJob)) {
-    name = nameWithJob;
+    label = nameWithJob;
   }
 
-  if (!actionIcons.has(name)) {
-    return noImage;
+  if (showCp && SimulatorState.craftState?.next_combo_action === name) {
+    // handle Standard/Advanced touch
+    cp = 18;
   }
 
-  const url = `icon/action/${name}`;
+  const url = `icon/action/${label}`;
 
   return (
     <div className="ActionIcon">
-      <picture title={name}>
+      <picture title={label}>
         <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
-        <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />
+        <img src={encodeURI(`${url}.png`)} alt={label} draggable={false} />
       </picture>
 
       {step && <div className="step">{step}</div>}
+      {showCp && <div className="cp">{cp}</div>}
     </div>
   );
 });
@@ -51,10 +56,6 @@ export const StatusIcon = observer(({ name, stacks, expiry }: StatusIconProps) =
 
   if (stacks && statusIcons.has(nameWithStacks)) {
     name = nameWithStacks;
-  }
-
-  if (!statusIcons.has(name)) {
-    return noImage;
   }
 
   const url = `icon/status/${name}`;

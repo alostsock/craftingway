@@ -50,7 +50,7 @@ const SortableIcon = observer(function SortableIcon({
 
       <button
         className="remove"
-        title={`Remove ${ACTION_LOOKUP[actionName]}`}
+        title={`Remove ${ACTION_LOOKUP[actionName].label}`}
         onClick={() => onRemove(id)}
         data-no-dnd
       >

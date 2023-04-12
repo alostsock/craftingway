@@ -29,7 +29,6 @@ const PersistentList = observer(function PersistentList({ onAdd }: PersistentLis
                 key={name}
                 id={idFromAction(name)}
                 name={name}
-                label={label}
                 onClick={() => onAdd(name)}
                 disabled={!activeActions.has(name)}
               />

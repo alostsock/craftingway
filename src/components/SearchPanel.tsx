@@ -20,9 +20,15 @@ const SearchPanel = observer(function SearchPanel() {
       return !previous;
     });
 
-  const search = action(() => SimulatorState.searchStepwise());
-
+  const existingRotation = !!SimulatorState.completionReason;
   const isSearching = SimulatorState.isSearching;
+
+  const search = action(() => {
+    if (existingRotation) {
+      SimulatorState.actions = [];
+    }
+    SimulatorState.searchStepwise();
+  });
 
   return (
     <div className="SearchPanel">
@@ -32,7 +38,7 @@ const SearchPanel = observer(function SearchPanel() {
       </p>
 
       <button className="search" onClick={search} disabled={isSearching}>
-        {isSearching ? "Searching..." : "Search"}
+        {isSearching ? "Searching..." : existingRotation ? "Reset and search" : "Search"}
       </button>
 
       <button className="link" onClick={toggleConfig} disabled={isSearching}>

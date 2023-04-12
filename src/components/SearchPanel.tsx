@@ -3,6 +3,7 @@ import "./SearchPanel.scss";
 import { useState } from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 import NumberInput from "./NumberInput";
 import { SimulatorState } from "../lib/simulator-state";
@@ -41,8 +42,18 @@ const SearchPanel = observer(function SearchPanel() {
       {showConfig && (
         <div className="config">
           <div className="field max-steps">
-            <label>Max number of crafting steps</label>
+            <LabelHelp
+              htmlFor="config-max-steps"
+              labelText="Max number of crafting steps"
+              helpText={[
+                "Generally, this is the only setting you should change. It should be set to a few",
+                "steps more than what you would expect. If the value is too low, the solver won't",
+                "learn much per iteration. Too high and it will waste computational budget on",
+                "useless extra steps.",
+              ].join(" ")}
+            />
             <NumberInput
+              id="config-max-steps"
               min={0}
               max={40}
               numberValue={SimulatorState.config.maxSteps}
@@ -52,8 +63,17 @@ const SearchPanel = observer(function SearchPanel() {
           </div>
 
           <div className="field iterations">
-            <label>Iterations</label>
+            <LabelHelp
+              htmlFor="config-iterations"
+              labelText="Iterations"
+              helpText={[
+                "The number of iterations to run per crafting step. Increasing this value depends",
+                "on your computational budget, but there are diminishing returns. If you decide to",
+                "increase this value, then you should probably also increase the exploration constant.",
+              ].join(" ")}
+            />
             <NumberInput
+              id="config-iterations"
               min={0}
               max={10_000_000}
               numberValue={SimulatorState.config.iterations}
@@ -63,8 +83,17 @@ const SearchPanel = observer(function SearchPanel() {
           </div>
 
           <div className="field max-score">
-            <label>Score weighting constant</label>{" "}
+            <LabelHelp
+              htmlFor="config-max-score"
+              labelText="Score weighting constant"
+              helpText={[
+                "A constant ranging from 0 to 1 that configures how the solver scores and picks",
+                "paths already traveled. A value of 0.0 means actions will be chosen based on their",
+                "average outcome, whereas 1.0 uses their best outcome achieved so far.",
+              ].join(" ")}
+            />
             <NumberInput
+              id="config-max-score"
               isFloatingPoint
               min={0}
               max={1}
@@ -77,8 +106,17 @@ const SearchPanel = observer(function SearchPanel() {
           </div>
 
           <div className="field exploration">
-            <label>Exploration constant</label>
+            <LabelHelp
+              htmlFor="config-exploration"
+              labelText="Exploration constant"
+              helpText={[
+                "A constant that decides how often the solver will explore new, possibly good",
+                "paths. If this value is too high, moves will basically be decided entirely at",
+                "random.",
+              ].join(" ")}
+            />
             <NumberInput
+              id="config-exploration"
               isFloatingPoint
               min={0}
               max={100}
@@ -102,3 +140,24 @@ const SearchPanel = observer(function SearchPanel() {
 });
 
 export default SearchPanel;
+
+function LabelHelp({
+  htmlFor,
+  labelText,
+  helpText,
+}: {
+  htmlFor: string;
+  labelText: string;
+  helpText: string;
+}) {
+  return (
+    <Tooltip.Root>
+      <Tooltip.TooltipTrigger asChild>
+        <label htmlFor={htmlFor}>{labelText}</label>
+      </Tooltip.TooltipTrigger>
+      <Tooltip.Content side="top" align="start" sideOffset={8} asChild>
+        <div className="tooltip">{helpText}</div>
+      </Tooltip.Content>
+    </Tooltip.Root>
+  );
+}

@@ -52,10 +52,9 @@ const SearchPanel = observer(function SearchPanel() {
               htmlFor="config-max-steps"
               labelText="Max number of crafting steps"
               helpText={[
-                "Generally, this is the only setting you should change. It should be set to a few",
+                "Generally, this is the only setting you should change. It should be set to around 5",
                 "steps more than what you would expect. If the value is too low, the solver won't",
-                "learn much per iteration. Too high and it will waste computational budget on",
-                "useless extra steps.",
+                "learn much per iteration. Too high and it will time on useless extra steps.",
               ].join(" ")}
             />
             <NumberInput
@@ -117,8 +116,8 @@ const SearchPanel = observer(function SearchPanel() {
               labelText="Exploration constant"
               helpText={[
                 "A constant that decides how often the solver will explore new, possibly good",
-                "paths. If this value is too high, moves will basically be decided entirely at",
-                "random.",
+                "paths. If this value is too high, moves will basically be decided at random.",
+                "In theory 2 is a good value, but you can set it to a max of 100.",
               ].join(" ")}
             />
             <NumberInput

@@ -1,5 +1,6 @@
 import "./CraftStateDisplay.scss";
 
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import type { CompletionReason } from "crafty";
 
@@ -15,8 +16,8 @@ const statuses = new Map<CompletionReason | null, Status>([
   [null, { type: undefined, text: "Crafting…" }],
   ["Finished", { type: "success", text: "Synthesis is complete." }],
   ["DurabilityFailure", { type: "failure", text: "No durability remains." }],
-  ["InvalidActionFailure", { type: "failure", text: "A bad move was made." }],
-  ["MaxStepsFailure", { type: "failure", text: "The step limit has been reached." }],
+  ["InvalidActionFailure", { type: "failure", text: "A bad move was made (probably)." }],
+  ["MaxStepsFailure", { type: "failure", text: "The step limit was reached." }],
 ]);
 
 const CraftStateDisplay = observer(function CraftStateDisplay() {
@@ -29,7 +30,7 @@ const CraftStateDisplay = observer(function CraftStateDisplay() {
     <section className="CraftStateDisplay">
       <h2>
         <span className="step">Step {step}</span>
-        <span className={status?.type}>{status?.text}</span>
+        <span className={clsx("status", status?.type)}>{status?.text}</span>
       </h2>
 
       <div className="bars">

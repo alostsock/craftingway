@@ -9,12 +9,16 @@
       color: var(--text-muted-color);
     }
 
+    .status {
+      font-size: 1.25rem;
+    }
+
     .success {
       color: var(--blue-400);
     }
 
     .failure {
-      color: var(--orange-600);
+      color: var(--yellow-500);
     }
   }
 

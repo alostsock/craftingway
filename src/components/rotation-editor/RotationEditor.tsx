@@ -100,7 +100,7 @@ const RotationEditor = observer(function RotationEditor() {
   };
 
   const [rotationEditorMode, setRotationEditorMode] = useState<Mode>(
-    Storage.retrieve<Mode>(MODE_STORE) || "manual"
+    Storage.retrieve<Mode>(MODE_STORE) || "auto"
   );
 
   const onModeChange = (mode: Mode) => {
@@ -143,14 +143,14 @@ const RotationEditor = observer(function RotationEditor() {
             defaultMode={rotationEditorMode}
             modeOptions={[
               {
-                mode: "manual",
-                label: manualModeLabel,
-                component: () => <PersistentList onAdd={addItem} />,
-              },
-              {
                 mode: "auto",
                 label: autoModeLabel,
                 component: () => <SearchPanel />,
+              },
+              {
+                mode: "manual",
+                label: manualModeLabel,
+                component: () => <PersistentList onAdd={addItem} />,
               },
             ]}
             onChange={onModeChange}

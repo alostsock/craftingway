@@ -1,6 +1,6 @@
 import "./SearchPanel.scss";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -53,11 +53,14 @@ const SearchPanel = observer(function SearchPanel() {
             <LabelHelp
               htmlFor="config-max-steps"
               labelText="Max number of crafting steps"
-              helpText={[
-                "Generally, this is the only setting you should change. It should be set to around 5",
-                "steps more than what you would expect. If the value is too low, the solver won't",
-                "learn much per iteration. Too high and it will time on useless extra steps.",
-              ].join(" ")}
+              helpText={
+                <span>
+                  This is generally the only setting you should change, and it should be set to
+                  around 5 steps more than what you'd expect. If this value is too low, the solver
+                  won't learn much per iteration; too high and it will waste time on useless extra
+                  steps.
+                </span>
+              }
             />
             <NumberInput
               id="config-max-steps"
@@ -73,11 +76,14 @@ const SearchPanel = observer(function SearchPanel() {
             <LabelHelp
               htmlFor="config-iterations"
               labelText="Iterations"
-              helpText={[
-                "The number of iterations to run per crafting step. Increasing this value depends",
-                "on your computational budget, but there are diminishing returns. If you decide to",
-                "increase this value, then you should probably also increase the exploration constant.",
-              ].join(" ")}
+              helpText={
+                <span>
+                  The number of iterations to run per crafting step. Increasing this value depends
+                  on your computational budget, and there are diminishing returns. If you decide to
+                  increase this value, then you should probably also increase the exploration
+                  constant.
+                </span>
+              }
             />
             <NumberInput
               id="config-iterations"
@@ -93,11 +99,13 @@ const SearchPanel = observer(function SearchPanel() {
             <LabelHelp
               htmlFor="config-max-score"
               labelText="Score weighting constant"
-              helpText={[
-                "A constant ranging from 0 to 1 that configures how the solver scores and picks",
-                "paths already traveled. A value of 0.0 means actions will be chosen based on their",
-                "average outcome, whereas 1.0 uses their best outcome achieved so far.",
-              ].join(" ")}
+              helpText={
+                <span>
+                  A constant ranging from 0 to 1 that configures how the solver scores and picks
+                  paths to travel next. A value of 0.0 means actions will be chosen based on their
+                  average outcome, whereas 1.0 uses their best outcome achieved so far.
+                </span>
+              }
             />
             <NumberInput
               id="config-max-score"
@@ -116,11 +124,20 @@ const SearchPanel = observer(function SearchPanel() {
             <LabelHelp
               htmlFor="config-exploration"
               labelText="Exploration constant"
-              helpText={[
-                "A constant that decides how often the solver will explore new, possibly good",
-                "paths. If this value is too high, moves will basically be decided at random.",
-                "In theory 2 is a good value, but you can set it to a max of 100.",
-              ].join(" ")}
+              helpText={
+                <span>
+                  A constant that decides how often the solver will explore new, possibly good
+                  paths. If this value is too high, moves will basically be decided at random. More
+                  info can be found{" "}
+                  <a
+                    href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search#Exploration_and_exploitation"
+                    target="_blank"
+                  >
+                    here
+                  </a>
+                  .
+                </span>
+              }
             />
             <NumberInput
               id="config-exploration"
@@ -155,7 +172,7 @@ function LabelHelp({
 }: {
   htmlFor: string;
   labelText: string;
-  helpText: string;
+  helpText: React.ReactNode;
 }) {
   return (
     <Tooltip.Root>

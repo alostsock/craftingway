@@ -18,13 +18,15 @@ export interface Config {
   explorationConstant: number;
 }
 
-const CONFIG_STORE = "simulatorConfig";
+// Remember to bump version number when updating DEFAULT_CONFIG, so that the
+// cache is invalidated
+const CONFIG_STORE = "simulatorConfig_v1";
 
 export const DEFAULT_CONFIG: Config = {
   maxSteps: 25,
-  iterations: 150_000,
+  iterations: 300_000,
   maxScoreWeightingConstant: 0.1,
-  explorationConstant: 2.0,
+  explorationConstant: 4.0,
 };
 
 class _SimulatorState {

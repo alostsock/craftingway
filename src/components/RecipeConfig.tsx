@@ -13,7 +13,6 @@ import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
 import { sanitizeIntFromText, stars } from "../lib/utils";
-import NumberInput from "./NumberInput";
 
 type Mode = "name" | "level";
 
@@ -94,6 +93,7 @@ const RecipesByName = observer(function RecipesByName() {
     if (recipe && !recipe.jobs.has(PlayerState.job)) {
       PlayerState.job = recipe.jobs.values().next().value;
     }
+    SimulatorState.actions = [];
     RecipeState.recipe = recipe;
   });
 
@@ -148,7 +148,10 @@ const RecipesByLevel = observer(function RecipesByLevel() {
   const [level, setLevel] = useState<number>(0);
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
 
-  const setRecipe = action((recipe: RecipeData | null) => (RecipeState.recipe = recipe));
+  const setRecipe = action((recipe: RecipeData | null) => {
+    SimulatorState.actions = [];
+    RecipeState.recipe = recipe;
+  });
 
   useAutorun(() => {
     setQueryResults(SimulatorState.recipesByLevel(level));

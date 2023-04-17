@@ -33,12 +33,14 @@ const SearchPanel = observer(function SearchPanel() {
   return (
     <div className="SearchPanel">
       <p>
-        We'll attempt to find a decent rotation by exploring lots of possible branching actions and
-        outcomes.
+        We'll attempt to find a decent rotation by exploring lots of possible actions and outcomes.
+        If you already have ideas about which actions to use first, you can add them by crafting
+        manually. This rotation probably won't be perfect, but should be good enough to get you
+        started.
       </p>
 
       <button className="search" onClick={search} disabled={isSearching}>
-        {isSearching ? "Searching..." : existingRotation ? "Reset and search" : "Search"}
+        {isSearching ? "Searching..." : existingRotation ? "Reset rotation and search" : "Search"}
       </button>
 
       <button className="link" onClick={toggleConfig} disabled={isSearching}>
@@ -124,7 +126,7 @@ const SearchPanel = observer(function SearchPanel() {
               id="config-exploration"
               isFloatingPoint
               min={0}
-              max={100}
+              max={1000}
               numberValue={SimulatorState.config.explorationConstant}
               onNumberChange={(value) => SimulatorState.setConfig({ explorationConstant: value })}
               disabled={isSearching}

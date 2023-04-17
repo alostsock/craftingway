@@ -41,7 +41,7 @@ export default function DraggableIcon({ id, name, onClick, disabled }: Props) {
         </button>
       </Tooltip.Trigger>
 
-      <Tooltip.Content asChild side="top" align="start" sideOffset={8}>
+      <Tooltip.Content asChild side="top" align="start">
         <div className="tooltip">
           <span className="action-label">{ACTION_LOOKUP[name].label}</span>
           {TOOLTIP_TEXT[name]}

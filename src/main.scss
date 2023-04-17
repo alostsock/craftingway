@@ -209,9 +209,10 @@ footer {
 .tooltip {
   font-size: var(--small-font-size);
   background: var(--grey-900);
-  padding: var(--1) var(--1);
+  padding: 1rem 1rem;
   border: 1px solid var(--grey-700);
   border-radius: var(--border-radius);
+  margin: 0 0 0.5rem -1rem;
 
   display: flex;
   flex-direction: column;

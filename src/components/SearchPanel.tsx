@@ -179,7 +179,7 @@ function LabelHelp({
       <Tooltip.TooltipTrigger asChild>
         <label htmlFor={htmlFor}>{labelText}</label>
       </Tooltip.TooltipTrigger>
-      <Tooltip.Content side="top" align="start" sideOffset={8} asChild>
+      <Tooltip.Content asChild side="top" align="start">
         <div className="tooltip">{helpText}</div>
       </Tooltip.Content>
     </Tooltip.Root>

@@ -10,4 +10,13 @@
     font-size: var(--small-font-size);
     margin: auto 0;
   }
+
+  .tooltip {
+    color: var(--text-muted-color);
+    max-width: 22em;
+
+    .buff-label {
+      color: var(--text-color);
+    }
+  }
 }

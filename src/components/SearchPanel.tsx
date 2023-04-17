@@ -35,8 +35,8 @@ const SearchPanel = observer(function SearchPanel() {
       <p>
         We'll attempt to find a decent rotation by exploring lots of possible actions and outcomes.
         This rotation probably won't be perfect, but should be good enough to get you started. If
-        you already have ideas about which actions to use first, you can add them by crafting
-        manually.
+        you already have ideas about which actions to use first, you can add them from the "Craft
+        manually" tab.
       </p>
 
       <button className="search" onClick={search} disabled={isSearching}>

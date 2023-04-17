@@ -11,7 +11,7 @@ const RotationControls = observer(function RotationControls() {
   });
 
   const copyToClipboard = (lines: string[]) => {
-    navigator.clipboard.writeText(lines.join("\n"));
+    navigator.clipboard.writeText(lines.join("\r\n"));
   };
 
   if (SimulatorState.actions.length === 0) {

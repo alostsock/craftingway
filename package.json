@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build-submodule": "bash -c \"cd crafty && . build-web.sh\"",
+    "build-submodule": "bash -c \"cd crafty && ./build-web.sh\"",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

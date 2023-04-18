@@ -1,0 +1,5 @@
+{
+	"vite.buildCommand": "yarn run build",
+	"vite.devCommand": "yarn run dev",
+	"vite.port": 5173
+}

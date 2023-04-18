@@ -1,26 +1,26 @@
 // For format details, see https://aka.ms/devcontainer.json.
 // See also https://code.visualstudio.com/docs/devcontainers/create-dev-container#_dockerfile.
 {
-	"name": "node",
-	"build": {
-		"dockerfile": "../Containerfile"
-	},
+  "name": "node",
+  "build": {
+    "dockerfile": "../Containerfile"
+  },
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [5173],
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [5173],
 
-	"postStartCommand": "yarn build-submodule",
+  "postStartCommand": "yarn build-submodule",
 
-	"customizations": {
-		"vscode": {
-			"extensions": [ // Automatically install these extensions in the container
-			]
-		}
-	}
+  "customizations": {
+    "vscode": {
+      // Automatically install these extensions in the container
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  }
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }

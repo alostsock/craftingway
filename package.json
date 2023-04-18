@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "eslint": "eslint src",
     "build-submodule": "bash -c \"cd crafty && ./build-web.sh\"",
     "build": "tsc && vite build",
     "preview": "vite preview"

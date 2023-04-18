@@ -1,0 +1,47 @@
+name: 'CI'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: '*'
+  pull_request:
+    branches: '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - uses: dtolnay/rust-toolchain@stable
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'yarn'
+
+    - name: Get submodule commit hash
+      id: get-submodule-hash
+      run: echo "SUBMODULE_HASH=$(git submodule)" >> $GITHUB_OUTPUT
+
+    - name: Check if submodule build is cached
+      uses: actions/cache@v3
+      id: submodule-cache
+      with:
+        path: crafty/web/pkg
+        key: ${{ steps.get-submodule-hash.outputs.SUBMODULE_HASH }}
+
+    - name: Build submodule
+      if: steps.submodule-cache.outputs.cache-hit != 'true'
+      # TODO: Update wasm-pack when install bug is fixed
+      run: |
+        yarn global add wasm-pack@0.10.3
+        yarn run build-submodule
+
+    - run: yarn install --frozen-lockfile
+
+    - run: yarn run build
+
+    - run: yarn run eslint

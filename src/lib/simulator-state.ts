@@ -171,7 +171,6 @@ class _SimulatorState {
 
   get macroTextParts(): string[][] {
     const lineLimit = 15;
-    const alarmText = "/e <se.8>";
 
     const latestValidStep = SimulatorState.craftState?.step ?? 0;
     const validActions = this.actions.slice(0, latestValidStep - 1);
@@ -179,7 +178,10 @@ class _SimulatorState {
 
     const parts: string[][] = [];
     while (lines.length > 0) {
-      if (lines.length <= lineLimit) {
+      const partNumber = parts.length + 1;
+      const alarmText = `/e Part ${partNumber} complete <se.8>`;
+
+      if (lines.length == lineLimit) {
         parts.push(lines.splice(0, lines.length));
       } else {
         parts.push(lines.splice(0, lineLimit - 1).concat(alarmText));

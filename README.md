@@ -32,7 +32,7 @@ git submodule update --init
 
 From here, there are two ways to develop: either with or without a container.
 
-### Using a container
+### Using the dev container
 
 If you use VS Code, the editor should automatically detect the dev container and prompt you to use it when you open the project. After the container starts, it will start building the submodule.
 
@@ -44,16 +44,27 @@ yarn install
 yarn run dev
 ```
 
-If you do *not* use VS Code, you can build and run the container yourself with either `podman` or `docker`, following the instructions [here](https://github.com/alostsock/craftingway/pull/1#issue-1670616719).
+#### Podman
+
+If you are on podman 4.4.x, downgrade to 4.3.x: https://github.com/containers/podman/issues/17313#issuecomment-1508452808
+
+### Using a manually built container
+
+You can build and run the container yourself with either `podman` or `docker`:
+
+```sh
+docker build -f Containerfile . -t craftingway
+docker run --rm -it -v `pwd`:/usr/src craftingway bash
+```
+
+Then, run the `yarn` commands in the section above.
 
 ### Without a container
 
 Running the app requires Node.js, the [yarn](https://classic.yarnpkg.com/lang/en/docs/install) package manager, the Rust toolchain, and [`wasm-pack`](https://rustwasm.github.io/wasm-pack/) for compilation. All of these should be installed. A couple scripts also kinda assume a Linux system -- if you're on Windows, I strongly recommend just using WSL.
 
-After everything is installed, you should be able to build the submodule and run the app in dev mode:
+After everything is installed, you should be able to build the submodule and run the app using the same `yarn` commands above.
 
-```sh
-yarn run build-submodule
-yarn install
-yarn run dev
-```
+### arm64 (including Apple silicon Macs)
+
+`wasm-pack` 0.11.x supports arm64, but you will get "Error: no prebuilt wasm-opt binaries are available for this platform". Modify `crafty/web/Cargo.toml` as the error message suggests.

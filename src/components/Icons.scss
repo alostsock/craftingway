@@ -2,11 +2,8 @@
 .StatusIcon {
   user-select: none;
 
-  picture {
-    display: block;
-  }
-
   img {
+    display: block;
     width: 100%;
     height: 100%;
   }
@@ -21,7 +18,7 @@
   overflow: hidden;
   position: relative;
 
-  picture {
+  img {
     width: var(--action-icon-size);
     height: var(--action-icon-size);
   }
@@ -51,14 +48,14 @@
 }
 
 .StatusIcon {
-  picture {
+  img {
     height: var(--status-icon-height);
     clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 91% 20%, 92% 81%);
   }
 
   // ensure numerals in the top right don't get cut off
   // prettier-ignore
-  &.with-stacks picture {
+  &.with-stacks img {
       clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 65% 12%, 80% 10%, 91% 9%, 93% 20%, 91% 31%, 92% 81%);
     }
 

@@ -34,13 +34,10 @@ export const ActionIcon = observer(function ActionIcon({ name, step, showCp }: A
 
   return (
     <div className="ActionIcon">
-      <picture title={label}>
-        <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
-        <img src={encodeURI(`${url}.png`)} alt={label} draggable={false} />
-      </picture>
+      <img src={encodeURI(`${url}.webp`)} title={label} alt={label} draggable={false} />
 
       {step && <div className="step">{step}</div>}
-      {showCp && <div className="cp">{cp}</div>}
+      {showCp && cp && <div className="cp">{cp}</div>}
     </div>
   );
 });
@@ -62,10 +59,7 @@ export const StatusIcon = observer(({ name, stacks, expiry }: StatusIconProps) =
 
   return (
     <div className={clsx("StatusIcon", stacks && "with-stacks", expiry && "with-expiry")}>
-      <picture title={name}>
-        <source srcSet={encodeURI(`${url}.webp`)} type="image/webp" />
-        <img src={encodeURI(`${url}.png`)} alt={name} draggable={false} />
-      </picture>
+      <img src={encodeURI(`${url}.webp`)} title={name} alt={name} draggable={false} />
 
       {expiry && <span className="expiry">{expiry}</span>}
     </div>

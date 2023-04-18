@@ -81,7 +81,7 @@ export default function NumberInput({
 }
 
 function sanitizeTextInput(text: string, isFloatingPoint: boolean) {
-  const pattern = isFloatingPoint ? /[^0-9\.]/g : /[^0-9]/g;
+  const pattern = isFloatingPoint ? /[^0-9.]/g : /[^0-9]/g;
 
   return text.replace(pattern, "").split(".", 2).join(".");
 }

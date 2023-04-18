@@ -28,7 +28,7 @@ export default function DraggableIcon({ id, name, onClick, disabled }: Props) {
           ref={(node) => {
             setNodeRef(node);
             if (node) {
-              node.scrollIntoView = () => {};
+              node.scrollIntoView = () => {}; // eslint-disable-line @typescript-eslint/no-empty-function
             }
           }}
           style={style}

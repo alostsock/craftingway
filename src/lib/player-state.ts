@@ -48,8 +48,8 @@ class _PlayerState {
   }
 
   get playerWithBonuses(): Player {
-    let food = this.foodBonus;
-    let potion = this.potionBonus;
+    const food = this.foodBonus;
+    const potion = this.potionBonus;
     return {
       job_level: this.config.job_level,
       craftsmanship: this.config.craftsmanship + food.craftsmanship + potion.craftsmanship,
@@ -70,11 +70,11 @@ class _PlayerState {
 
   setConfig(attrs: Partial<JobConfig>) {
     for (const stat of ["job_level", "craftsmanship", "control", "cp"] as const) {
-      let value = attrs[stat];
+      const value = attrs[stat];
       if (value != null) this.configByJob[this.job][stat] = value;
     }
     for (const consumable of ["food", "potion"] as const) {
-      let variant = attrs[consumable];
+      const variant = attrs[consumable];
       if (variant !== undefined) this.configByJob[this.job][consumable] = variant;
     }
   }

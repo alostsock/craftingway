@@ -16,7 +16,7 @@ export function fuzzysearch(needle: string, haystack: string): number {
     return needle === haystack ? 2.0 : 0;
   }
 
-  let matchOffsets = [];
+  const matchOffsets = [];
 
   // the inner loop should only terminate if there isn't a match,
   // since haystack.length > needle.length

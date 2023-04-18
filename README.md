@@ -24,17 +24,36 @@ If you have questions, suggestions, or would like to contribute, please join the
 
 ## Development
 
-The site itself is a relatively straightforward React app. However, it heavily relies on the [simulator/solver](https://github.com/alostsock/crafty), which is a library written in Rust and compiled to WASM with Javascript bindings.
+The site itself is a relatively straightforward React app. However, it heavily relies on the [simulator/solver](https://github.com/alostsock/crafty), which is a library written in Rust and compiled to WASM with Javascript bindings. The simulator package is included as a git submodule. If you haven't interacted with submodules before, you'll need to run this after cloning the repo:
 
-Running the app therefore requires Node.js, the [yarn](https://classic.yarnpkg.com/lang/en/docs/install) package manager, the Rust toolchain, and [`wasm-pack`](https://rustwasm.github.io/wasm-pack/) for compilation. A couple scripts also kinda assume a Linux system -- if you're on Windows, I strongly recommend just using WSL.
-
-The simulator package is included as a git submodule. If you haven't interacted with submodules before, you'll need to run this after cloning the repo:
 ```sh
 git submodule update --init
 ```
 
-To build the submodule and run the app in dev mode:
+From here, there are two ways to develop: either with or without a container.
+
+### Using a container
+
+If you use VS Code, the editor should automatically detect the dev container and prompt you to use it when you open the project. After the container starts, it will start building the submodule.
+
+Afterwards, run the following inside the container:
+
 ```sh
-yarn build-submodule
-yarn dev
+yarn run build-submodule # optional, if you want to rebuild the submodule
+yarn install
+yarn run dev
+```
+
+If you do *not* use VS Code, you can build and run the container yourself with either `podman` or `docker`, following the instructions [here](https://github.com/alostsock/craftingway/pull/1#issue-1670616719).
+
+### Without a container
+
+Running the app requires Node.js, the [yarn](https://classic.yarnpkg.com/lang/en/docs/install) package manager, the Rust toolchain, and [`wasm-pack`](https://rustwasm.github.io/wasm-pack/) for compilation. All of these should be installed. A couple scripts also kinda assume a Linux system -- if you're on Windows, I strongly recommend just using WSL.
+
+After everything is installed, you should be able to build the submodule and run the app in dev mode:
+
+```sh
+yarn run build-submodule
+yarn install
+yarn run dev
 ```

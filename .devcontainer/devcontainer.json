@@ -17,7 +17,6 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [ // Automatically install these extensions in the container
-				"antfu.vite"
 			]
 		}
 	}

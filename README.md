@@ -11,15 +11,19 @@ If you have questions, suggestions, or would like to contribute, please join the
 ## FAQ
 
 #### Isn't this site kinda useless since Teamcraft exists?
+
 - Maybe. The first few iterations of this app were made just as an experiment that happened to work relatively well, so I figured I'd make a website out of it. I have received feedback from folks saying they enjoy the "no-frills" aspect of it, though.
 
 #### There are some actions that don't exist in the app, like Hasty Touch and Rapid Synthesis. Will you be supporting these?
+
 - While possible, this is unlikely due to the amount of effort and complexity it would add. I intend to keep gameplay elements that involve RNG out of scope for as long as possible, since it is not necessary to rely on it for normal crafting (yet -- we'll see what the future holds). Keeping rotations deterministic also improves the performance of the solver in two ways: 1) it limits the number of available moves, and 2) it reduces the amount of branching possibilities to consider.
 
 #### Will you be supporting expert crafts?
+
 - Probably not, for the reasons above.
 
 #### How does the solver work?
+
 - It uses [Monte Carlo tree search](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search) along with a few bits of [hard-coded logic](https://github.com/alostsock/crafty/blob/d788fedadb7fe01f219fef6e39d4bd8c9934386a/crafty/src/craft_state.rs#L156-L240).
 
 ## Development

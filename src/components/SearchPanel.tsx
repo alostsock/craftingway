@@ -131,7 +131,8 @@ const SearchPanel = observer(function SearchPanel() {
                   info can be found{" "}
                   <a
                     href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search#Exploration_and_exploitation"
-                    target="_blank" rel="noreferrer"
+                    target="_blank"
+                    rel="noreferrer"
                   >
                     here
                   </a>

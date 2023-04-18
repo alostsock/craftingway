@@ -64,7 +64,7 @@ export const ACTION_LOOKUP = ACTIONS.reduce((prev, current) => {
 }, {} as Record<Action, ActionData>);
 
 export function traitedActions(jobLevel: number): ActionData[] {
-  let actions: ActionData[] = [];
+  const actions: ActionData[] = [];
 
   for (const action of ACTIONS) {
     if (

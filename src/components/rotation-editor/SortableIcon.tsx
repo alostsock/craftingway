@@ -38,7 +38,7 @@ const SortableIcon = observer(function SortableIcon({
       ref={(node) => {
         setNodeRef(node);
         if (node) {
-          node.scrollIntoView = () => {};
+          node.scrollIntoView = () => {}; // eslint-disable-line @typescript-eslint/no-empty-function
         }
       }}
       style={style}

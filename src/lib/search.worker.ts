@@ -36,9 +36,9 @@ onmessage = (event) => {
     const { recipe, player, actionHistory, maxSteps, searchOptions } = message;
 
     init().then(() => {
-      let actions: Action[] = [...actionHistory];
+      const actions: Action[] = [...actionHistory];
 
-      let callback = (action: Action) => {
+      const callback = (action: Action) => {
         actions.push(action);
 
         postMessage({

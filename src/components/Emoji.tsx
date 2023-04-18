@@ -5,7 +5,7 @@ import twemoji from "twemoji";
 
 type Props = { emoji: string };
 
-const Emoji = memo(({ emoji }: Props) => {
+const Emoji = memo(function Emoji({ emoji }: Props) {
   return (
     <span
       className="Emoji"

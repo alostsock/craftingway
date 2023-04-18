@@ -105,7 +105,7 @@ class _SimulatorState {
 
     for (const attr of Object.keys(attrs) as Array<keyof Config>) {
       if (attr in this.config) {
-        let value = attrs[attr];
+        const value = attrs[attr];
         if (value != null) this.config[attr] = value;
       }
     }

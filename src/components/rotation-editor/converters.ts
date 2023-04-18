@@ -7,6 +7,6 @@ export function idFromAction(action: Action) {
 }
 
 export function actionFromId(id: string) {
-  let [_, action] = id.match(/(\w+)-?\d*/)!;
+  const [_, action] = id.match(/(\w+)-?\d*/)!;
   return action as Action;
 }

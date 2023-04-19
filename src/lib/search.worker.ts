@@ -1,5 +1,5 @@
 import init, { searchStepwise } from "crafty";
-import type { Recipe, Player, Action, SearchOptions } from "crafty";
+import type { Recipe, Player, Action, CraftOptions, SearchOptions } from "crafty";
 
 import { checkAttrs } from "./utils";
 
@@ -8,7 +8,7 @@ export interface SearchRequestMessage {
   recipe: Recipe;
   player: Player;
   actionHistory: Action[];
-  maxSteps: number;
+  craftOptions: CraftOptions;
   searchOptions: SearchOptions;
 }
 
@@ -29,11 +29,11 @@ onmessage = (event) => {
       "recipe",
       "player",
       "actionHistory",
-      "maxSteps",
+      "craftOptions",
       "searchOptions",
     ]);
 
-    const { recipe, player, actionHistory, maxSteps, searchOptions } = message;
+    const { recipe, player, actionHistory, craftOptions, searchOptions } = message;
 
     init().then(() => {
       const actions: Action[] = [...actionHistory];
@@ -47,14 +47,7 @@ onmessage = (event) => {
         } satisfies SearchResponseMessage);
       };
 
-      searchStepwise(
-        recipe,
-        player,
-        actionHistory,
-        Math.min(maxSteps, 255),
-        searchOptions,
-        callback
-      );
+      searchStepwise(recipe, player, actionHistory, craftOptions, searchOptions, callback);
 
       postMessage({
         type: "search-complete",

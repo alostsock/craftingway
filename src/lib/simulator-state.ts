@@ -161,7 +161,11 @@ class _SimulatorState {
       recipe: toJS(RecipeState.recipe),
       player: toJS(PlayerState.playerWithBonuses),
       actionHistory: toJS(this.actions),
-      maxSteps: this.config.maxSteps,
+      craftOptions: {
+        max_steps: this.config.maxSteps,
+        starting_quality: RecipeState.startingQuality,
+        quality_target: RecipeState.targetQuality ?? undefined,
+      },
       searchOptions: {
         iterations: this.config.iterations,
         max_score_weighting_constant: this.config.maxScoreWeightingConstant,

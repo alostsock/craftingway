@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import type { Recipe } from "crafty";
+import { unpack } from "msgpackr/unpack";
 
 import { PlayerState } from "./player-state";
 import { fuzzysearch } from "./fuzzysearch";
@@ -33,8 +34,8 @@ class _RecipeState {
   }
 
   async loadRecipes() {
-    const response = await fetch("recipes.json");
-    const rawRecipeData: RawRecipeData[] = await response.json();
+    const response = await fetch("recipes.msgpack");
+    const rawRecipeData: RawRecipeData[] = unpack(new Uint8Array(await response.arrayBuffer()));
     this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
   }
 

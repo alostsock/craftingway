@@ -20,6 +20,7 @@
     "downshift": "^6.1.12",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
+    "msgpackr": "^1.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "twemoji": "^14.0.2"

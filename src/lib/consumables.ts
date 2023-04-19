@@ -1,5 +1,7 @@
 import type { Player } from "crafty";
 
+import { fuzzysearch } from "./fuzzysearch";
+
 type ConsumableStatValues = readonly [value: number, max: number, hq_value: number, hq_max: number];
 
 export interface Consumable {
@@ -137,3 +139,23 @@ export const POTION_VARIANTS: readonly ConsumableVariant[] = generateConsumableV
   POTIONS,
   false
 );
+
+export function searchConsumables(
+  consumables: readonly ConsumableVariant[],
+  query: string,
+  limit = 10
+) {
+  query = query.toLowerCase();
+
+  const matches = [];
+  for (const consumable of consumables) {
+    const score = fuzzysearch(query, consumable.name.toLowerCase());
+    if (!score) continue;
+    matches.push({ consumable, score });
+  }
+
+  return matches
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((result) => result.consumable);
+}

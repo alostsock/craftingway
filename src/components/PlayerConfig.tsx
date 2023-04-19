@@ -1,7 +1,7 @@
 import "./PlayerConfig.scss";
 
 import clsx from "clsx";
-import { useSelect } from "downshift";
+import { useCombobox } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
@@ -11,7 +11,12 @@ import NumberInput from "./NumberInput";
 import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
-import { ConsumableVariant, FOOD_VARIANTS, POTION_VARIANTS } from "../lib/consumables";
+import {
+  ConsumableVariant,
+  FOOD_VARIANTS,
+  POTION_VARIANTS,
+  searchConsumables,
+} from "../lib/consumables";
 import { useAutorun } from "../lib/hooks";
 
 type StatConfig = {
@@ -160,48 +165,54 @@ const PlayerConfig = observer(function PlayerConfig() {
 export default PlayerConfig;
 
 const FoodSelect = observer(function FoodSelect() {
-  const items = FOOD_VARIANTS.slice();
-
-  const select = useSelect({
-    items,
-    onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
-  });
+  const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>([]);
 
   const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
+  const cb = useCombobox({
+    inputValue: query,
+    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    items: queryResults,
+    itemToString: (item) => item?.name || "",
+    onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
+    defaultHighlightedIndex: 0,
+  });
 
-  useAutorun(
-    () => (PlayerState.config.food ? select.selectItem(PlayerState.config.food) : select.reset()),
-    []
-  );
+  useAutorun(() => {
+    setQueryResults(query.length > 0 ? searchConsumables(FOOD_VARIANTS, query, 10) : []);
+  }, [query]);
 
   return (
     <React.Fragment>
-      <label
-        className={clsx({ "food-active": PlayerState.config.food })}
-        {...select.getLabelProps()}
-      >
+      <label className={clsx({ "food-active": PlayerState.config.food })} {...cb.getLabelProps()}>
         Food
       </label>
 
-      <div className="dropdown-list">
-        <button
+      <div className="dropdown-list" {...cb.getComboboxProps()}>
+        <input
           className={clsx("trigger", { placeholder: !PlayerState.config.food })}
-          {...select.getToggleButtonProps()}
-        >
-          {PlayerState.config.food?.name ?? "No food"}
-        </button>
+          placeholder="No food"
+          spellCheck="false"
+          {...cb.getInputProps()}
+        />
 
-        <ul {...select.getMenuProps()}>
-          {select.isOpen &&
-            items.map((item, index) => (
-              <li key={index} {...select.getItemProps({ item, index })}>
+        <ul {...cb.getMenuProps()}>
+          {cb.isOpen &&
+            queryResults.map((item, index) => (
+              <li key={index} {...cb.getItemProps({ item, index })}>
                 <ConsumableVariantDisplay variant={item} />
               </li>
             ))}
         </ul>
 
         {PlayerState.config.food && (
-          <button className="link reset" onClick={() => setFood(null)}>
+          <button
+            className="link reset"
+            onClick={() => {
+              setFood(null);
+              cb.reset();
+            }}
+          >
             <Emoji emoji="❌" />
           </button>
         )}
@@ -211,49 +222,57 @@ const FoodSelect = observer(function FoodSelect() {
 });
 
 const PotionSelect = observer(function PotionSelect() {
-  const items = POTION_VARIANTS.slice();
-
-  const select = useSelect({
-    items,
-    onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
-  });
+  const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>([]);
 
   const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
+  const cb = useCombobox({
+    inputValue: query,
+    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    items: queryResults,
+    itemToString: (item) => item?.name || "",
+    onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
+    defaultHighlightedIndex: 0,
+  });
 
-  useAutorun(
-    () =>
-      PlayerState.config.potion ? select.selectItem(PlayerState.config.potion) : select.reset(),
-    []
-  );
+  useAutorun(() => {
+    setQueryResults(query.length > 0 ? searchConsumables(POTION_VARIANTS, query, 10) : []);
+  }, [query]);
 
   return (
     <React.Fragment>
       <label
         className={clsx({ "potion-active": PlayerState.config.potion })}
-        {...select.getLabelProps()}
+        {...cb.getLabelProps()}
       >
         Potion
       </label>
 
-      <div className="dropdown-list">
-        <button
+      <div className="dropdown-list" {...cb.getComboboxProps()}>
+        <input
           className={clsx("trigger", { placeholder: !PlayerState.config.potion })}
-          {...select.getToggleButtonProps()}
-        >
-          {PlayerState.config.potion?.name ?? "No potion"}
-        </button>
+          placeholder="No potion"
+          spellCheck="false"
+          {...cb.getInputProps()}
+        />
 
-        <ul {...select.getMenuProps()}>
-          {select.isOpen &&
-            items.map((item, index) => (
-              <li key={index} {...select.getItemProps({ item, index })}>
+        <ul {...cb.getMenuProps()}>
+          {cb.isOpen &&
+            queryResults.map((item, index) => (
+              <li key={index} {...cb.getItemProps({ item, index })}>
                 <ConsumableVariantDisplay variant={item} />
               </li>
             ))}
         </ul>
 
         {PlayerState.config.potion && (
-          <button className="link reset" onClick={() => setPotion(null)}>
+          <button
+            className="link reset"
+            onClick={() => {
+              setPotion(null);
+              cb.reset();
+            }}
+          >
             <Emoji emoji="❌" />
           </button>
         )}

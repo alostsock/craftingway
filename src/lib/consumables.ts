@@ -142,10 +142,13 @@ export const POTION_VARIANTS: readonly ConsumableVariant[] = generateConsumableV
 
 export function searchConsumables(
   consumables: readonly ConsumableVariant[],
-  query: string,
-  limit = 10
-) {
+  query: string
+): ConsumableVariant[] {
   query = query.toLowerCase();
+
+  if (!query) {
+    return consumables.slice();
+  }
 
   const matches = [];
   for (const consumable of consumables) {
@@ -154,8 +157,5 @@ export function searchConsumables(
     matches.push({ consumable, score });
   }
 
-  return matches
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((result) => result.consumable);
+  return matches.sort((a, b) => b.score - a.score).map((result) => result.consumable);
 }

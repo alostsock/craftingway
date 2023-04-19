@@ -166,7 +166,7 @@ export default PlayerConfig;
 
 const FoodSelect = observer(function FoodSelect() {
   const [query, setQuery] = useState("");
-  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>([]);
+  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(FOOD_VARIANTS.slice());
 
   const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
   const cb = useCombobox({
@@ -179,7 +179,7 @@ const FoodSelect = observer(function FoodSelect() {
   });
 
   useAutorun(() => {
-    setQueryResults(query.length > 0 ? searchConsumables(FOOD_VARIANTS, query, 10) : []);
+    setQueryResults(searchConsumables(FOOD_VARIANTS, query));
   }, [query]);
 
   return (
@@ -193,6 +193,7 @@ const FoodSelect = observer(function FoodSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.food })}
           placeholder="No food"
           spellCheck="false"
+          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
         />
 
@@ -223,7 +224,7 @@ const FoodSelect = observer(function FoodSelect() {
 
 const PotionSelect = observer(function PotionSelect() {
   const [query, setQuery] = useState("");
-  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>([]);
+  const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(POTION_VARIANTS.slice());
 
   const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
   const cb = useCombobox({
@@ -236,7 +237,7 @@ const PotionSelect = observer(function PotionSelect() {
   });
 
   useAutorun(() => {
-    setQueryResults(query.length > 0 ? searchConsumables(POTION_VARIANTS, query, 10) : []);
+    setQueryResults(searchConsumables(POTION_VARIANTS, query));
   }, [query]);
 
   return (
@@ -253,6 +254,7 @@ const PotionSelect = observer(function PotionSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.potion })}
           placeholder="No potion"
           spellCheck="false"
+          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
         />
 

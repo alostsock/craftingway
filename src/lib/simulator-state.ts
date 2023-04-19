@@ -96,6 +96,9 @@ class _SimulatorState {
       item_level: 0,
       equip_level: 0,
       is_specialist: false,
+      can_hq: true,
+      material_quality: 100,
+      ingredients: [],
       ...recipe,
     }));
   }

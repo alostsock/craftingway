@@ -6,6 +6,13 @@ import { PlayerState } from "./player-state";
 import { fuzzysearch } from "./fuzzysearch";
 import { Job } from "./jobs";
 
+export interface Ingredient {
+  name: string;
+  amount: number;
+  item_level: number;
+  can_hq: boolean;
+}
+
 interface RawRecipeData extends Recipe {
   name: string;
   jobs: Job[];
@@ -14,6 +21,9 @@ interface RawRecipeData extends Recipe {
   equip_level: number;
   stars: number;
   is_specialist: boolean;
+  can_hq: boolean;
+  material_quality: number;
+  ingredients: Ingredient[];
 }
 
 export interface RecipeData extends Omit<RawRecipeData, "jobs"> {
@@ -24,6 +34,9 @@ class _RecipeState {
   loaded = false;
   recipes: RecipeData[] = [];
   recipe: RecipeData | null = null;
+
+  startingQuality = 0;
+  targetQuality: number | null = null;
 
   constructor() {
     makeAutoObservable(this, {

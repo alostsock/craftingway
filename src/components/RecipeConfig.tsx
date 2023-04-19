@@ -55,8 +55,12 @@ const RecipeConfig = observer(function RecipeConfig() {
               Lv.{RecipeState.recipe.job_level} {stars(RecipeState.recipe.stars)}
             </div>
             <div className="info">Recipe Lv.{RecipeState.recipe.recipe_level}</div>
-            <div className="info">Equip Lv.{RecipeState.recipe.equip_level}</div>
-            <div className="info">Item Lv.{RecipeState.recipe.item_level}</div>
+            {RecipeState.recipe.equip_level > 0 && (
+              <div className="info">Equip Lv.{RecipeState.recipe.equip_level}</div>
+            )}
+            {RecipeState.recipe.item_level > 0 && (
+              <div className="info">Item Lv.{RecipeState.recipe.item_level}</div>
+            )}
           </div>
 
           {otherJobs.length > 0 && (

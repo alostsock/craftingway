@@ -167,10 +167,17 @@ const FoodSelect = observer(function FoodSelect() {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(FOOD_VARIANTS.slice());
 
-  const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
+  const setFood = action((food: ConsumableVariant | null) => {
+    PlayerState.setConfig({ food });
+  });
+
+  const reset = () => {
+    setFood(null);
+    setQuery("");
+  };
+
   const cb = useCombobox({
-    defaultInputValue: query,
-    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    inputValue: query,
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
@@ -178,6 +185,9 @@ const FoodSelect = observer(function FoodSelect() {
   });
 
   useAutorun(() => {
+    if (PlayerState.config.food) {
+      setQuery(PlayerState.config.food.name);
+    }
     setQueryResults(searchConsumables(FOOD_VARIANTS, query));
   }, [query]);
 
@@ -192,8 +202,9 @@ const FoodSelect = observer(function FoodSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.food })}
           placeholder="No food"
           spellCheck="false"
-          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
+          onChange={(event) => setQuery(event.target.value)}
+          onFocus={() => cb.openMenu()}
         />
 
         <ul {...cb.getMenuProps()}>
@@ -206,13 +217,7 @@ const FoodSelect = observer(function FoodSelect() {
         </ul>
 
         {PlayerState.config.food && (
-          <button
-            className="link reset"
-            onClick={() => {
-              setFood(null);
-              cb.reset();
-            }}
-          >
+          <button className="link reset" onClick={reset}>
             <Emoji emoji="❌" />
           </button>
         )}
@@ -225,10 +230,17 @@ const PotionSelect = observer(function PotionSelect() {
   const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(POTION_VARIANTS.slice());
 
-  const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
+  const setPotion = action((potion: ConsumableVariant | null) => {
+    PlayerState.setConfig({ potion });
+  });
+
+  const reset = () => {
+    setPotion(null);
+    setQuery("");
+  };
+
   const cb = useCombobox({
-    defaultInputValue: query,
-    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    inputValue: query,
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
@@ -236,6 +248,9 @@ const PotionSelect = observer(function PotionSelect() {
   });
 
   useAutorun(() => {
+    if (PlayerState.config.potion) {
+      setQuery(PlayerState.config.potion.name);
+    }
     setQueryResults(searchConsumables(POTION_VARIANTS, query));
   }, [query]);
 
@@ -253,8 +268,9 @@ const PotionSelect = observer(function PotionSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.potion })}
           placeholder="No potion"
           spellCheck="false"
-          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
+          onChange={(event) => setQuery(event.target.value)}
+          onFocus={() => cb.openMenu()}
         />
 
         <ul {...cb.getMenuProps()}>
@@ -267,13 +283,7 @@ const PotionSelect = observer(function PotionSelect() {
         </ul>
 
         {PlayerState.config.potion && (
-          <button
-            className="link reset"
-            onClick={() => {
-              setPotion(null);
-              cb.reset();
-            }}
-          >
+          <button className="link reset" onClick={reset}>
             <Emoji emoji="❌" />
           </button>
         )}

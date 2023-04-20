@@ -53,7 +53,12 @@ class _SimulatorState {
         const { craft_state, completion_reason } = simulateActions(
           RecipeState.recipe,
           PlayerState.playerWithBonuses,
-          this.actions
+          this.actions,
+          {
+            max_steps: 50,
+            starting_quality: RecipeState.startingQuality,
+            quality_target: undefined,
+          }
         );
         this.craftState = craft_state;
         this.completionReason = completion_reason || null;

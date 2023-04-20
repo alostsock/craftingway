@@ -1,0 +1,24 @@
+.IngredientConfig {
+  display: flex;
+  flex-direction: column;
+  gap: var(--05);
+
+  .materials-prompt {
+    color: var(--text-muted-color);
+  }
+
+  .ingredients {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, min-content);
+    gap: var(--05);
+    align-items: center;
+
+    input {
+      width: 2.5em;
+    }
+
+    .total {
+      text-align: end;
+    }
+  }
+}

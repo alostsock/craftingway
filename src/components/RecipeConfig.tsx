@@ -7,6 +7,7 @@ import React, { useState } from "react";
 
 import ModeSelector from "./ModeSelector";
 import Highlighter from "./Highlighter";
+import IngredientConfig from "./IngredientConfig";
 import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
@@ -65,7 +66,7 @@ const RecipeConfig = observer(function RecipeConfig() {
 
           {otherJobs.length > 0 && (
             <div className="prompt">
-              Craft as{" "}
+              Craftable as{" "}
               {otherJobs.map((job) => (
                 <button key={job} className="link" onClick={action(() => (PlayerState.job = job))}>
                   {job}
@@ -73,6 +74,8 @@ const RecipeConfig = observer(function RecipeConfig() {
               ))}
             </div>
           )}
+
+          <IngredientConfig />
 
           <button
             className="link prompt"

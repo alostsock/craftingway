@@ -34,19 +34,13 @@ const STATS = [
 ] as const satisfies readonly StatConfig[];
 
 const PlayerConfig = observer(function PlayerConfig() {
-  type CopyMenuState = "inactive" | "copying" | "copying-all";
+  type CopyMenuState = "inactive" | "copying-all";
   const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
 
   const handleJobChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
     // TODO: add warning dialog before clearing recipe
     PlayerState.job = event.target.value as Job;
     RecipeState.recipe = null;
-    setCopyMenuState("inactive");
-  });
-
-  const handleConfigCopy = action((job: Job) => {
-    const config = PlayerState.configByJob[job];
-    PlayerState.setConfig(config);
     setCopyMenuState("inactive");
   });
 
@@ -123,7 +117,7 @@ const PlayerConfig = observer(function PlayerConfig() {
       <div className="prompts">
         {copyMenuState !== "copying-all" ? (
           <button className="link" onClick={() => setCopyMenuState("copying-all")}>
-            Copy stats <strong>to</strong> all other jobs
+            Copy stats to all other jobs
           </button>
         ) : (
           <div>
@@ -131,27 +125,6 @@ const PlayerConfig = observer(function PlayerConfig() {
             <button className="link" onClick={handleConfigCopyAll}>
               OK
             </button>{" "}
-            <button className="link" onClick={() => setCopyMenuState("inactive")}>
-              Cancel
-            </button>
-          </div>
-        )}
-
-        {copyMenuState !== "copying" ? (
-          <button className="link" onClick={() => setCopyMenuState("copying")}>
-            Copy stats <strong>from</strong> another job
-          </button>
-        ) : (
-          <div>
-            Copy stats from…
-            {JOBS.map((job) => (
-              <React.Fragment key={job}>
-                {" "}
-                <button key={job} className="link" onClick={() => handleConfigCopy(job)}>
-                  {job}
-                </button>
-              </React.Fragment>
-            ))}{" "}
             <button className="link" onClick={() => setCopyMenuState("inactive")}>
               Cancel
             </button>

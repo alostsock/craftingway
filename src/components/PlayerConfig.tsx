@@ -38,6 +38,7 @@ const PlayerConfig = observer(function PlayerConfig() {
   const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
 
   const handleJobChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO: add warning dialog before clearing recipe
     PlayerState.job = event.target.value as Job;
     RecipeState.recipe = null;
     setCopyMenuState("inactive");
@@ -169,7 +170,7 @@ const FoodSelect = observer(function FoodSelect() {
 
   const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
   const cb = useCombobox({
-    defaultInputValue: query,
+    inputValue: query,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
     items: queryResults,
     itemToString: (item) => item?.name || "",
@@ -227,7 +228,7 @@ const PotionSelect = observer(function PotionSelect() {
 
   const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
   const cb = useCombobox({
-    defaultInputValue: query,
+    inputValue: query,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
     items: queryResults,
     itemToString: (item) => item?.name || "",

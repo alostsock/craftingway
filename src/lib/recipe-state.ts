@@ -36,7 +36,6 @@ class _RecipeState {
   recipe: RecipeData | null = null;
 
   startingQuality = 0;
-  targetQuality: number | null = null;
 
   constructor() {
     makeAutoObservable(this, {

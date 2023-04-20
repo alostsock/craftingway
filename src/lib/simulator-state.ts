@@ -169,7 +169,7 @@ class _SimulatorState {
       craftOptions: {
         max_steps: this.config.maxSteps,
         starting_quality: RecipeState.startingQuality,
-        quality_target: RecipeState.targetQuality ?? undefined,
+        quality_target: RecipeState.recipe.can_hq ? RecipeState.recipe.quality : 0,
       },
       searchOptions: {
         iterations: this.config.iterations,

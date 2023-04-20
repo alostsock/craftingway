@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useCombobox } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Emoji from "./Emoji";
 import NumberInput from "./NumberInput";
@@ -17,7 +17,7 @@ import {
   POTION_VARIANTS,
   searchConsumables,
 } from "../lib/consumables";
-import { useAutorun } from "../lib/hooks";
+import { useReaction } from "../lib/hooks";
 
 type StatConfig = {
   name: string;
@@ -164,22 +164,34 @@ const PlayerConfig = observer(function PlayerConfig() {
 export default PlayerConfig;
 
 const FoodSelect = observer(function FoodSelect() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(PlayerState.config.food?.name ?? "");
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(FOOD_VARIANTS.slice());
 
-  const setFood = action((food: ConsumableVariant | null) => PlayerState.setConfig({ food }));
+  useReaction(
+    () => PlayerState.config.food,
+    (food) => setQuery(food?.name ?? "")
+  );
+
+  useEffect(() => {
+    setQueryResults(searchConsumables(FOOD_VARIANTS, query));
+  }, [query]);
+
+  const setFood = action((food: ConsumableVariant | null) => {
+    PlayerState.setConfig({ food });
+  });
+
   const cb = useCombobox({
-    defaultInputValue: query,
-    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    inputValue: query,
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
     defaultHighlightedIndex: 0,
   });
 
-  useAutorun(() => {
-    setQueryResults(searchConsumables(FOOD_VARIANTS, query));
-  }, [query]);
+  const reset = () => {
+    setFood(null);
+    cb.reset();
+  };
 
   return (
     <React.Fragment>
@@ -192,8 +204,9 @@ const FoodSelect = observer(function FoodSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.food })}
           placeholder="No food"
           spellCheck="false"
-          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => cb.openMenu()}
         />
 
         <ul {...cb.getMenuProps()}>
@@ -206,13 +219,7 @@ const FoodSelect = observer(function FoodSelect() {
         </ul>
 
         {PlayerState.config.food && (
-          <button
-            className="link reset"
-            onClick={() => {
-              setFood(null);
-              cb.reset();
-            }}
-          >
+          <button className="link reset" onClick={reset}>
             <Emoji emoji="❌" />
           </button>
         )}
@@ -222,22 +229,34 @@ const FoodSelect = observer(function FoodSelect() {
 });
 
 const PotionSelect = observer(function PotionSelect() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(PlayerState.config.potion?.name ?? "");
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(POTION_VARIANTS.slice());
 
-  const setPotion = action((potion: ConsumableVariant | null) => PlayerState.setConfig({ potion }));
+  useReaction(
+    () => PlayerState.config.potion,
+    (potion) => setQuery(potion?.name ?? "")
+  );
+
+  useEffect(() => {
+    setQueryResults(searchConsumables(POTION_VARIANTS, query));
+  }, [query]);
+
+  const setPotion = action((potion: ConsumableVariant | null) => {
+    PlayerState.setConfig({ potion });
+  });
+
   const cb = useCombobox({
-    defaultInputValue: query,
-    onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
+    inputValue: query,
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
     defaultHighlightedIndex: 0,
   });
 
-  useAutorun(() => {
-    setQueryResults(searchConsumables(POTION_VARIANTS, query));
-  }, [query]);
+  const reset = () => {
+    setPotion(null);
+    cb.reset();
+  };
 
   return (
     <React.Fragment>
@@ -253,8 +272,9 @@ const PotionSelect = observer(function PotionSelect() {
           className={clsx("trigger", { placeholder: !PlayerState.config.potion })}
           placeholder="No potion"
           spellCheck="false"
-          onFocus={() => cb.openMenu()}
           {...cb.getInputProps()}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => cb.openMenu()}
         />
 
         <ul {...cb.getMenuProps()}>
@@ -267,13 +287,7 @@ const PotionSelect = observer(function PotionSelect() {
         </ul>
 
         {PlayerState.config.potion && (
-          <button
-            className="link reset"
-            onClick={() => {
-              setPotion(null);
-              cb.reset();
-            }}
-          >
+          <button className="link reset" onClick={reset}>
             <Emoji emoji="❌" />
           </button>
         )}

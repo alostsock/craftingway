@@ -21,7 +21,7 @@ const IngredientConfig = observer(function IngredientConfig() {
   if (
     !RecipeState.recipe ||
     !RecipeState.recipe.can_hq ||
-    RecipeState.recipe.ingredients.length === 0
+    RecipeState.recipe.ingredients.filter((i) => i.can_hq).length === 0
   ) {
     return null;
   }
@@ -46,12 +46,12 @@ const IngredientConfig = observer(function IngredientConfig() {
 
   return (
     <div className="IngredientConfig">
-      <div className="prompt">HQ materials:</div>
+      <div className="prompt">Quality materials:</div>
 
       <div className="ingredients">
         {RecipeState.recipe.ingredients
           .slice()
-          .sort((i) => -i.item_level)
+          .sort((a, b) => b.item_level - a.item_level)
           .filter((i) => i.can_hq)
           .map(({ name, amount, item_level }) => (
             <QuantityInput

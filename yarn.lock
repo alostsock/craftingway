@@ -687,6 +687,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@jsonurl/jsonurl@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@jsonurl/jsonurl/-/jsonurl-1.1.7.tgz#aab830c95fa402f09512ed1b5128be2c60c67a21"
+  integrity sha512-H3aKlfSjVoUhhNRO+2HDtVNq8UT0TV8kyAgJ29bETLdjU6Xz3s1PMzbRkfcAdwuwzHjiisabHpJoP8p+hju6bA==
+
 "@lukeed/ms@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@lukeed/ms/-/ms-2.0.1.tgz#3c2bbc258affd9cc0e0cc7828477383c73afa6ee"

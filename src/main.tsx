@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { configure } from "mobx";
 
 import App from "./components/App";
+import { setupURL } from "./lib/url";
 
 configure({
   enforceActions: "observed",
@@ -17,3 +18,5 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <App />
   </React.StrictMode>
 );
+
+setupURL();

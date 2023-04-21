@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import type { Recipe } from "crafty";
 import { unpack } from "msgpackr/unpack";
 
@@ -50,6 +50,7 @@ class _RecipeState {
     const response = await fetch("recipes.msgpack");
     const rawRecipeData: RawRecipeData[] = unpack(new Uint8Array(await response.arrayBuffer()));
     this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
+    runInAction(() => (this.loaded = true));
   }
 
   get recipe() {

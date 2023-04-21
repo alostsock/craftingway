@@ -16,6 +16,8 @@ import { runInAction } from "mobx";
 //   "Signature Buuz Cookware Materials"
 
 const IngredientConfig = observer(function IngredientConfig() {
+  // a mapping of item name to the number of item levels it contributes,
+  // based on the amount selected
   const [qualityMapping, setQualityMapping] = useState<Record<string, number>>({});
 
   if (

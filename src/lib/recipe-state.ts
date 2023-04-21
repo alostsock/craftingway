@@ -33,7 +33,8 @@ export interface RecipeData extends Omit<RawRecipeData, "jobs"> {
 class _RecipeState {
   loaded = false;
   recipes: RecipeData[] = [];
-  recipe: RecipeData | null = null;
+
+  private _recipe: RecipeData | null = null;
 
   startingQuality = 0;
 
@@ -49,6 +50,15 @@ class _RecipeState {
     const response = await fetch("recipes.msgpack");
     const rawRecipeData: RawRecipeData[] = unpack(new Uint8Array(await response.arrayBuffer()));
     this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
+  }
+
+  get recipe() {
+    return this._recipe;
+  }
+
+  set recipe(recipe: RecipeData | null) {
+    this.startingQuality = 0;
+    this._recipe = recipe;
   }
 
   searchRecipes(query: string, limit = 10) {

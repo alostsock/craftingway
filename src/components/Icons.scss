@@ -56,8 +56,8 @@
   // ensure numerals in the top right don't get cut off
   // prettier-ignore
   &.with-stacks img {
-      clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 65% 12%, 80% 10%, 91% 9%, 93% 20%, 91% 31%, 92% 81%);
-    }
+    clip-path: polygon(8% 81%, 9% 20%, 50% 5%, 65% 12%, 80% 10%, 91% 9%, 93% 20%, 91% 31%, 92% 81%);
+  }
 
   &.with-expiry {
     position: relative;

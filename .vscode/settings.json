@@ -1,5 +1,6 @@
 {
   "editor.rulers": [100],
+  "eslint.packageManager": "yarn",
   "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },

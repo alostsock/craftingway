@@ -3,16 +3,13 @@ import "./RotationControls.scss";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
+import CopyButton from "./CopyButton";
 import { SimulatorState } from "../lib/simulator-state";
 
 const RotationControls = observer(function RotationControls() {
   const reset = action(() => {
     SimulatorState.actions = [];
   });
-
-  const copyToClipboard = (lines: string[]) => {
-    navigator.clipboard.writeText(lines.join("\r\n"));
-  };
 
   if (SimulatorState.actions.length === 0) {
     return <div className="RotationControls" />;
@@ -27,13 +24,13 @@ const RotationControls = observer(function RotationControls() {
       </button>
 
       {SimulatorState.macroTextParts.length === 1 && (
-        <button
+        <CopyButton
           className="link"
-          onClick={() => copyToClipboard(SimulatorState.macroTextParts[0])}
+          copyText={SimulatorState.macroTextParts[0].join("\r\n")}
           disabled={isSearching}
         >
           Copy macro
-        </button>
+        </CopyButton>
       )}
 
       {SimulatorState.macroTextParts.length > 1 && (
@@ -41,14 +38,14 @@ const RotationControls = observer(function RotationControls() {
           <span>Copy macro:</span>
 
           {SimulatorState.macroTextParts.map((macroTextLines, index) => (
-            <button
+            <CopyButton
               key={index}
               className="link"
-              onClick={() => copyToClipboard(macroTextLines)}
+              copyText={macroTextLines.join("\r\n")}
               disabled={isSearching}
             >
               Part {index + 1}
-            </button>
+            </CopyButton>
           ))}
         </div>
       )}

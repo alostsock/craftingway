@@ -8,7 +8,7 @@ interface Props extends React.ComponentPropsWithoutRef<"button"> {
   copyText: string;
 }
 
-export default function CopyButton({ copyText, className, children, ...props }: Props) {
+export default function CopyButton({ copyText, className, disabled, children, ...props }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
@@ -22,9 +22,14 @@ export default function CopyButton({ copyText, className, children, ...props }: 
   }, [isCopied]);
 
   return (
-    <Tooltip.Root open={isCopied ? true : undefined}>
+    <Tooltip.Root open={disabled ? false : isCopied ? true : undefined}>
       <Tooltip.Trigger asChild>
-        <button className={clsx("CopyButton", className)} onClick={handleCopy} {...props}>
+        <button
+          className={clsx("CopyButton", className)}
+          disabled={disabled}
+          onClick={handleCopy}
+          {...props}
+        >
           {children}
         </button>
       </Tooltip.Trigger>

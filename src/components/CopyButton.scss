@@ -1,0 +1,12 @@
+.CopyButton {
+  &.content {
+    font-size: var(--small-font-size);
+    background: var(--grey-800);
+    padding: 0.25em 0.5em;
+    margin-bottom: 0.5em;
+    border-radius: var(--border-radius);
+
+    display: flex;
+    gap: 0.5em;
+  }
+}

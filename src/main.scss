@@ -79,6 +79,16 @@ button {
       color: var(--link-hover-color);
     }
   }
+
+  &.text {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    background: none;
+    padding: 0;
+    outline: 0;
+    margin: 0;
+  }
 }
 
 input {

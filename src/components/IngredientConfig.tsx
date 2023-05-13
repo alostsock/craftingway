@@ -6,6 +6,7 @@ import { RecipeState } from "../lib/recipe-state";
 import React, { useEffect, useState } from "react";
 import NumberInput from "./NumberInput";
 import { runInAction } from "mobx";
+import CopyButton from "./CopyButton";
 
 // UI considerations, as of patch 6.3
 // - there can be as many as 6 HQ'able ingredients, "Twinsilk Coat of Casting"
@@ -88,7 +89,11 @@ function QuantityInput({ label, total, onChange }: QuantityInputProps) {
 
   return (
     <React.Fragment>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        <CopyButton className="text" copyText={label}>
+          {label}
+        </CopyButton>
+      </label>
       <NumberInput
         id={id}
         numberValue={quantity}

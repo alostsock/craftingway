@@ -14,6 +14,7 @@ import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
 import { sanitizeIntFromText, stars } from "../lib/utils";
+import CopyButton from "./CopyButton";
 
 type Mode = "name" | "level";
 
@@ -51,7 +52,11 @@ const RecipeConfig = observer(function RecipeConfig() {
       {RecipeState.recipe && (
         <React.Fragment>
           <div className="recipe-display">
-            <h2 className="name">{RecipeState.recipe.name}</h2>
+            <h2 className="name">
+              <CopyButton className="text" copyText={RecipeState.recipe.name}>
+                {RecipeState.recipe.name}
+              </CopyButton>
+            </h2>
             <div className="info">
               Lv.{RecipeState.recipe.job_level} {stars(RecipeState.recipe.stars)}
             </div>

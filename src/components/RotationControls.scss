@@ -16,4 +16,8 @@
     display: flex;
     gap: 0.5em;
   }
+
+  .CopyButton.content {
+    background: var(--grey-700);
+  }
 }

@@ -169,7 +169,12 @@ const FoodSelect = observer(function FoodSelect() {
 
   useReaction(
     () => PlayerState.config.food,
-    (food) => setQuery(food?.name ?? "")
+    (food) => {
+      setQuery(food?.name ?? "");
+      if (food) {
+        cb.selectItem(food);
+      }
+    }
   );
 
   useEffect(() => {
@@ -234,7 +239,12 @@ const PotionSelect = observer(function PotionSelect() {
 
   useReaction(
     () => PlayerState.config.potion,
-    (potion) => setQuery(potion?.name ?? "")
+    (potion) => {
+      setQuery(potion?.name ?? "");
+      if (potion) {
+        cb.selectItem(potion);
+      }
+    }
   );
 
   useEffect(() => {

@@ -9,7 +9,8 @@ import App from "./components/App";
 configure({
   enforceActions: "observed",
   computedRequiresReaction: true,
-  observableRequiresReaction: true,
+  // This causes some false positives to appear, but can be useful for debugging
+  // observableRequiresReaction: true,
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

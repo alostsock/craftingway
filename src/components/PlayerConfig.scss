@@ -84,7 +84,7 @@
       max-width: 28em;
 
       display: grid;
-      gap: var(--1) var(--05);
+      gap: var(--05);
       grid-template-columns: min-content 1fr;
 
       label.food-active {

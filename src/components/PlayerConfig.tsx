@@ -83,7 +83,11 @@ const PlayerConfig = observer(function PlayerConfig() {
                 onChange={handleJobChange}
                 autoComplete="off"
               />
-              <label htmlFor={id} tabIndex={-1}>
+              <label
+                className={clsx({ specialist: PlayerState.configByJob[job].isSpecialist })}
+                htmlFor={id}
+                tabIndex={-1}
+              >
                 <Emoji emoji={JOB_EMOJIS[job]} />
                 {job}
               </label>

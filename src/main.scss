@@ -116,6 +116,11 @@ input {
     appearance: textfield;
     text-align: right;
   }
+
+  &[type="checkbox"] {
+    height: 1.25em;
+    width: 1.25em;
+  }
 }
 
 section {

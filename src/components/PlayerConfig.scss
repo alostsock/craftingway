@@ -42,16 +42,12 @@
       flex-direction: column;
     }
 
-    .stats,
-    .consumables {
+    .stats {
+      width: min-content;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: var(--05);
-    }
-
-    .stats {
-      width: min-content;
 
       #input-job_level {
         width: 2.5em;
@@ -59,7 +55,7 @@
         margin-right: 6.5em;
       }
 
-      input {
+      input:not([type="checkbox"]) {
         width: 4em;
       }
 
@@ -74,6 +70,16 @@
 
         .potion {
           color: var(--potion-color);
+        }
+      }
+
+      .specialist {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+
+        input {
+          margin-right: 9.25em;
         }
       }
     }

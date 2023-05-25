@@ -55,6 +55,16 @@ const PlayerConfig = observer(function PlayerConfig() {
     setCopyMenuState("inactive");
   });
 
+  const toggleSpecialist = action(() => {
+    const { craftsmanship, control, cp, isSpecialist } = PlayerState.config;
+    PlayerState.setConfig({
+      craftsmanship: isSpecialist ? craftsmanship - 20 : craftsmanship + 20,
+      control: isSpecialist ? control - 20 : control + 20,
+      cp: isSpecialist ? cp - 15 : cp + 15,
+      isSpecialist: !isSpecialist,
+    });
+  });
+
   return (
     <section className="PlayerConfig">
       <fieldset className="jobs">
@@ -111,6 +121,16 @@ const PlayerConfig = observer(function PlayerConfig() {
               </div>
             );
           })}
+
+          <div className="specialist">
+            <label htmlFor="specialist-toggle">Specialist?</label>
+            <input
+              id="specialist-toggle"
+              type="checkbox"
+              checked={!!PlayerState.config.isSpecialist}
+              onChange={toggleSpecialist}
+            />
+          </div>
         </div>
 
         <div className="consumables">

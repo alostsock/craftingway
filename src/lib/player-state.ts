@@ -8,6 +8,7 @@ import { calculateConsumableBonus, ConsumableBonus, ConsumableVariant } from "./
 interface JobConfig extends Player {
   food: ConsumableVariant | null;
   potion: ConsumableVariant | null;
+  isSpecialist?: boolean;
 }
 
 const DEFAULT_CONFIG: JobConfig = {
@@ -76,6 +77,9 @@ class _PlayerState {
     for (const consumable of ["food", "potion"] as const) {
       const variant = attrs[consumable];
       if (variant !== undefined) this.configByJob[this.job][consumable] = variant;
+    }
+    if ("isSpecialist" in attrs) {
+      this.configByJob[this.job].isSpecialist = attrs.isSpecialist;
     }
   }
 

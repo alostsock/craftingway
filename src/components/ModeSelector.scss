@@ -24,8 +24,12 @@
 
     input + label {
       cursor: pointer;
-      opacity: 0.45;
+      opacity: 0.5;
       transition: opacity 70ms;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
 
     input:checked + label {

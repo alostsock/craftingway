@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 
 import Emoji from "./Emoji";
 import NumberInput from "./NumberInput";
+import Highlighter from "./Highlighter";
 import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
@@ -242,7 +243,7 @@ const FoodSelect = observer(function FoodSelect() {
           {cb.isOpen &&
             queryResults.map((item, index) => (
               <li key={index} {...cb.getItemProps({ item, index })}>
-                <ConsumableVariantDisplay variant={item} />
+                <ConsumableVariantDisplay variant={item} query={query} />
               </li>
             ))}
         </ul>
@@ -315,7 +316,7 @@ const PotionSelect = observer(function PotionSelect() {
           {cb.isOpen &&
             queryResults.map((item, index) => (
               <li key={index} {...cb.getItemProps({ item, index })}>
-                <ConsumableVariantDisplay variant={item} />
+                <ConsumableVariantDisplay variant={item} query={query} />
               </li>
             ))}
         </ul>
@@ -332,12 +333,16 @@ const PotionSelect = observer(function PotionSelect() {
 
 const ConsumableVariantDisplay = observer(function ConsumableVariantDisplay({
   variant: { name, craftsmanship, control, cp },
+  query,
 }: {
   variant: ConsumableVariant;
+  query: string;
 }) {
   return (
     <React.Fragment>
-      <div className="name">{name}</div>
+      <div className="name">
+        <Highlighter needle={query} haystack={name} />
+      </div>
       <div className="details">
         {craftsmanship && (
           <div>

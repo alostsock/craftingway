@@ -139,8 +139,25 @@ const PlayerConfig = observer(function PlayerConfig() {
         </div>
 
         <div className="consumables">
-          <FoodSelect />
-          <PotionSelect />
+          {PlayerState.config.food ? (
+            <SelectedConsumable
+              label="Food"
+              name={PlayerState.config.food.name}
+              onReset={action(() => PlayerState.setConfig({ food: null }))}
+            />
+          ) : (
+            <FoodSelect />
+          )}
+
+          {PlayerState.config.potion ? (
+            <SelectedConsumable
+              label="Potion"
+              name={PlayerState.config.potion.name}
+              onReset={action(() => PlayerState.setConfig({ potion: null }))}
+            />
+          ) : (
+            <PotionSelect />
+          )}
         </div>
       </div>
 
@@ -188,6 +205,29 @@ const PlayerConfig = observer(function PlayerConfig() {
 
 export default PlayerConfig;
 
+function SelectedConsumable({
+  label,
+  name,
+  onReset,
+}: {
+  label: string;
+  name: string;
+  onReset: () => void;
+}) {
+  return (
+    <React.Fragment>
+      <label className={`${label.toLowerCase()}-active`}>{label}</label>
+
+      <div className="selected-consumable">
+        {name}
+        <button className="reset" onClick={onReset}>
+          <Emoji emoji="❌" />
+        </button>
+      </div>
+    </React.Fragment>
+  );
+}
+
 const FoodSelect = observer(function FoodSelect() {
   const [query, setQuery] = useState(PlayerState.config.food?.name ?? "");
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(FOOD_VARIANTS.slice());
@@ -218,11 +258,6 @@ const FoodSelect = observer(function FoodSelect() {
     defaultHighlightedIndex: 0,
   });
 
-  const reset = () => {
-    setFood(null);
-    cb.reset();
-  };
-
   return (
     <React.Fragment>
       <label className={clsx({ "food-active": PlayerState.config.food })} {...cb.getLabelProps()}>
@@ -243,16 +278,10 @@ const FoodSelect = observer(function FoodSelect() {
           {cb.isOpen &&
             queryResults.map((item, index) => (
               <li key={index} {...cb.getItemProps({ item, index })}>
-                <ConsumableVariantDisplay variant={item} query={query} />
+                <ConsumableListItem variant={item} query={query} />
               </li>
             ))}
         </ul>
-
-        {PlayerState.config.food && (
-          <button className="link reset" onClick={reset}>
-            <Emoji emoji="❌" />
-          </button>
-        )}
       </div>
     </React.Fragment>
   );
@@ -288,11 +317,6 @@ const PotionSelect = observer(function PotionSelect() {
     defaultHighlightedIndex: 0,
   });
 
-  const reset = () => {
-    setPotion(null);
-    cb.reset();
-  };
-
   return (
     <React.Fragment>
       <label
@@ -316,22 +340,16 @@ const PotionSelect = observer(function PotionSelect() {
           {cb.isOpen &&
             queryResults.map((item, index) => (
               <li key={index} {...cb.getItemProps({ item, index })}>
-                <ConsumableVariantDisplay variant={item} query={query} />
+                <ConsumableListItem variant={item} query={query} />
               </li>
             ))}
         </ul>
-
-        {PlayerState.config.potion && (
-          <button className="link reset" onClick={reset}>
-            <Emoji emoji="❌" />
-          </button>
-        )}
       </div>
     </React.Fragment>
   );
 });
 
-const ConsumableVariantDisplay = observer(function ConsumableVariantDisplay({
+const ConsumableListItem = observer(function ConsumableListItem({
   variant: { name, craftsmanship, control, cp },
   query,
 }: {

@@ -121,17 +121,17 @@ const MEALS: Consumable[] = [
 
 // prettier-ignore
 const POTIONS: Consumable[] = [
-  { item_level: 527, name: "Competent Draught", craftsmanship: [2, 40, 3, 50], control: null, cp: null },
-  { item_level: 540, name: "Commanding Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
-  { item_level: 554, name: "Cunning Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },
+  { item_level: 527, name: "Competent Craftsman's Draught", craftsmanship: [2, 40, 3, 50], control: null, cp: null },
+  { item_level: 540, name: "Commanding Craftsman's Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
+  { item_level: 554, name: "Cunning Craftsman's Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },
 
-  { item_level: 406, name: "Competent Syrup", craftsmanship: [2, 33, 3, 41], control: null, cp: null },
-  { item_level: 412, name: "Commanding Syrup", craftsmanship: null, control: [2, 34, 3, 42], cp: null },
-  { item_level: 412, name: "Cunning Syrup", craftsmanship: null, control: null, cp: [5, 13, 6, 16] },
+  { item_level: 406, name: "Competent Craftsman's Syrup", craftsmanship: [2, 33, 3, 41], control: null, cp: null },
+  { item_level: 412, name: "Commanding Craftsman's Syrup", craftsmanship: null, control: [2, 34, 3, 42], cp: null },
+  { item_level: 412, name: "Cunning Craftsman's Syrup", craftsmanship: null, control: null, cp: [5, 13, 6, 16] },
 
-  { item_level: 273, name: "Competent Tea", craftsmanship: [2, 20, 3, 25], control: null, cp: null },
-  { item_level: 276, name: "Commanding Tea", craftsmanship: null, control: [2, 20, 3, 25], cp: null },
-  { item_level: 282, name: "Cunning Tea", craftsmanship: null, control: null, cp: [4, 10, 5, 13] },
+  { item_level: 273, name: "Competent Craftsman's Tea", craftsmanship: [2, 20, 3, 25], control: null, cp: null },
+  { item_level: 276, name: "Commanding Craftsman's Tea", craftsmanship: null, control: [2, 20, 3, 25], cp: null },
+  { item_level: 282, name: "Cunning Craftsman's Tea", craftsmanship: null, control: null, cp: [4, 10, 5, 13] },
 ];
 
 export const FOOD_VARIANTS: readonly ConsumableVariant[] = generateConsumableVariants(MEALS, true);

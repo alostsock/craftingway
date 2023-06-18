@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface Props extends React.ComponentPropsWithoutRef<"input"> {
   isFloatingPoint?: boolean;
@@ -21,16 +21,18 @@ export default function NumberInput({
   onNumberChange,
   ...props
 }: Props) {
+  const previousNumberValue = useRef<number>(numberValue);
   const [textValue, setTextValue] = useState<string>(numberValue.toString());
   const [isFinal, setIsFinal] = useState(false);
 
   useEffect(() => {
-    if (parseFloat(textValue) === numberValue) return;
+    if (previousNumberValue.current !== numberValue) {
+      // the number was changed outside of this component; update this component
+      previousNumberValue.current = numberValue;
+      setTextValue(numberValue.toString());
+      return;
+    }
 
-    setTextValue(numberValue.toString() || "0");
-  }, [numberValue]);
-
-  useEffect(() => {
     if (textValue.length > 0 && !textValue.endsWith(".")) {
       const value = isFloatingPoint ? parseFloat(textValue) : parseInt(textValue);
 
@@ -45,10 +47,11 @@ export default function NumberInput({
       } else if (max && value > max) {
         if (isFinal) setTextValue(max.toString());
       } else {
+        previousNumberValue.current = value;
         onNumberChange(value);
       }
     }
-  }, [textValue, isFinal]);
+  }, [textValue, numberValue, isFloatingPoint, min, max, isFinal, onNumberChange]);
 
   const resolveTextValue = () => {
     if (textValue.trim().length === 0) {

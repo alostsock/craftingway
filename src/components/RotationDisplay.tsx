@@ -302,10 +302,6 @@ function useSimulatorResult(rotationData: RotationData | string | null): Simulat
       return;
     }
 
-    if (result) {
-      return;
-    }
-
     const foodBonus = calculateConsumableBonus(rotationData.player, rotationData.food);
     const potionBonus = calculateConsumableBonus(rotationData.player, rotationData.potion);
 

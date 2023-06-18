@@ -73,6 +73,8 @@ class _RecipeState {
       .filter((i) => i.can_hq)
       .reduce((sum, { amount, item_level }) => sum + amount * item_level, 0);
 
+    if (totalPossibleItemLevels === 0) return 0;
+
     const itemLevels = Object.entries(ingredients).reduce((prev, [itemName, quantity]) => {
       const itemLevel = recipe.ingredients.find((i) => i.name === itemName)?.item_level ?? 0;
       return prev + itemLevel * quantity;

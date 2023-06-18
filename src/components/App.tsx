@@ -2,7 +2,7 @@ import "./App.scss";
 
 import { observer } from "mobx-react-lite";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
-import { Route, Switch } from "wouter";
+import { Redirect, Route, Switch } from "wouter";
 
 import Header from "./Header";
 import PlayerConfig from "./PlayerConfig";
@@ -18,12 +18,16 @@ const App = observer(function App() {
         <Header />
 
         <Switch>
-          <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
-
-          <Route>
+          <Route path="/">
             <PlayerConfig />
             <RecipeConfig />
             <CraftStateDisplay />
+          </Route>
+
+          <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
+
+          <Route>
+            <Redirect to="/" />
           </Route>
         </Switch>
 

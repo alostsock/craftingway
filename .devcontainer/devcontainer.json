@@ -4,6 +4,7 @@
   "build": {
     "dockerfile": "../Containerfile"
   },
+  "remoteUser": "node",
   "forwardPorts": [
     5173, // frontend server
     8080 // backend server

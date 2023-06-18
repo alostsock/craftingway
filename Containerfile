@@ -1,9 +1,5 @@
 FROM docker.io/library/node:18
 
-WORKDIR /root
-RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --quiet
-ENV PATH=/root/.cargo/bin:$PATH
-
 # https://github.com/diesel-rs/diesel/blob/c5a9f7b7fc9d1ebd7b02aa49fd861e78933906c4/.github/workflows/ci.yml#L75-L109
 RUN curl -sSf -o sqlite-autoconf-3380200.tar.gz https://sqlite.org/2022/sqlite-autoconf-3380200.tar.gz \
     && tar zxf sqlite-autoconf-3380200.tar.gz
@@ -35,6 +31,11 @@ RUN CFLAGS="$CFLAGS -O2 -fno-strict-aliasing \
       --libdir=/usr/lib/x86_64-linux-gnu \
       --libexecdir=/usr/lib/x86_64-linux-gnu/sqlite3
 RUN make && make install
+
+USER node
+WORKDIR /home/node
+RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --quiet
+ENV PATH=/home/node/.cargo/bin:$PATH
 
 RUN cargo install wasm-pack cargo-watch
 RUN cargo install sqlx-cli --no-default-features --features native-tls,sqlite

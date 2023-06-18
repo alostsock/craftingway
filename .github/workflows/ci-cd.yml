@@ -42,7 +42,6 @@ jobs:
 
       - name: Build submodule
         if: steps.submodule-cache.outputs.cache-hit != 'true'
-        # TODO: Update wasm-pack when install bug is fixed
         run: |
           yarn global add wasm-pack@0.11.1
           yarn run build-submodule

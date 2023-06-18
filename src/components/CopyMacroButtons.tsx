@@ -1,9 +1,9 @@
 import "./CopyMacroButtons.scss";
 
-import type { CraftState, Action } from "crafty";
+import type { Action, CraftState } from "crafty";
 
-import CopyButton from "./CopyButton";
 import { SimulatorState } from "../lib/simulator-state";
+import CopyButton from "./CopyButton";
 
 interface Props {
   craftState: CraftState;

@@ -1,23 +1,23 @@
 import "./RotationDisplay.scss";
 
-import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import { observer } from "mobx-react-lite";
 import type { Action, Player, SimulatorResult } from "crafty";
+import { observer } from "mobx-react-lite";
+import React, { useEffect, useState } from "react";
 
-import RecipeDisplay from "./RecipeDisplay";
-import CraftStepDisplay from "./CraftStepDisplay";
-import Progress from "./Progress";
-import { ActionIcon } from "./Icons";
-import CopyMacroButtons from "./CopyMacroButtons";
-import { SimulatorState } from "../lib/simulator-state";
-import { RecipeState, RecipeData } from "../lib/recipe-state";
+import { ACTIONS } from "../lib/actions";
 import { getRotation } from "../lib/api";
 import { ConsumableVariant, FOOD_VARIANTS, POTION_VARIANTS } from "../lib/consumables";
-import { ACTIONS } from "../lib/actions";
-import { useReaction } from "../lib/hooks";
 import { calculateConsumableBonus } from "../lib/consumables";
+import { useReaction } from "../lib/hooks";
 import type { Job } from "../lib/jobs";
+import { RecipeData, RecipeState } from "../lib/recipe-state";
+import { SimulatorState } from "../lib/simulator-state";
+import CopyMacroButtons from "./CopyMacroButtons";
+import CraftStepDisplay from "./CraftStepDisplay";
+import { ActionIcon } from "./Icons";
+import Progress from "./Progress";
+import RecipeDisplay from "./RecipeDisplay";
 
 const STATS = [
   { name: "job_level", label: "Level" },

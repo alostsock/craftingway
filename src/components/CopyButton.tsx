@@ -1,8 +1,10 @@
 import "./CopyButton.scss";
-import React, { useEffect, useState } from "react";
-import clsx from "clsx";
-import Emoji from "./Emoji";
+
 import * as Tooltip from "@radix-ui/react-tooltip";
+import clsx from "clsx";
+import React, { useEffect, useState } from "react";
+
+import Emoji from "./Emoji";
 
 interface Props extends React.ComponentPropsWithoutRef<"button"> {
   copyText: string | (() => Promise<string | undefined>);

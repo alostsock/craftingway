@@ -1,11 +1,10 @@
-import { PointerSensor, KeyboardSensor, TouchSensor, KeyboardCode } from "@dnd-kit/core";
-
 import type {
   Activators,
-  PointerSensorOptions,
   KeyboardSensorOptions,
+  PointerSensorOptions,
   TouchSensorOptions,
 } from "@dnd-kit/core";
+import { KeyboardCode, KeyboardSensor, PointerSensor, TouchSensor } from "@dnd-kit/core";
 
 // Patches for the default dnd-kit sensors to ignore events from elements with a
 // "data-no-dnd" attribute.

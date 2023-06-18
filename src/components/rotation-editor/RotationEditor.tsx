@@ -1,35 +1,33 @@
 import "./RotationEditor.scss";
 
-import { useState } from "react";
-import { observer } from "mobx-react-lite";
-import { DndContext, useSensor, useSensors, closestCorners, DragOverlay } from "@dnd-kit/core";
+import type { DragEndEvent, DragMoveEvent, DragStartEvent } from "@dnd-kit/core";
+import { closestCorners, DndContext, DragOverlay, useSensor, useSensors } from "@dnd-kit/core";
 import {
   arrayMove,
   rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-
-import type { DragStartEvent, DragMoveEvent, DragEndEvent } from "@dnd-kit/core";
 import type { Action } from "crafty";
-
-import MutableList from "./MutableList";
-import PersistentList from "./PersistentList";
-import { actionFromId, idFromAction } from "./converters";
-import { ActionIcon } from "../Icons";
-import RotationControls from "../RotationControls";
-import SearchPanel from "../SearchPanel";
-import ModeSelector from "../ModeSelector";
-import Emoji from "../Emoji";
+import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 import {
-  CustomPointerSensor,
   CustomKeyboardSensor,
+  CustomPointerSensor,
   CustomTouchSensor,
 } from "../../lib/custom-dnd-sensors";
+import { useReaction } from "../../lib/hooks";
 import { SimulatorState } from "../../lib/simulator-state";
 import Storage from "../../lib/storage";
-import { useReaction } from "../../lib/hooks";
+import Emoji from "../Emoji";
+import { ActionIcon } from "../Icons";
+import ModeSelector from "../ModeSelector";
+import RotationControls from "../RotationControls";
+import SearchPanel from "../SearchPanel";
+import { actionFromId, idFromAction } from "./converters";
+import MutableList from "./MutableList";
+import PersistentList from "./PersistentList";
 
 const MODE_STORE = "rotationEditorMode";
 

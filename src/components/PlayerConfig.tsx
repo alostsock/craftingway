@@ -6,12 +6,6 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 
-import Emoji from "./Emoji";
-import NumberInput from "./NumberInput";
-import Highlighter from "./Highlighter";
-import { Job, JOBS, JOB_EMOJIS } from "../lib/jobs";
-import { PlayerState } from "../lib/player-state";
-import { RecipeState } from "../lib/recipe-state";
 import {
   ConsumableVariant,
   FOOD_VARIANTS,
@@ -19,6 +13,12 @@ import {
   searchConsumables,
 } from "../lib/consumables";
 import { useReaction } from "../lib/hooks";
+import { Job, JOB_EMOJIS, JOBS } from "../lib/jobs";
+import { PlayerState } from "../lib/player-state";
+import { RecipeState } from "../lib/recipe-state";
+import Emoji from "./Emoji";
+import Highlighter from "./Highlighter";
+import NumberInput from "./NumberInput";
 
 type StatConfig = {
   name: string;

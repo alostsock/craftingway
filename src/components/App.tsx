@@ -1,14 +1,14 @@
 import "./App.scss";
 
-import { observer } from "mobx-react-lite";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
+import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "wouter";
 
+import CraftStateDisplay from "./CraftStateDisplay";
+import Footer from "./Footer";
 import Header from "./Header";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
-import CraftStateDisplay from "./CraftStateDisplay";
-import Footer from "./Footer";
 import RotationDisplay from "./RotationDisplay";
 
 const App = observer(function App() {

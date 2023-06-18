@@ -1,11 +1,11 @@
 import "./Icons.scss";
 
 import clsx from "clsx";
-import { observer } from "mobx-react-lite";
 import type { Action } from "crafty";
+import { observer } from "mobx-react-lite";
 
-import { actionIcons, statusIcons } from "../lib/assets";
 import { ACTION_LOOKUP } from "../lib/actions";
+import { actionIcons, statusIcons } from "../lib/assets";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
 

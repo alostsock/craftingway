@@ -1,5 +1,5 @@
-import { observer } from "mobx-react-lite";
 import { useDroppable } from "@dnd-kit/core";
+import { observer } from "mobx-react-lite";
 
 import SortableIcon from "./SortableIcon";
 

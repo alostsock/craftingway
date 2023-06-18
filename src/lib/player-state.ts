@@ -1,9 +1,9 @@
-import { autorun, makeAutoObservable } from "mobx";
 import type { Player } from "crafty";
+import { autorun, makeAutoObservable } from "mobx";
 
+import { calculateConsumableBonus, ConsumableBonus, ConsumableVariant } from "./consumables";
 import { Job, JOBS } from "./jobs";
 import Storage from "./storage";
-import { calculateConsumableBonus, ConsumableBonus, ConsumableVariant } from "./consumables";
 
 interface JobConfig extends Player {
   food: ConsumableVariant | null;

@@ -1,9 +1,9 @@
 import "./RecipeDisplay.scss";
 
-import CopyButton from "./CopyButton";
-import { stars } from "../lib/utils";
+import { Job, JOB_EMOJIS } from "../lib/jobs";
 import type { RecipeData } from "../lib/recipe-state";
-import { JOB_EMOJIS, Job } from "../lib/jobs";
+import { stars } from "../lib/utils";
+import CopyButton from "./CopyButton";
 import Emoji from "./Emoji";
 
 interface Props {

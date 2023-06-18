@@ -1,12 +1,12 @@
+import { useSortable } from "@dnd-kit/sortable";
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import { useSortable } from "@dnd-kit/sortable";
 
-import { actionFromId } from "./converters";
-import { ActionIcon } from "../Icons";
-import Emoji from "../Emoji";
 import { ACTION_LOOKUP } from "../../lib/actions";
 import { SimulatorState } from "../../lib/simulator-state";
+import Emoji from "../Emoji";
+import { ActionIcon } from "../Icons";
+import { actionFromId } from "./converters";
 
 type SortableIconProps = {
   id: string;

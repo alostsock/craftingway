@@ -5,16 +5,16 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
-import ModeSelector from "./ModeSelector";
-import Highlighter from "./Highlighter";
-import IngredientConfig from "./IngredientConfig";
-import RecipeDisplay from "./RecipeDisplay";
 import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
-import { RecipeState, RecipeData } from "../lib/recipe-state";
+import { RecipeData, RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
 import { sanitizeIntFromText, stars } from "../lib/utils";
+import Highlighter from "./Highlighter";
+import IngredientConfig from "./IngredientConfig";
+import ModeSelector from "./ModeSelector";
+import RecipeDisplay from "./RecipeDisplay";
 
 type Mode = "name" | "level";
 

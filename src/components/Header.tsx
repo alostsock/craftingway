@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import "./Header.scss";
 
+import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import { Link, useLocation } from "wouter";
 

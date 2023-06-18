@@ -1,4 +1,5 @@
 import type { Action } from "crafty";
+
 import { groupBy } from "./utils";
 
 type ActionGroup = "Starter" | "Durability" | "Progress" | "Quality" | "Buff" | "Other";

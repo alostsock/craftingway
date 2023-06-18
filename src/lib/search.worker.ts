@@ -1,5 +1,5 @@
+import type { Action, CraftOptions, Player, Recipe, SearchOptions } from "crafty";
 import init, { searchStepwise } from "crafty";
-import type { Recipe, Player, Action, CraftOptions, SearchOptions } from "crafty";
 
 import { checkAttrs } from "./utils";
 

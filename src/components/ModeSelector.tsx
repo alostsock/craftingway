@@ -2,8 +2,8 @@ import "./ModeSelector.scss";
 
 import React, { useState } from "react";
 
-import EmptyComponent from "./EmptyComponent";
 import { generateId } from "../lib/utils";
+import EmptyComponent from "./EmptyComponent";
 
 type ModeOption<Mode extends string> = {
   mode: Mode;

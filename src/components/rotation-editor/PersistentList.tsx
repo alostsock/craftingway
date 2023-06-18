@@ -1,12 +1,12 @@
-import { observer } from "mobx-react-lite";
 import type { Action } from "crafty";
+import { observer } from "mobx-react-lite";
 
-import DraggableIcon from "./DraggableIcon";
-import { idFromAction } from "./converters";
 import { traitedActions } from "../../lib/actions";
-import { SimulatorState } from "../../lib/simulator-state";
 import { PlayerState } from "../../lib/player-state";
+import { SimulatorState } from "../../lib/simulator-state";
 import { groupBy } from "../../lib/utils";
+import { idFromAction } from "./converters";
+import DraggableIcon from "./DraggableIcon";
 
 type PersistentListProps = {
   onAdd: (action: Action) => void;

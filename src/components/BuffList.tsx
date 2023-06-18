@@ -1,11 +1,11 @@
 import "./BuffList.scss";
 
-import { observer } from "mobx-react-lite";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import { observer } from "mobx-react-lite";
 
-import { StatusIcon } from "./Icons";
-import { SimulatorState } from "../lib/simulator-state";
 import { Buff, BUFF_LOOKUP } from "../lib/buffs";
+import { SimulatorState } from "../lib/simulator-state";
+import { StatusIcon } from "./Icons";
 
 const BuffList = observer(function BuffList() {
   if (!SimulatorState.craftState) return null;

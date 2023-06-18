@@ -1,8 +1,8 @@
 import "./main.scss";
 
+import { configure } from "mobx";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { configure } from "mobx";
 
 import App from "./components/App";
 

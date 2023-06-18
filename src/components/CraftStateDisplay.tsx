@@ -2,12 +2,12 @@ import "./CraftStateDisplay.scss";
 
 import { observer } from "mobx-react-lite";
 
-import CraftStepDisplay from "./CraftStepDisplay";
-import RotationEditor from "./rotation-editor/RotationEditor";
-import BuffList from "./BuffList";
-import Progress from "./Progress";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
+import BuffList from "./BuffList";
+import CraftStepDisplay from "./CraftStepDisplay";
+import Progress from "./Progress";
+import RotationEditor from "./rotation-editor/RotationEditor";
 
 const CraftStateDisplay = observer(function CraftStateDisplay() {
   if (!RecipeState.recipe || !SimulatorState.craftState) return null;

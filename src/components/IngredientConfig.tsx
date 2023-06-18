@@ -1,12 +1,12 @@
 import "./IngredientConfig.scss";
 
-import { observer } from "mobx-react-lite";
 import { action } from "mobx";
+import { observer } from "mobx-react-lite";
 import React from "react";
 
-import NumberInput from "./NumberInput";
-import CopyButton from "./CopyButton";
 import { RecipeState } from "../lib/recipe-state";
+import CopyButton from "./CopyButton";
+import NumberInput from "./NumberInput";
 
 // UI considerations, as of patch 6.3
 // - there can be as many as 6 HQ'able ingredients, "Twinsilk Coat of Casting"

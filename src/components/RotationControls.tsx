@@ -3,12 +3,12 @@ import "./RotationControls.scss";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import CopyButton from "./CopyButton";
-import CopyMacroButtons from "./CopyMacroButtons";
 import { createRotation } from "../lib/api";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
+import CopyButton from "./CopyButton";
+import CopyMacroButtons from "./CopyMacroButtons";
 
 const RotationControls = observer(function RotationControls() {
   const reset = action(() => {

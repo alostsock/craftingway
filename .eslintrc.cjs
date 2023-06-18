@@ -20,11 +20,13 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module,",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "simple-import-sort"],
   rules: {
     "react/no-unescaped-entities": "off",
     "react-hooks/exhaustive-deps": ["warn", { additionalHooks: "useAutorun" }],
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unused-vars": ["error", { args: "none", varsIgnorePattern: "^_" }],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
   },
 };

@@ -1,15 +1,14 @@
+import type { Action, CompletionReason, CraftState, Recipe } from "crafty";
+import init, { generateMacroText, Player, recipesByJobLevel, simulateActions } from "crafty";
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
-import init, { recipesByJobLevel, simulateActions, generateMacroText, Player } from "crafty";
-import type { Recipe, Action, CraftState, CompletionReason } from "crafty";
 
-import { RecipeState, RecipeData } from "./recipe-state";
-import { PlayerState } from "./player-state";
 import { JOBS } from "./jobs";
-import { checkAttrs } from "./utils";
-import Storage from "./storage";
-
-import searchWorkerUrl from "./search.worker?worker&url";
+import { PlayerState } from "./player-state";
+import { RecipeData, RecipeState } from "./recipe-state";
 import type { SearchRequestMessage, SearchResponseMessage } from "./search.worker";
+import searchWorkerUrl from "./search.worker?worker&url";
+import Storage from "./storage";
+import { checkAttrs } from "./utils";
 
 export interface Config {
   maxSteps: number;

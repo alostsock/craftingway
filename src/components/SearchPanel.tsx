@@ -1,13 +1,13 @@
 import "./SearchPanel.scss";
 
-import React, { useState } from "react";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import React, { useState } from "react";
 
-import NumberInput from "./NumberInput";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
+import NumberInput from "./NumberInput";
 
 const CONFIG_VISIBILITY_STORE = "showConfig";
 

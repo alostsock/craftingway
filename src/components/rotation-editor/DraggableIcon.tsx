@@ -1,11 +1,11 @@
-import clsx from "clsx";
 import { useDraggable } from "@dnd-kit/core";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import clsx from "clsx";
 import type { Action } from "crafty";
 
-import { TOOLTIP_TEXT } from "../TooltipText";
-import { ActionIcon } from "../Icons";
 import { ACTION_LOOKUP } from "../../lib/actions";
+import { ActionIcon } from "../Icons";
+import { TOOLTIP_TEXT } from "../TooltipText";
 
 interface Props {
   id: string;

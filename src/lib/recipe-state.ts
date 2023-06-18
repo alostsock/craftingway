@@ -1,10 +1,10 @@
-import { makeAutoObservable, runInAction } from "mobx";
 import type { Recipe } from "crafty";
+import { makeAutoObservable, runInAction } from "mobx";
 import { unpack } from "msgpackr/unpack";
 
-import { PlayerState } from "./player-state";
 import { fuzzysearch } from "./fuzzysearch";
 import { Job } from "./jobs";
+import { PlayerState } from "./player-state";
 
 export interface Ingredient {
   name: string;

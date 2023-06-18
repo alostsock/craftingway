@@ -72,14 +72,14 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy backend
-        if: ${{ github.ref_name == 'main' && steps.paths-filter.outputs.backend == 'true' }}
+        if: ${{ github.ref_name == 'main' && (github.event_name == 'workflow_dispatch' || steps.paths-filter.outputs.backend == 'true') }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         working-directory: ./server
         run: flyctl deploy --remote-only
 
       - name: Deploy backend (preview)
-        if: ${{ github.ref_name == 'preview' && steps.paths-filter.outputs.backend == 'true' }}
+        if: ${{ github.ref_name == 'preview' && (github.event_name == 'workflow_dispatch' || steps.paths-filter.outputs.backend == 'true') }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_PREVIEW_API_TOKEN }}
         working-directory: ./server

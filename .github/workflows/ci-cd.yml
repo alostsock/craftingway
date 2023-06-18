@@ -90,10 +90,9 @@ jobs:
         env:
           AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          VITE_REVISION: ${{ env.GITHUB_SHA }}
           VITE_API_URL: ${{ secrets.API_URL }}
         run: |
-          yarn run build
+          VITE_REVISION=$GITHUB_SHA yarn run build
           yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
             --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"
 
@@ -102,9 +101,8 @@ jobs:
         env:
           AUTH_TOKEN: ${{ secrets.NETLIFY_PREVIEW_AUTH_TOKEN }}
           SITE_ID: ${{ secrets.NETLIFY_PREVIEW_SITE_ID }}
-          VITE_REVISION: ${{ env.GITHUB_SHA }}
           VITE_API_URL: ${{ secrets.PREVIEW_API_URL }}
         run: |
-          yarn run build
+          VITE_REVISION=$GITHUB_SHA yarn run build
           yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
             --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"

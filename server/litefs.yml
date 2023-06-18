@@ -1,0 +1,36 @@
+# https://fly.io/docs/litefs/config/
+
+fuse:
+  dir: "/litefs"
+
+data:
+  dir: "/var/lib/litefs"
+
+skip-sync: false
+
+exit-on-error: false
+
+http:
+  addr: ":20202"
+
+proxy:
+  addr: ":8080"
+  target: "localhost:8081"
+  db: "sqlite.db"
+  passthrough: []
+
+lease:
+  type: "consul"
+  advertise-url: "http://${HOSTNAME}.vm.${FLY_APP_NAME}.internal:20202"
+  candidate: ${FLY_REGION == PRIMARY_REGION}
+  promote: true
+
+  consul:
+    url: "${FLY_CONSUL_URL}"
+    key: "litefs/${FLY_APP_NAME}"
+
+exec:
+  - cmd: "/app/server migrate"
+    if-candidate: true
+
+  - cmd: "/app/server serve --port 8081"

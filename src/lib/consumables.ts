@@ -56,8 +56,10 @@ function generateConsumableVariants(
 
 export function calculateConsumableBonus(
   player: Player,
-  variant: ConsumableVariant
+  variant: ConsumableVariant | null
 ): ConsumableBonus {
+  if (!variant) return { craftsmanship: 0, control: 0, cp: 0 };
+
   const bonus = (stat: number, values: ConsumableVariantStatValues | null) => {
     if (!values) return 0;
     return Math.min(Math.floor((stat * values[0]) / 100), values[1]);

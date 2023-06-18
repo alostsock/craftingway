@@ -30,7 +30,7 @@ export const ActionIcon = observer(function ActionIcon({ name, step, showCp }: A
     cp = 18;
   }
 
-  const url = `icon/action/${label}`;
+  const url = `/icon/action/${label}`;
 
   return (
     <div className="ActionIcon">
@@ -55,7 +55,7 @@ export const StatusIcon = observer(({ name, stacks, expiry }: StatusIconProps) =
     name = nameWithStacks;
   }
 
-  const url = `icon/status/${name}`;
+  const url = `/icon/status/${name}`;
 
   return (
     <div className={clsx("StatusIcon", stacks && "with-stacks", expiry && "with-expiry")}>

@@ -5,15 +5,24 @@ import Emoji from "./Emoji";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
 interface Props extends React.ComponentPropsWithoutRef<"button"> {
-  copyText: string;
+  copyText: string | (() => Promise<string | undefined>);
 }
 
 export default function CopyButton({ copyText, className, disabled, children, ...props }: Props) {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(copyText);
-    setIsCopied(true);
+    if (typeof copyText === "string") {
+      navigator.clipboard.writeText(copyText);
+      setIsCopied(true);
+    } else {
+      copyText().then((text) => {
+        if (text) {
+          navigator.clipboard.writeText(text);
+          setIsCopied(true);
+        }
+      });
+    }
   };
 
   useEffect(() => {

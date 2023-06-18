@@ -37,10 +37,9 @@ const SearchPanel = observer(function SearchPanel() {
       </button>
 
       <p>
-        We'll attempt to find a decent rotation by exploring lots of possible actions and outcomes.
-        This rotation probably won't be perfect, but it should be good enough to get you started. If
-        you already have ideas about which actions to use first, you can add them from the "Craft
-        manually" tab.
+        We'll attempt to find a rotation by exploring lots of possible actions and outcomes. It
+        won't be perfect, but it should be good enough to get you started. If you already know which
+        actions to use first, you can add them from the "Craft manually" tab.
       </p>
 
       <button className="link" onClick={toggleConfig} disabled={isSearching}>

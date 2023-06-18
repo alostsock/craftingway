@@ -1,0 +1,12 @@
+.CopyMacroButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  font-size: var(--small-font-size);
+
+  * {
+    color: var(--text-muted-color);
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+}

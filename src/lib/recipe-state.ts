@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import type { Recipe } from "crafty";
 import { unpack } from "msgpackr/unpack";
 
@@ -36,7 +36,7 @@ class _RecipeState {
 
   private _recipe: RecipeData | null = null;
 
-  startingQuality = 0;
+  hq_ingredients: Record<string, number> = {};
 
   constructor() {
     makeAutoObservable(this, {
@@ -47,9 +47,10 @@ class _RecipeState {
   }
 
   async loadRecipes() {
-    const response = await fetch("recipes.msgpack");
+    const response = await fetch("/recipes.msgpack");
     const rawRecipeData: RawRecipeData[] = unpack(new Uint8Array(await response.arrayBuffer()));
     this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
+    runInAction(() => (this.loaded = true));
   }
 
   get recipe() {
@@ -57,8 +58,29 @@ class _RecipeState {
   }
 
   set recipe(recipe: RecipeData | null) {
-    this.startingQuality = 0;
+    this.hq_ingredients = {};
     this._recipe = recipe;
+  }
+
+  get startingQuality(): number {
+    return this._recipe ? this.calculateStartingQuality(this._recipe, this.hq_ingredients) : 0;
+  }
+
+  calculateStartingQuality(recipe: RecipeData, ingredients: Record<string, number>): number {
+    const totalPossibleQuality = recipe.quality * (recipe.material_quality / 100);
+
+    const totalPossibleItemLevels = recipe.ingredients
+      .filter((i) => i.can_hq)
+      .reduce((sum, { amount, item_level }) => sum + amount * item_level, 0);
+
+    const itemLevels = Object.entries(ingredients).reduce((prev, [itemName, quantity]) => {
+      const itemLevel = recipe.ingredients.find((i) => i.name === itemName)?.item_level ?? 0;
+      return prev + itemLevel * quantity;
+    }, 0);
+
+    const quality = totalPossibleQuality * (itemLevels / totalPossibleItemLevels);
+
+    return Math.floor(quality);
   }
 
   searchRecipes(query: string, limit = 10) {

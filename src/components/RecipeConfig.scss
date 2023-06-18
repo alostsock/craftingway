@@ -31,25 +31,6 @@
     width: 2.5em;
   }
 
-  .recipe-display {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    gap: 0 1.5em; // roughly 3 spaces
-
-    @media (max-width: 38em) {
-      grid-template-columns: repeat(2, auto);
-    }
-
-    .name {
-      grid-column: 1 / -1;
-      width: 100%;
-    }
-
-    .info {
-      color: var(--text-muted-color);
-    }
-  }
-
   .prompt {
     color: var(--text-muted-color);
     font-size: var(--small-font-size);

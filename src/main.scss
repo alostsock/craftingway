@@ -39,15 +39,16 @@ h3 {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
+
+  @media (max-width: 30em) {
+    font-size: 1.25rem;
+  }
 }
 
 h2 {
-  font-size: 1.5rem;
-}
-
-h3 {
   font-size: 1.25rem;
+  font-weight: 500;
 }
 
 button {
@@ -83,6 +84,7 @@ button {
   &.text {
     font-size: inherit;
     font-weight: inherit;
+    text-align: inherit;
     color: inherit;
     background: none;
     padding: 0;

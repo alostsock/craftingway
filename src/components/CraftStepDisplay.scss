@@ -1,0 +1,22 @@
+.CraftStepDisplay {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 0.5em;
+
+  .step {
+    color: var(--text-muted-color);
+  }
+
+  .status {
+    font-size: 1rem;
+  }
+
+  .success {
+    color: var(--blue-400);
+  }
+
+  .failure {
+    color: var(--yellow-500);
+  }
+}

@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,31 +44,66 @@ jobs:
         if: steps.submodule-cache.outputs.cache-hit != 'true'
         # TODO: Update wasm-pack when install bug is fixed
         run: |
-          yarn global add wasm-pack@0.10.3
+          yarn global add wasm-pack@0.11.1
           yarn run build-submodule
 
       - run: yarn install --frozen-lockfile
 
       - run: yarn run lint
 
-      - run: VITE_REVISION=$GITHUB_SHA yarn run build
+      - uses: dorny/paths-filter@v2
+        id: paths-filter
+        with:
+          filters: |
+            backend:
+              - 'server/**'
 
-      # https://cli.netlify.com/commands/deploy
+      - name: Check server for errors
+        if: ${{ steps.paths-filter.outputs.backend == 'true' }}
+        env:
+          DATABASE_URL: sqlite:sqlite.db?mode=rwc
+        working-directory: ./server
+        run: |
+          cargo install sqlx-cli --no-default-features --features native-tls,sqlite
+          sqlx migrate run
+          cargo check
 
-      - name: Deploy to Netlify
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy backend
+        if: ${{ github.ref_name == 'main' && steps.paths-filter.outputs.backend == 'true' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        working-directory: ./server
+        run: flyctl deploy --remote-only
+
+      - name: Deploy backend (preview)
+        if: ${{ github.ref_name == 'preview' && steps.paths-filter.outputs.backend == 'true' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        working-directory: ./server
+        run: flyctl deploy -a servingway-preview --remote-only
+
+      - name: Deploy frontend
         if: ${{ github.ref_name == 'main' }}
         env:
           AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          VITE_REVISION: ${{ env.GITHUB_SHA }}
+          VITE_API_URL: ${{ secrets.API_URL }}
         run: |
+          yarn run build
           yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
             --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"
 
-      - name: Deploy to Netlify (preview)
+      - name: Deploy frontend (preview)
         if: ${{ github.ref_name == 'preview' }}
         env:
           AUTH_TOKEN: ${{ secrets.NETLIFY_PREVIEW_AUTH_TOKEN }}
           SITE_ID: ${{ secrets.NETLIFY_PREVIEW_SITE_ID }}
+          VITE_REVISION: ${{ env.GITHUB_SHA }}
+          VITE_API_URL: ${{ secrets.PREVIEW_API_URL }}
         run: |
+          yarn run build
           yarn netlify deploy --auth $AUTH_TOKEN --site $SITE_ID --prod --dir dist \
             --message "$GITHUB_REF @ $GITHUB_SHA (attempt #$GITHUB_RUN_ATTEMPT)"

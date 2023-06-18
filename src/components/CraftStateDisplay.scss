@@ -1,27 +1,4 @@
 .CraftStateDisplay {
-  h2 {
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    column-gap: 0.5em;
-
-    .step {
-      color: var(--text-muted-color);
-    }
-
-    .status {
-      font-size: 1.25rem;
-    }
-
-    .success {
-      color: var(--blue-400);
-    }
-
-    .failure {
-      color: var(--yellow-500);
-    }
-  }
-
   .bars {
     display: flex;
     flex-direction: column;

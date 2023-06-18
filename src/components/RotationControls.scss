@@ -12,12 +12,8 @@
     white-space: nowrap;
   }
 
-  .copy-macro-buttons {
-    display: flex;
-    gap: 0.5em;
-  }
-
   .CopyButton.content {
-    background: var(--grey-700);
+    background: var(--grey-900);
+    outline: 1px solid var(--grey-700);
   }
 }

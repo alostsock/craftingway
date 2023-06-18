@@ -103,7 +103,7 @@ const PlayerConfig = observer(function PlayerConfig() {
             const id = `input-${name}`;
 
             return (
-              <div className="field" key={name}>
+              <React.Fragment key={name}>
                 <label htmlFor={id}>{label}</label>
                 <NumberInput
                   id={id}
@@ -113,29 +113,25 @@ const PlayerConfig = observer(function PlayerConfig() {
                   numberValue={PlayerState.config[name]}
                   onNumberChange={(value) => PlayerState.setConfig({ [name]: value })}
                 />
-                {name !== "job_level" && (
-                  <div className="bonuses">
-                    {PlayerState.foodBonus[name] > 0 && (
-                      <span className="food">+{PlayerState.foodBonus[name]}</span>
-                    )}
-                    {PlayerState.potionBonus[name] > 0 && (
-                      <span className="potion">+{PlayerState.potionBonus[name]}</span>
-                    )}
-                  </div>
-                )}
-              </div>
+                <div className="bonuses">
+                  {name !== "job_level" && PlayerState.foodBonus[name] > 0 && (
+                    <span className="food">+{PlayerState.foodBonus[name]}</span>
+                  )}
+                  {name !== "job_level" && PlayerState.potionBonus[name] > 0 && (
+                    <span className="potion">+{PlayerState.potionBonus[name]}</span>
+                  )}
+                </div>
+              </React.Fragment>
             );
           })}
 
-          <div className="specialist">
-            <label htmlFor="specialist-toggle">Specialist?</label>
-            <input
-              id="specialist-toggle"
-              type="checkbox"
-              checked={!!PlayerState.config.isSpecialist}
-              onChange={toggleSpecialist}
-            />
-          </div>
+          <label htmlFor="specialist-toggle">Specialist?</label>
+          <input
+            id="specialist-toggle"
+            type="checkbox"
+            checked={!!PlayerState.config.isSpecialist}
+            onChange={toggleSpecialist}
+          />
         </div>
 
         <div className="consumables">

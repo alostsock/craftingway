@@ -1,6 +1,6 @@
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
-import init, { recipesByJobLevel, simulateActions, generateMacroText } from "crafty";
-import type { Action, CraftState, CompletionReason } from "crafty";
+import init, { recipesByJobLevel, simulateActions, generateMacroText, Player } from "crafty";
+import type { Recipe, Action, CraftState, CompletionReason } from "crafty";
 
 import { RecipeState, RecipeData } from "./recipe-state";
 import { PlayerState } from "./player-state";
@@ -50,15 +50,11 @@ class _SimulatorState {
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
-        const { craft_state, completion_reason } = simulateActions(
+        const { craft_state, completion_reason } = this.simulateActions(
           RecipeState.recipe,
           PlayerState.playerWithBonuses,
           this.actions,
-          {
-            max_steps: 50,
-            starting_quality: RecipeState.startingQuality,
-            quality_target: undefined,
-          }
+          RecipeState.startingQuality
         );
         this.craftState = craft_state;
         this.completionReason = completion_reason || null;
@@ -92,20 +88,32 @@ class _SimulatorState {
     this._completionReason = reason;
   }
 
+  simulateActions(recipe: Recipe, player: Player, actions: Action[], startingQuality: number) {
+    return simulateActions(recipe, player, actions, {
+      max_steps: 50,
+      starting_quality: startingQuality,
+      quality_target: undefined,
+    });
+  }
+
   recipesByLevel(jobLevel: number): RecipeData[] {
     if (!this.loaded) return [];
 
-    return recipesByJobLevel(jobLevel).map((recipe) => ({
-      name: "Generic Recipe",
-      jobs: new Set(JOBS),
-      item_level: 0,
-      equip_level: 0,
-      is_specialist: false,
-      can_hq: true,
-      material_quality: 100,
-      ingredients: [],
-      ...recipe,
-    }));
+    return recipesByJobLevel(jobLevel).map((recipe) => {
+      const key = `${recipe.recipe_level}/${recipe.progress}/${recipe.quality}/${recipe.durability}`;
+
+      return {
+        name: `Generic Recipe (${key})`,
+        jobs: new Set(JOBS),
+        item_level: 0,
+        equip_level: 0,
+        is_specialist: false,
+        can_hq: true,
+        material_quality: 100,
+        ingredients: [],
+        ...recipe,
+      };
+    });
   }
 
   setConfig(attrs: Partial<Config>) {
@@ -181,11 +189,11 @@ class _SimulatorState {
     } satisfies SearchRequestMessage);
   }
 
-  get macroTextParts(): string[][] {
+  createMacroParts(craftState: CraftState, actions: Action[]): string[][] {
     const lineLimit = 15;
 
-    const latestValidStep = SimulatorState.craftState?.step ?? 0;
-    const validActions = this.actions.slice(0, latestValidStep - 1);
+    const latestValidStep = craftState.step;
+    const validActions = actions.slice(0, latestValidStep - 1);
     const lines = generateMacroText(validActions);
 
     const parts: string[][] = [];

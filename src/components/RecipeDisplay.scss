@@ -1,0 +1,26 @@
+.RecipeDisplay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5em;
+
+  .name {
+    grid-column: 1 / -1;
+    width: 100%;
+
+    button {
+      text-align: left;
+    }
+  }
+
+  .info {
+    color: var(--text-muted-color);
+  }
+
+  @media (max-width: 30em) {
+    .rlvl,
+    .elvl,
+    .ilvl {
+      display: none;
+    }
+  }
+}

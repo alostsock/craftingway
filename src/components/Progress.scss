@@ -6,10 +6,16 @@
   label {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 0.5em;
+    white-space: nowrap;
 
     .name {
       color: var(--text-muted-color);
+
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 0.5em;
     }
   }
 
@@ -20,11 +26,35 @@
     // --blue-400, but with 25% opacity
     background-color: hsl(210, 47%, 21%);
 
+    position: relative;
+
     .bar {
       height: 100%;
       border-radius: var(--border-radius);
       background-color: var(--blue-400);
       transition: width 140ms ease-in-out;
+
+      &.initial {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        background-color: var(--blue-100);
+        overflow: hidden;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          height: 100%;
+          width: 3px;
+          background-color: var(--grey-900);
+        }
+      }
     }
   }
 }

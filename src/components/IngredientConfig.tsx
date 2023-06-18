@@ -1,12 +1,12 @@
 import "./IngredientConfig.scss";
 
 import { observer } from "mobx-react-lite";
+import { action } from "mobx";
+import React from "react";
 
-import { RecipeState } from "../lib/recipe-state";
-import React, { useEffect, useState } from "react";
 import NumberInput from "./NumberInput";
-import { runInAction } from "mobx";
 import CopyButton from "./CopyButton";
+import { RecipeState } from "../lib/recipe-state";
 
 // UI considerations, as of patch 6.3
 // - there can be as many as 6 HQ'able ingredients, "Twinsilk Coat of Casting"
@@ -17,10 +17,6 @@ import CopyButton from "./CopyButton";
 //   "Signature Buuz Cookware Materials"
 
 const IngredientConfig = observer(function IngredientConfig() {
-  // a mapping of item name to the number of item levels it contributes,
-  // based on the amount selected
-  const [qualityMapping, setQualityMapping] = useState<Record<string, number>>({});
-
   if (
     !RecipeState.recipe ||
     !RecipeState.recipe.can_hq ||
@@ -29,39 +25,34 @@ const IngredientConfig = observer(function IngredientConfig() {
     return null;
   }
 
-  const totalMaterialQuality =
-    RecipeState.recipe.quality * (RecipeState.recipe.material_quality / 100);
-
-  const totalItemLevel = RecipeState.recipe.ingredients
-    .filter((i) => i.can_hq)
-    .reduce((sum, { amount, item_level }) => sum + amount * item_level, 0);
-
-  const handleChange = (name: string, itemLevels: number) => {
-    const quality = totalMaterialQuality * (itemLevels / totalItemLevel);
-    // don't floor the quality here; do it at the end when summing everything up
-    setQualityMapping((mapping) => ({ ...mapping, [name]: quality }));
-  };
-
-  useEffect(() => {
-    const materialQuality = Object.values(qualityMapping).reduce((prev, curr) => prev + curr, 0);
-    runInAction(() => (RecipeState.startingQuality = Math.floor(materialQuality)));
-  }, [qualityMapping]);
+  const handleChange = action((ingredientName: string, quantity: number) => {
+    if (quantity > 0) {
+      RecipeState.hq_ingredients = {
+        ...RecipeState.hq_ingredients,
+        [ingredientName]: quantity,
+      };
+    } else {
+      const { [ingredientName]: _, ...ingredients } = RecipeState.hq_ingredients;
+      RecipeState.hq_ingredients = ingredients;
+    }
+  });
 
   return (
     <div className="IngredientConfig">
-      <div className="prompt">Quality materials:</div>
+      <div className="prompt">Quality ingredients:</div>
 
       <div className="ingredients">
         {RecipeState.recipe.ingredients
           .slice()
           .sort((a, b) => b.item_level - a.item_level)
           .filter((i) => i.can_hq)
-          .map(({ name, amount, item_level }) => (
+          .map(({ name, amount }) => (
             <QuantityInput
               key={name}
               label={name}
+              quantity={RecipeState.hq_ingredients[name] ?? 0}
               total={amount}
-              onChange={(quantity) => handleChange(name, item_level * quantity)}
+              onChange={(quantity) => handleChange(name, quantity)}
             />
           ))}
       </div>
@@ -73,34 +64,22 @@ export default IngredientConfig;
 
 interface QuantityInputProps {
   label: string;
+  quantity: number;
   total: number;
   onChange: (quantity: number) => void;
 }
 
-function QuantityInput({ label, total, onChange }: QuantityInputProps) {
-  const [quantity, setQuantity] = useState(0);
-
-  const handleChange = (n: number) => {
-    setQuantity(n);
-    onChange(n);
-  };
-
+function QuantityInput({ label, quantity, total, onChange }: QuantityInputProps) {
   const id = `number-input-${label}`;
 
   return (
     <React.Fragment>
       <label htmlFor={id}>
-        <CopyButton className="text" copyText={label}>
+        <CopyButton className="text" copyText={label} tabIndex={-1}>
           {label}
         </CopyButton>
       </label>
-      <NumberInput
-        id={id}
-        numberValue={quantity}
-        min={0}
-        max={total}
-        onNumberChange={handleChange}
-      />
+      <NumberInput id={id} numberValue={quantity} min={0} max={total} onNumberChange={onChange} />
       <span>/</span>
       <span className="total">{total}</span>
     </React.Fragment>

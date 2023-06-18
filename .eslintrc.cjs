@@ -23,9 +23,6 @@ module.exports = {
   rules: {
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { args: "none", destructuredArrayIgnorePattern: "^_" },
-    ],
+    "@typescript-eslint/no-unused-vars": ["error", { args: "none", varsIgnorePattern: "^_" }],
   },
 };

@@ -1,51 +1,32 @@
 import "./Progress.scss";
 
-import type { CraftState } from "crafty";
-import { observer } from "mobx-react-lite";
-
-import { SimulatorState } from "../lib/simulator-state";
-import { RecipeState } from "../lib/recipe-state";
-
 type Props = {
   label: string;
-  value: Extract<keyof CraftState, "progress" | "quality" | "durability" | "cp">;
-  target: keyof CraftState;
+  initialValue?: number;
+  value: number;
+  target: number;
 };
 
-const Progress = observer(function Progress({ label, value, target }: Props) {
-  if (!SimulatorState.craftState || !RecipeState.recipe) return null;
-
-  let valueNum = SimulatorState.craftState[value];
-
-  if (value === "quality") {
-    valueNum = Math.max(RecipeState.startingQuality, valueNum);
-  }
-
-  let targetNum = SimulatorState.craftState[target];
-
-  if (value === "quality" && !RecipeState.recipe.can_hq) {
-    targetNum = 0;
-  }
-
-  if (typeof valueNum != "number" || typeof targetNum != "number") return null;
-
+export default function Progress({ label, initialValue = 0, value, target }: Props) {
   return (
     <div className="Progress">
       <label>
-        <span className="name">{label}</span>
+        <span className="name">
+          <span>{label}</span>
+          <span>{initialValue > 0 && `(Base: ${initialValue})`}</span>
+        </span>
         <span>
-          {valueNum} / {targetNum}
+          {value} / {target}
         </span>
       </label>
 
       <div className="progress">
-        <div className="bar" style={{ width: percentage(valueNum, targetNum) }} />
+        <div className="bar" style={{ width: percentage(value, target) }} />
+        <div className="bar initial" style={{ width: percentage(initialValue, target) }} />
       </div>
     </div>
   );
-});
-
-export default Progress;
+}
 
 function percentage(value: number, target: number): string {
   if (target === 0) return "0";

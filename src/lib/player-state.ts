@@ -60,12 +60,10 @@ class _PlayerState {
   }
 
   get foodBonus(): ConsumableBonus {
-    if (!this.config.food) return { craftsmanship: 0, control: 0, cp: 0 };
     return calculateConsumableBonus(this.config, this.config.food);
   }
 
   get potionBonus(): ConsumableBonus {
-    if (!this.config.potion) return { craftsmanship: 0, control: 0, cp: 0 };
     return calculateConsumableBonus(this.config, this.config.potion);
   }
 

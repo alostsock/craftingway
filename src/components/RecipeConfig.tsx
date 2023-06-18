@@ -8,13 +8,13 @@ import React, { useState } from "react";
 import ModeSelector from "./ModeSelector";
 import Highlighter from "./Highlighter";
 import IngredientConfig from "./IngredientConfig";
+import RecipeDisplay from "./RecipeDisplay";
 import { useAutorun } from "../lib/hooks";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState, RecipeData } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
 import { sanitizeIntFromText, stars } from "../lib/utils";
-import CopyButton from "./CopyButton";
 
 type Mode = "name" | "level";
 
@@ -51,23 +51,7 @@ const RecipeConfig = observer(function RecipeConfig() {
 
       {RecipeState.recipe && (
         <React.Fragment>
-          <div className="recipe-display">
-            <h2 className="name">
-              <CopyButton className="text" copyText={RecipeState.recipe.name}>
-                {RecipeState.recipe.name}
-              </CopyButton>
-            </h2>
-            <div className="info">
-              Lv.{RecipeState.recipe.job_level} {stars(RecipeState.recipe.stars)}
-            </div>
-            <div className="info">Recipe Lv.{RecipeState.recipe.recipe_level}</div>
-            {RecipeState.recipe.equip_level > 0 && (
-              <div className="info">Equip Lv.{RecipeState.recipe.equip_level}</div>
-            )}
-            {RecipeState.recipe.item_level > 0 && (
-              <div className="info">Item Lv.{RecipeState.recipe.item_level}</div>
-            )}
-          </div>
+          <RecipeDisplay recipe={RecipeState.recipe} />
 
           {otherJobs.length > 0 && (
             <div className="prompt">

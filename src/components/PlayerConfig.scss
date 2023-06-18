@@ -47,21 +47,20 @@
     gap: var(--1);
     padding: var(--05) 0;
 
-    @media (max-width: 42em) {
+    @media (max-width: 40em) {
       flex-direction: column;
     }
 
     .stats {
       width: min-content;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      display: grid;
+      grid-template-columns: min-content min-content 1fr;
+      align-items: center;
       gap: var(--05);
 
       #input-job_level {
         width: 2.5em;
-        margin-left: 1.5em;
-        margin-right: 6.5em;
+        justify-self: end;
       }
 
       input:not([type="checkbox"]) {
@@ -69,9 +68,10 @@
       }
 
       .bonuses {
+        justify-content: flex-start;
+        min-width: 6em; // enough space for "+000 +000"
         display: flex;
         gap: var(--05);
-        min-width: 6em; // enough space for "+000 +000"
 
         .food {
           color: var(--food-color);
@@ -86,10 +86,6 @@
         display: flex;
         align-items: center;
         gap: 0.5em;
-
-        input {
-          margin-right: 9.25em;
-        }
       }
     }
 
@@ -111,8 +107,7 @@
       }
 
       label {
-        align-self: center;
-        text-align: end;
+        align-self: baseline;
       }
 
       .selected-consumable,
@@ -150,10 +145,6 @@
 
       .dropdown-list {
         width: 100%;
-
-        .trigger.placeholder {
-          color: var(--placeholder-color);
-        }
       }
 
       ul {

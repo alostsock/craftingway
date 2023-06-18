@@ -1,29 +1,28 @@
 .Header {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  position: relative;
+  padding: 0 var(--05);
 
-  h1 {
-    margin-top: var(--3);
-
-    span {
-      color: var(--orange-200);
-    }
+  * {
+    line-height: 1.15;
   }
 
-  .links {
+  nav {
+    width: 100%;
     display: flex;
-    flex-direction: row-reverse;
     align-items: center;
     gap: var(--1);
 
-    position: absolute;
-    top: 0;
-    right: 0;
+    &.expanded {
+      align-items: flex-end;
+      flex-direction: row-reverse;
+      flex-wrap: wrap-reverse;
 
-    a {
-      line-height: 1;
+      .logo {
+        text-align: center;
+        font-size: 2rem;
+        width: 100%;
+        padding: var(--05);
+      }
     }
 
     img {
@@ -35,18 +34,43 @@
       }
     }
 
-    .github img {
-      height: 1.3rem;
+    .logo {
+      font-size: 1.25rem;
       margin-top: -0.15rem;
-      padding: 0 0.15rem;
+
+      &,
+      &:visited {
+        text-decoration: none;
+        color: var(--text-color);
+      }
+
+      span {
+        color: var(--orange-200);
+      }
     }
 
-    .discord img {
-      height: 1rem;
-    }
+    .external-links {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--05);
 
-    .ko-fi img {
-      height: 1.2rem;
+      a {
+        display: flex;
+        align-items: center;
+      }
+
+      .ko-fi img {
+        height: 1.2rem;
+      }
+      .discord img {
+        height: 1.05rem;
+      }
+      .github img {
+        height: 1.35rem;
+        margin-left: 0.15rem;
+      }
     }
   }
 }

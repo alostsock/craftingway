@@ -4,6 +4,10 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import CopyButton from "./CopyButton";
+import CopyMacroButtons from "./CopyMacroButtons";
+import { createRotation } from "../lib/api";
+import { PlayerState } from "../lib/player-state";
+import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 
 const RotationControls = observer(function RotationControls() {
@@ -11,7 +15,28 @@ const RotationControls = observer(function RotationControls() {
     SimulatorState.actions = [];
   });
 
-  if (SimulatorState.actions.length === 0) {
+  const getShareableLink = async () => {
+    if (!RecipeState.recipe) return;
+
+    const { job_level, craftsmanship, control, cp, food, potion } = PlayerState.config;
+    const result = await createRotation({
+      version: "6.4-1",
+      job: PlayerState.job,
+      job_level,
+      craftsmanship,
+      control,
+      cp,
+      food: food?.name ?? null,
+      potion: potion?.name ?? null,
+      recipe_job_level: RecipeState.recipe.job_level,
+      recipe: RecipeState.recipe.name,
+      hq_ingredients: RecipeState.hq_ingredients,
+      actions: SimulatorState.actions.join(","),
+    });
+    return typeof result === "string" ? `${window.origin}/rotation/${result}` : undefined;
+  };
+
+  if (!SimulatorState.craftState || SimulatorState.actions.length === 0) {
     return <div className="RotationControls" />;
   }
 
@@ -23,32 +48,15 @@ const RotationControls = observer(function RotationControls() {
         Reset
       </button>
 
-      {SimulatorState.macroTextParts.length === 1 && (
-        <CopyButton
-          className="link"
-          copyText={SimulatorState.macroTextParts[0].join("\r\n")}
-          disabled={isSearching}
-        >
-          Copy macro
-        </CopyButton>
-      )}
+      <CopyMacroButtons
+        craftState={SimulatorState.craftState}
+        actions={SimulatorState.actions}
+        disabled={isSearching}
+      />
 
-      {SimulatorState.macroTextParts.length > 1 && (
-        <div className="copy-macro-buttons">
-          <span>Copy macro:</span>
-
-          {SimulatorState.macroTextParts.map((macroTextLines, index) => (
-            <CopyButton
-              key={index}
-              className="link"
-              copyText={macroTextLines.join("\r\n")}
-              disabled={isSearching}
-            >
-              Part {index + 1}
-            </CopyButton>
-          ))}
-        </div>
-      )}
+      <CopyButton className="link" copyText={getShareableLink} disabled={isSearching}>
+        Share
+      </CopyButton>
     </div>
   );
 });

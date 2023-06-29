@@ -9,6 +9,7 @@ edition = "2021"
 axum = "0.6.18"
 chrono = "0.4.26"
 clap = { version = "4.3.0", features = ["derive"] }
+governor = "0.5.1"
 hyper = { version = "0.14.26", features = ["full"] }
 rand = { version = "0.8.5", features = ["small_rng"] }
 serde = { version = "1", features = ["derive"] }

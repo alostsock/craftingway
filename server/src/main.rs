@@ -1,8 +1,10 @@
 #![warn(clippy::pedantic)]
+use axum::middleware;
 use clap::{Parser, Subcommand};
 use hyper::http::{HeaderValue, Method};
 use sqlx::sqlite::SqlitePoolOptions;
 use sqlx::SqlitePool;
+use std::{net::SocketAddr, sync::Arc};
 use tower::ServiceBuilder;
 use tower_http::{
     cors::{Any, CorsLayer},
@@ -61,6 +63,12 @@ async fn migrate(sqlite_connection: SqlitePool) {
 async fn serve(sqlite_connection: SqlitePool, port: &u16) {
     let app_url = std::env::var("APP_URL").expect("APP_URL must be set");
 
+    let state = server::ApiState {
+        db: sqlite_connection,
+        slugger: server::Slugger::new(),
+        rate_limiter: Arc::new(server::create_rate_limiter()),
+    };
+
     let trace = TraceLayer::new_for_http();
 
     let cors = CorsLayer::new()
@@ -68,25 +76,23 @@ async fn serve(sqlite_connection: SqlitePool, port: &u16) {
         .allow_headers(Any)
         .allow_origin(app_url.parse::<HeaderValue>().unwrap());
 
+    let rate_limit = middleware::from_fn_with_state(state.clone(), server::rate_limit_middleware);
+
     let timeout = TimeoutLayer::new(std::time::Duration::from_secs(5));
 
-    let app = server::create_router()
-        .with_state(server::ApiState {
-            db: sqlite_connection,
-            slugger: server::Slugger::new(),
-        })
-        .layer(
-            ServiceBuilder::new()
-                .layer(trace)
-                .layer(cors)
-                .layer(timeout),
-        );
+    let app = server::create_router().with_state(state).layer(
+        ServiceBuilder::new()
+            .layer(trace)
+            .layer(cors)
+            .layer(rate_limit)
+            .layer(timeout),
+    );
 
     info!("Starting server on port {port}");
     // Listen on both IPv4 and IPv6
     let addr = format!("[::]:{port}").parse().unwrap();
     axum::Server::bind(&addr)
-        .serve(app.into_make_service())
+        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await
         .unwrap();
 }

@@ -1,11 +1,14 @@
 mod error;
-pub mod models;
-pub mod routes;
-pub mod serde_custom;
+mod models;
+mod routes;
+mod serde_custom;
 mod slugger;
+mod tracing;
 
-pub use error::ApiError;
-pub use slugger::Slugger;
+pub use crate::error::ApiError;
+pub use crate::routes::create_router;
+pub use crate::slugger::Slugger;
+pub use crate::tracing::setup_tracing;
 
 #[derive(Clone)]
 pub struct ApiState {

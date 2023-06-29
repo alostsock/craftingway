@@ -54,5 +54,6 @@ COPY --from=sqlite /usr/bin/sqlite3 /usr/bin/sqlite3
 COPY litefs.yml /etc/litefs.yml
 COPY migrations migrations
 ENV DATABASE_URL=sqlite:/litefs/sqlite.db?mode=rwc
+ENV RUST_LOG="warn,server=info"
 COPY --from=builder /app/server /app/server
 ENTRYPOINT litefs mount

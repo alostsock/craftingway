@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev-server": "cargo watch -C server -x 'run -- serve --port 8080'",
+    "dev-server": "RUST_LOG=\"debug\" cargo watch -C server -x 'run -- serve --port 8080'",
     "format": "eslint src --fix && prettier src --write",
     "lint": "eslint src && prettier --check . && tsc",
     "build-submodule": "bash -c \"cd crafty && ./build-web.sh\"",

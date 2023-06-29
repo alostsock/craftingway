@@ -6,7 +6,9 @@ use tower::ServiceBuilder;
 use tower_http::{
     cors::{Any, CorsLayer},
     timeout::TimeoutLayer,
+    trace::TraceLayer,
 };
+use tracing::info;
 
 #[derive(Parser, Debug)]
 struct Cli {
@@ -29,6 +31,8 @@ async fn main() {
 
     let db_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
 
+    let _guard = server::setup_tracing();
+
     let sqlite_connection = SqlitePoolOptions::new()
         .max_connections(10)
         .connect(&db_url)
@@ -40,7 +44,7 @@ async fn main() {
         .await
         .expect("could not obtain sqlite version");
 
-    println!("Using sqlite version {sqlite_version}");
+    info!("Using sqlite version {sqlite_version}");
 
     match &cli.command {
         Command::Migrate => migrate(sqlite_connection).await,
@@ -49,12 +53,14 @@ async fn main() {
 }
 
 async fn migrate(sqlite_connection: SqlitePool) {
-    println!("Running pending migrations");
+    info!("Running pending migrations");
     sqlx::migrate!().run(&sqlite_connection).await.unwrap()
 }
 
 async fn serve(sqlite_connection: SqlitePool, port: &u16) {
     let app_url = std::env::var("APP_URL").expect("APP_URL must be set");
+
+    let trace = TraceLayer::new_for_http();
 
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
@@ -63,14 +69,19 @@ async fn serve(sqlite_connection: SqlitePool, port: &u16) {
 
     let timeout = TimeoutLayer::new(std::time::Duration::from_secs(5));
 
-    let app = server::routes::create_router()
+    let app = server::create_router()
         .with_state(server::ApiState {
             db: sqlite_connection,
             slugger: server::Slugger::new(),
         })
-        .layer(ServiceBuilder::new().layer(cors).layer(timeout));
+        .layer(
+            ServiceBuilder::new()
+                .layer(trace)
+                .layer(cors)
+                .layer(timeout),
+        );
 
-    println!("Starting server on port {port}");
+    info!("Starting server on port {port}");
     // Listen on both IPv4 and IPv6
     let addr = format!("[::]:{port}").parse().unwrap();
     axum::Server::bind(&addr)

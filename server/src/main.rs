@@ -1,3 +1,4 @@
+#![warn(clippy::pedantic)]
 use clap::{Parser, Subcommand};
 use hyper::http::{HeaderValue, Method};
 use sqlx::sqlite::SqlitePoolOptions;
@@ -54,7 +55,7 @@ async fn main() {
 
 async fn migrate(sqlite_connection: SqlitePool) {
     info!("Running pending migrations");
-    sqlx::migrate!().run(&sqlite_connection).await.unwrap()
+    sqlx::migrate!().run(&sqlite_connection).await.unwrap();
 }
 
 async fn serve(sqlite_connection: SqlitePool, port: &u16) {

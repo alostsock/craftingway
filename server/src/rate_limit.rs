@@ -1,26 +1,24 @@
 use crate::{ApiError, ApiState};
 use axum::{
-    extract::{ConnectInfo, State},
-    http::{Request, StatusCode},
+    extract::State,
+    http::Request,
     middleware::Next,
     response::{IntoResponse, Response},
 };
 use governor::{
     clock::{Clock, QuantaClock},
-    state::keyed::DashMapStateStore,
+    state::{InMemoryState, NotKeyed},
     Quota, RateLimiter,
 };
 use hyper::Method;
-use std::{net::SocketAddr, num::NonZeroU32};
+use std::num::NonZeroU32;
 
-type RateLimitKey = SocketAddr;
+pub type NotKeyedRateLimiter = RateLimiter<NotKeyed, InMemoryState, QuantaClock>;
 
-pub type KeyedRateLimiter = RateLimiter<RateLimitKey, DashMapStateStore<RateLimitKey>, QuantaClock>;
-
-pub fn create_rate_limiter() -> KeyedRateLimiter {
-    let quota = NonZeroU32::new(5).unwrap();
-    let burst = NonZeroU32::new(10).unwrap();
-    RateLimiter::keyed(Quota::per_minute(quota).allow_burst(burst))
+pub fn create_rate_limiter() -> NotKeyedRateLimiter {
+    let quota = NonZeroU32::new(1000).unwrap();
+    let burst = NonZeroU32::new(1500).unwrap();
+    RateLimiter::direct(Quota::per_minute(quota).allow_burst(burst))
 }
 
 pub async fn rate_limit_middleware<Body>(
@@ -32,21 +30,12 @@ pub async fn rate_limit_middleware<Body>(
         return next.run(request).await;
     }
 
-    let Some(ConnectInfo(addr)) = request.extensions().get::<ConnectInfo<SocketAddr>>() else {
-        // I'm not sure if this can ever occur?
-        return StatusCode::FORBIDDEN.into_response();
-    };
-
-    match state.rate_limiter.check_key(addr) {
+    match state.rate_limiter.check() {
         Ok(_) => next.run(request).await,
         Err(err) => {
             let wait_time = err.wait_time_from(QuantaClock::default().now()).as_secs();
 
-            ApiError::TooManyRequests {
-                addr: *addr,
-                wait_time,
-            }
-            .into_response()
+            ApiError::TooManyRequests { wait_time }.into_response()
         }
     }
 }

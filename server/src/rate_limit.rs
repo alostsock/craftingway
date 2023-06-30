@@ -1,7 +1,7 @@
 use crate::{ApiError, ApiState};
 use axum::{
     extract::{ConnectInfo, State},
-    http::Request,
+    http::{Request, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
 };
@@ -19,13 +19,12 @@ pub type KeyedRateLimiter = RateLimiter<RateLimitKey, DashMapStateStore<RateLimi
 
 pub fn create_rate_limiter() -> KeyedRateLimiter {
     let quota = NonZeroU32::new(5).unwrap();
-    let burst = NonZeroU32::new(5).unwrap();
+    let burst = NonZeroU32::new(10).unwrap();
     RateLimiter::keyed(Quota::per_minute(quota).allow_burst(burst))
 }
 
 pub async fn rate_limit_middleware<Body>(
     State(state): State<ApiState>,
-    ConnectInfo(addr): ConnectInfo<SocketAddr>,
     request: Request<Body>,
     next: Next<Body>,
 ) -> Response {
@@ -33,11 +32,21 @@ pub async fn rate_limit_middleware<Body>(
         return next.run(request).await;
     }
 
-    match state.rate_limiter.check_key(&addr) {
+    let Some(ConnectInfo(addr)) = request.extensions().get::<ConnectInfo<SocketAddr>>() else {
+        // I'm not sure if this can ever occur?
+        return StatusCode::FORBIDDEN.into_response();
+    };
+
+    match state.rate_limiter.check_key(addr) {
         Ok(_) => next.run(request).await,
         Err(err) => {
             let wait_time = err.wait_time_from(QuantaClock::default().now()).as_secs();
-            ApiError::TooManyRequests { addr, wait_time }.into_response()
+
+            ApiError::TooManyRequests {
+                addr: *addr,
+                wait_time,
+            }
+            .into_response()
         }
     }
 }

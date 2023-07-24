@@ -50,16 +50,8 @@ jobs:
 
       - run: yarn run lint
 
-      - uses: dorny/paths-filter@v2
-        id: paths-filter
-        with:
-          filters: |
-            backend:
-              - 'server/**'
-
       # TODO: This takes too long; figure out how to do cargo installs faster.
       # - name: Check server for errors
-      #   if: ${{ steps.paths-filter.outputs.backend == 'true' }}
       #   env:
       #     DATABASE_URL: sqlite:sqlite.db?mode=rwc
       #   working-directory: ./server
@@ -71,14 +63,14 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Deploy backend
-        if: ${{ github.ref_name == 'main' && (github.event_name == 'workflow_dispatch' || steps.paths-filter.outputs.backend == 'true') }}
+        if: ${{ github.ref_name == 'main' }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         working-directory: ./server
         run: flyctl deploy --remote-only
 
       - name: Deploy backend (preview)
-        if: ${{ github.ref_name == 'preview' && (github.event_name == 'workflow_dispatch' || steps.paths-filter.outputs.backend == 'true') }}
+        if: ${{ github.ref_name == 'preview' }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_PREVIEW_API_TOKEN }}
         working-directory: ./server

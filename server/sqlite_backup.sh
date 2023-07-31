@@ -33,6 +33,11 @@ function sign_hex {
   echo -ne "$2" | openssl sha256 -hex -hmac "$1" | sed 's/^.* //'
 }
 
+if [ ! -f /litefs/sqlite.db ]; then
+  echo "sqlite.db doesn't exist"
+  exit 1
+fi
+
 filename="sqlite.db.backup"
 sqlite3 /litefs/sqlite.db ".backup /tmp/$filename"
 gzip -f /tmp/$filename

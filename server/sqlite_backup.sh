@@ -16,12 +16,12 @@ function sha256 {
   echo -ne "$1" | openssl sha256 | sed 's/^.* //'
 }
 
-function sign_binary {
-  echo -ne "$2" | openssl sha256 -binary -hmac "$1" | sed 's/^.* //'
+function sign {
+  echo -ne "$2" | openssl sha256 -hex -hmac "$1" | sed 's/^.* //'
 }
 
-function sign_hex {
-  echo -ne "$2" | openssl sha256 -hex -hmac "$1" | sed 's/^.* //'
+function sign_hex_key {
+  echo -ne "$2" | openssl dgst -sha256 -hex -mac HMAC -macopt "hexkey:$1" | sed 's/^.* //'
 }
 
 if [ ! -f /litefs/sqlite.db ]; then
@@ -59,11 +59,11 @@ credential="$AWS_ACCESS_KEY_ID/$scope"
 string_to_sign="$algorithm\n$aws_datetime\n$scope\n$(sha256 "$canonical_request")"
 
 secret="AWS4$AWS_SECRET_ACCESS_KEY"
-key1="$(sign_binary "$secret" "$aws_date")"
-key2="$(sign_binary "$key1" "$AWS_DEFAULT_REGION")"
-key3="$(sign_binary "$key2" 's3')"
-key4="$(sign_binary "$key3" 'aws4_request')"
-signature="$(sign_hex "$key4" "$string_to_sign")"
+key1="$(sign "$secret" "$aws_date")"
+key2="$(sign_hex_key "$key1" "$AWS_DEFAULT_REGION")"
+key3="$(sign_hex_key "$key2" 's3')"
+key4="$(sign_hex_key "$key3" 'aws4_request')"
+signature="$(sign_hex_key "$key4" "$string_to_sign")"
 
 auth="$algorithm Credential=$credential, SignedHeaders=$signed_headers, Signature=$signature"
 

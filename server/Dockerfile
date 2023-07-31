@@ -48,8 +48,10 @@ RUN --mount=type=cache,target=/usr/local/cargo,from=rust:1-slim-bullseye,source=
     cargo build --release && mv ./target/release/server ./server
 
 FROM debian:bullseye-slim
-RUN apt update && apt install -y ca-certificates fuse3
-COPY --from=flyio/litefs:0.4 /usr/local/bin/litefs /usr/local/bin/litefs
+# litefs requires ca-certificates and fuse3
+# database backups require curl
+RUN apt update && apt install -y ca-certificates fuse3 curl
+COPY --from=flyio/litefs:0.5.2 /usr/local/bin/litefs /usr/local/bin/litefs
 COPY --from=sqlite /usr/bin/sqlite3 /usr/bin/sqlite3
 COPY litefs.yml /etc/litefs.yml
 COPY migrations migrations

@@ -4,22 +4,13 @@ set -euo pipefail
 
 if [ -z "${AWS_ACCESS_KEY_ID:-}" ] ||
   [ -z "${AWS_SECRET_ACCESS_KEY:-}" ] ||
-  [ -z "${AWS_DEFAULT_REGION:-}" ]; then
-  echo "AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_DEFAULT_REGION must be set"
+  [ -z "${AWS_DEFAULT_REGION:-}" ] ||
+  [ -z "${SQLITE_BACKUP_S3_BUCKET:-}" ]; then
+  echo "AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION, and SQLITE_BACKUP_S3_BUCKET must be set"
   exit 1
 fi
 
-case "$1" in
-  preview)
-    bucket="servingway-preview-sqlitedb-backups"
-    ;;
-  "")
-    bucket="servingway-sqlitedb-backups"
-    ;;
-  *)
-    echo "Argument should be 'preview' or left blank"
-    exit 1
-esac
+bucket="$SQLITE_BACKUP_S3_BUCKET"
 
 function sha256 {
   echo -ne "$1" | openssl sha256 | sed 's/^.* //'

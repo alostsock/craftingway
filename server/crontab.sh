@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+
+crontab << EOF
+AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+SQLITE_BACKUP_S3_BUCKET=$SQLITE_BACKUP_S3_BUCKET
+
+0 6 * * * /app/sqlite_backup.sh > /tmp/sqlite_backup.output
+EOF

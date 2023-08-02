@@ -48,6 +48,7 @@ RUN --mount=type=cache,target=/usr/local/cargo,from=rust:1-slim-bullseye,source=
     cargo build --release && mv ./target/release/server ./server
 
 FROM debian:bullseye-slim
+
 # litefs requires ca-certificates and fuse3
 # database backups require curl and cron
 RUN apt update && apt install -y ca-certificates fuse3 curl cron
@@ -55,12 +56,15 @@ COPY --from=flyio/litefs:0.5.2 /usr/local/bin/litefs /usr/local/bin/litefs
 COPY --from=sqlite /usr/bin/sqlite3 /usr/bin/sqlite3
 COPY litefs.yml /etc/litefs.yml
 COPY migrations migrations
+
+# for sqlite backups
 COPY sqlite_backup.sh /app/sqlite_backup.sh
-# cron setup
-RUN echo "0 6 * * * /app/sqlite_backup.sh" | crontab -
-RUN chmod +x /app/sqlite_backup.sh && cron
+COPY crontab.sh /app/crontab.sh
+RUN chmod +x /app/sqlite_backup.sh /app/crontab.sh
+
 # app setup
 ENV DATABASE_URL=sqlite:/litefs/sqlite.db?mode=rwc
 ENV RUST_LOG="warn,server=info"
 COPY --from=builder /app/server /app/server
-ENTRYPOINT litefs mount
+
+ENTRYPOINT /app/crontab.sh && service cron start && litefs mount

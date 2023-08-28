@@ -33,7 +33,11 @@ const SearchPanel = observer(function SearchPanel() {
   return (
     <div className="SearchPanel">
       <button className="search" onClick={search} disabled={isSearching}>
-        {isSearching ? "Searching..." : existingRotation ? "Reset rotation and search" : "Search"}
+        {isSearching
+          ? "Searching..."
+          : existingRotation
+          ? "Reset rotation and search again"
+          : "Search"}
       </button>
 
       <p>

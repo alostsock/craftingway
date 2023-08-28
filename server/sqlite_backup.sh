@@ -24,6 +24,13 @@ function sign_hex_key {
   echo -ne "$2" | openssl dgst -sha256 -hex -mac HMAC -macopt "hexkey:$1" | sed 's/^.* //'
 }
 
+# Only perform the backup on the primary node. If this file exists, then it
+# should be a replica.
+if [ -f /litefs/.primary ]; then
+  echo "Sqlite backup attempted on non-primary node"
+  exit 1
+fi
+
 if [ ! -f /litefs/sqlite.db ]; then
   echo "sqlite.db doesn't exist"
   exit 1

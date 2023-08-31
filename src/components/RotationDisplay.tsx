@@ -221,6 +221,7 @@ function useRotationData(
         cp,
         job,
         recipe: recipeName,
+        recipe_job_level,
         hq_ingredients,
         food: foodName,
         potion: potionName,
@@ -236,7 +237,13 @@ function useRotationData(
 
       setJob(job);
 
-      setRecipe(RecipeState.recipes.find((r) => r.name === recipeName) ?? null);
+      if (recipeName.startsWith("Generic Recipe")) {
+        setRecipe(
+          SimulatorState.recipesByLevel(recipe_job_level).find((r) => r.name === recipeName) ?? null
+        );
+      } else {
+        setRecipe(RecipeState.recipes.find((r) => r.name === recipeName) ?? null);
+      }
 
       setIngredients(hq_ingredients);
 

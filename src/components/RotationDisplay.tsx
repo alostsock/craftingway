@@ -15,6 +15,7 @@ import { RecipeData, RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import CopyMacroButtons from "./CopyMacroButtons";
 import CraftStepDisplay from "./CraftStepDisplay";
+import DocumentTitle from "./DocumentTitle";
 import { ActionIcon } from "./Icons";
 import Progress from "./Progress";
 import RecipeDisplay from "./RecipeDisplay";
@@ -80,6 +81,8 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
 
   return (
     <div className="RotationDisplay">
+      <DocumentTitle prefix={rotationData.recipe.name} />
+
       <section className="info">
         <h2>
           Saved Rotation <span>{timestamp}</span>

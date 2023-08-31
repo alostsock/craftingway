@@ -4,7 +4,9 @@ import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "wouter";
 
+import { RecipeState } from "../lib/recipe-state";
 import CraftStateDisplay from "./CraftStateDisplay";
+import DocumentTitle from "./DocumentTitle";
 import Footer from "./Footer";
 import Header from "./Header";
 import PlayerConfig from "./PlayerConfig";
@@ -19,6 +21,7 @@ const App = observer(function App() {
 
         <Switch>
           <Route path="/">
+            <DocumentTitle prefix={RecipeState.recipe?.name} />
             <PlayerConfig />
             <RecipeConfig />
             <CraftStateDisplay />

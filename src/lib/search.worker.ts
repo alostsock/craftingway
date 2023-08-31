@@ -1,5 +1,5 @@
 import type { Action, CraftOptions, Player, Recipe, SearchOptions } from "crafty";
-import init, { searchStepwise } from "crafty";
+import init, { searchStepwise, simulateActions } from "crafty";
 
 import { checkAttrs } from "./utils";
 
@@ -15,6 +15,7 @@ export interface SearchRequestMessage {
 export interface SearchResponseMessage {
   type: "search-response";
   actions: Action[];
+  score: number;
 }
 
 export interface SearchCompleteMessage {
@@ -41,9 +42,12 @@ onmessage = (event) => {
       const callback = (action: Action) => {
         actions.push(action);
 
+        const { score } = simulateActions(recipe, player, actions, craftOptions);
+
         postMessage({
           type: "search-response",
           actions,
+          score,
         } satisfies SearchResponseMessage);
       };
 

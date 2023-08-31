@@ -15,17 +15,19 @@ export interface Config {
   iterations: number;
   maxScoreWeightingConstant: number;
   explorationConstant: number;
+  concurrency: number;
 }
 
 // Remember to bump version number when updating DEFAULT_CONFIG, so that the
 // cache is invalidated
-const CONFIG_STORE = "simulatorConfig_v1";
+const CONFIG_STORE = "simulatorConfig_v2";
 
 export const DEFAULT_CONFIG: Config = {
   maxSteps: 25,
-  iterations: 300_000,
+  iterations: 200_000,
   maxScoreWeightingConstant: 0.1,
-  explorationConstant: 4.0,
+  explorationConstant: 3.0,
+  concurrency: Math.ceil(navigator.hardwareConcurrency / 2),
 };
 
 class _SimulatorState {
@@ -36,7 +38,7 @@ class _SimulatorState {
   private _completionReason: CompletionReason | null = null;
 
   config: Config;
-  private worker: Worker | null = null;
+  private workers: Set<Worker> = new Set();
 
   constructor() {
     makeAutoObservable(this);
@@ -131,61 +133,98 @@ class _SimulatorState {
   }
 
   get isSearching() {
-    return !!this.worker;
+    return this.workers.size > 0;
   }
 
-  stopSearch() {
-    if (this.worker) {
-      this.worker.terminate();
-      console.log("worker killed");
-      this.worker = null;
+  terminateWorker(worker: Worker) {
+    this.workers.delete(worker);
+    worker.terminate();
+  }
+
+  terminateAllWorkers() {
+    for (const worker of this.workers) {
+      this.terminateWorker(worker);
     }
   }
 
   searchStepwise() {
-    this.stopSearch();
+    this.terminateAllWorkers();
 
     if (!RecipeState.recipe || !this.loaded) return;
 
+    type Result = { actions: Action[]; score: number };
+    const results: Result[] = Array(this.config.concurrency).fill(undefined);
+    const bestScore = 0;
+
     const startedAt = performance.now();
+    console.log("creating workers...");
 
-    this.worker = new Worker(searchWorkerUrl, { type: "module" });
-    console.log("worker started");
+    for (let i = 0; i < this.config.concurrency; i++) {
+      const worker = new Worker(searchWorkerUrl, { type: "module" });
+      this.workers.add(worker);
 
-    this.worker.onmessage = (event) => {
-      const { type } = event.data;
+      worker.onmessage = (event) => {
+        switch (event.data.type) {
+          case "search-response": {
+            const { actions, score } = checkAttrs<SearchResponseMessage>(event.data, [
+              "actions",
+              "score",
+            ]);
 
-      if (type === "search-response") {
-        const { actions } = checkAttrs<SearchResponseMessage>(event.data, ["actions"]);
-        this.actions = actions;
-      } else if (type === "search-complete") {
-        console.log(`search completed in ${performance.now() - startedAt}ms`);
-        this.stopSearch();
-      } else {
-        throw new TypeError(`invalid message type: ${type}`);
-      }
-    };
+            results[i] = { actions, score };
 
-    // mobx objects aren't serializable across the wire, so we have to convert
-    // them to normal JS objects first
-    this.worker.postMessage({
-      type: "search-request",
-      recipe: toJS(RecipeState.recipe),
-      player: toJS(PlayerState.playerWithBonuses),
-      actionHistory: toJS(this.actions),
-      craftOptions: {
-        max_steps: this.config.maxSteps,
-        starting_quality: RecipeState.startingQuality,
-        quality_target: RecipeState.recipe.can_hq ? RecipeState.recipe.quality : 0,
-      },
-      searchOptions: {
-        iterations: this.config.iterations,
-        max_score_weighting_constant: this.config.maxScoreWeightingConstant,
-        exploration_constant: this.config.explorationConstant,
-        rng_seed: undefined,
-        score_storage_threshold: undefined,
-      },
-    } satisfies SearchRequestMessage);
+            // Setting actions here is only for indicating progress visually. We should rely on
+            // `results` for determining the actual state of the search, since this comparison and
+            // assignment is subject to race conditions. The final set of actions will be set on
+            // "search-complete" once all workers terminate.
+            if (score > bestScore) {
+              this.actions = actions;
+            }
+            break;
+          }
+          case "search-complete": {
+            const progress = this.config.concurrency - this.workers.size + 1;
+            const progressStatus = `[${progress}/${this.config.concurrency}]`;
+            console.log(`${progressStatus} search completed in ${performance.now() - startedAt}ms`);
+            this.terminateWorker(worker);
+
+            if (this.workers.size == 0) {
+              const bestResult = results.reduce((prev, current) =>
+                current.score > prev.score ? current : prev
+              );
+              // I've observed that occasionally the UI isn't consistent with `this.actions`.
+              // I think this could be from updates happening too frequently, so this delay is just
+              // to let things settle before finalizing the search.
+              setTimeout(() => (this.actions = bestResult.actions), 50);
+            }
+            break;
+          }
+          default:
+            throw new TypeError(`invalid message type: ${event.data.type}`);
+        }
+      };
+
+      // mobx objects aren't serializable across the wire, so we have to convert
+      // them to normal JS objects first
+      worker.postMessage({
+        type: "search-request",
+        recipe: toJS(RecipeState.recipe),
+        player: toJS(PlayerState.playerWithBonuses),
+        actionHistory: toJS(this.actions),
+        craftOptions: {
+          max_steps: this.config.maxSteps,
+          starting_quality: RecipeState.startingQuality,
+          quality_target: RecipeState.recipe.can_hq ? RecipeState.recipe.quality : 0,
+        },
+        searchOptions: {
+          iterations: this.config.iterations,
+          max_score_weighting_constant: this.config.maxScoreWeightingConstant,
+          exploration_constant: this.config.explorationConstant,
+          rng_seed: undefined,
+          score_storage_threshold: undefined,
+        },
+      } satisfies SearchRequestMessage);
+    }
   }
 
   createMacroParts(craftState: CraftState, actions: Action[]): string[][] {

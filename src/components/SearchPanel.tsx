@@ -75,6 +75,28 @@ const SearchPanel = observer(function SearchPanel() {
             />
           </div>
 
+          <div className="field concurrency">
+            <LabelHelp
+              htmlFor="config-concurrency"
+              labelText="Concurrency"
+              helpText={
+                <span>
+                  The number of searches to run in parallel. For maximum efficiency, this should be
+                  set to the amount of logical processor cores available on your device (probably{" "}
+                  {navigator.hardwareConcurrency}).
+                </span>
+              }
+            />
+            <NumberInput
+              id="config-concurrency"
+              min={1}
+              max={64} // who has this many cores available anyway, really
+              numberValue={SimulatorState.config.concurrency}
+              onNumberChange={(value) => SimulatorState.setConfig({ concurrency: value })}
+              disabled={isSearching}
+            />
+          </div>
+
           <div className="field iterations">
             <LabelHelp
               htmlFor="config-iterations"

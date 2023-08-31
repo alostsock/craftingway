@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
-export default function DocumentTitle({ prefix }: { prefix: string | null | undefined }) {
+export default function DocumentTitle({ prefix }: { prefix?: string | null }) {
   const [location, _] = useLocation();
 
   const [suffix, setSuffix] = useState("Craftingway");

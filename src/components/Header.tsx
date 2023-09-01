@@ -82,7 +82,8 @@ const Logo = () => (
 
 const Home = () => (
   <React.Fragment>
-    ←<span className="spacer" />
+    «
+    <span className="spacer" />
     home
   </React.Fragment>
 );

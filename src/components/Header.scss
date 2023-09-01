@@ -13,21 +13,21 @@
     gap: var(--1);
 
     a {
+      color: var(--text-muted-color);
       display: flex;
       align-items: center;
-      opacity: 0.5;
-      transition: opacity 70ms;
+      transition: color 70ms;
 
       &:hover {
-        opacity: 1;
+        color: var(--text-color);
       }
 
       &:not(:hover) {
         text-decoration: none;
       }
 
-      &:visited {
-        color: var(--text-color);
+      &:visited:not(:hover) {
+        color: var(--text-muted-color);
       }
     }
 
@@ -54,14 +54,20 @@
     }
 
     .links {
+      color: var(--text-muted-color);
       flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       gap: var(--05);
 
-      img:not(:hover) {
+      img {
         opacity: 0.4;
+        transition: opacity 70ms;
+
+        &:hover {
+          opacity: 1;
+        }
       }
 
       .external {

@@ -17,7 +17,7 @@ interface RotationRequest {
   actions: string;
 }
 
-interface RotationResponse extends RotationRequest {
+export interface RotationResponse extends RotationRequest {
   created_at: number;
 }
 

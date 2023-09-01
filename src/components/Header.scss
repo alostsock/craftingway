@@ -12,64 +12,73 @@
     align-items: center;
     gap: var(--1);
 
-    &.expanded {
-      align-items: flex-end;
-      flex-direction: row-reverse;
-      flex-wrap: wrap-reverse;
-
-      .logo {
-        text-align: center;
-        font-size: 2rem;
-        width: 100%;
-        padding: var(--05);
-      }
-    }
-
-    img {
-      opacity: 0.25;
+    a {
+      display: flex;
+      align-items: center;
+      opacity: 0.5;
       transition: opacity 70ms;
 
       &:hover {
         opacity: 1;
       }
-    }
 
-    .logo {
-      font-size: 1.25rem;
-      margin-top: -0.15rem;
-
-      &,
-      &:visited {
+      &:not(:hover) {
         text-decoration: none;
+      }
+
+      &:visited {
         color: var(--text-color);
       }
+    }
 
-      span {
-        color: var(--orange-200);
+    &.expanded {
+      align-items: flex-end;
+      flex-direction: row-reverse;
+      flex-wrap: wrap-reverse;
+
+      .home {
+        color: var(--text-color);
+        text-align: center;
+        font-size: 2rem;
+        width: 100%;
+        padding: var(--05);
+
+        span {
+          color: var(--orange-200);
+        }
       }
     }
 
-    .external-links {
+    .spacer {
+      width: 0.25em;
+    }
+
+    .links {
       flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       gap: var(--05);
 
-      a {
-        display: flex;
-        align-items: center;
+      img:not(:hover) {
+        opacity: 0.4;
       }
 
-      .ko-fi img {
-        height: 1.2rem;
-      }
-      .discord img {
-        height: 1.05rem;
-      }
-      .github img {
-        height: 1.35rem;
-        margin-left: 0.15rem;
+      .external {
+        display: flex;
+        align-items: center;
+        gap: var(--05);
+
+        .ko-fi img {
+          height: 1.2rem;
+        }
+        .discord img {
+          height: 1.05rem;
+        }
+        .github img {
+          height: 1.35rem;
+          margin-left: 0.15rem;
+        }
       }
     }
   }

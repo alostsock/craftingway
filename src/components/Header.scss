@@ -35,21 +35,21 @@
       align-items: flex-end;
       flex-direction: row-reverse;
       flex-wrap: wrap-reverse;
+    }
 
-      .home {
-        color: var(--text-color);
-        text-align: center;
-        font-size: 2rem;
-        width: 100%;
-        padding: var(--05);
+    .logo {
+      color: var(--text-color);
+      text-align: center;
+      font-size: 2rem;
+      width: 100%;
+      padding: var(--05);
 
-        span {
-          color: var(--orange-200);
-        }
+      span {
+        color: var(--orange-200);
       }
     }
 
-    .spacer {
+    .home span {
       width: 0.25em;
     }
 

@@ -2,7 +2,6 @@ import "./Header.scss";
 
 import clsx from "clsx";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Link, useLocation } from "wouter";
 
 const Header = observer(function Header() {
@@ -11,15 +10,20 @@ const Header = observer(function Header() {
   return (
     <header className="Header">
       <nav className={clsx({ expanded: location === "/" })}>
-        <VisitableLink href="/" className="home">
-          {(visiting) => (visiting ? <Logo /> : <Home />)}
-        </VisitableLink>
+        {location === "/" ? (
+          <div className="logo">
+            crafting<span>way</span>
+          </div>
+        ) : (
+          <Link href="/" className="home">
+            «<span />
+            home
+          </Link>
+        )}
 
         <div className="links">
           <div className="internal">
-            <VisitableLink href="/logbook">
-              {(visiting) => (visiting ? null : <React.Fragment>logbook</React.Fragment>)}
-            </VisitableLink>
+            {location !== "/logbook" && <Link href="/logbook">logbook</Link>}
           </div>
 
           <div className="external">
@@ -58,38 +62,3 @@ const Header = observer(function Header() {
 });
 
 export default Header;
-
-interface VisitableLinkProps {
-  href: string;
-  children: ((visiting: boolean) => React.ReactNode) | React.ReactNode;
-  className?: string;
-}
-
-// Renders a link if the current URL doesnt match `href`; otherwise, a div.
-const VisitableLink = ({ href, children, className }: VisitableLinkProps) => {
-  const [location, _] = useLocation();
-  const visiting = location === href;
-  const label = typeof children === "function" ? children(visiting) : children;
-
-  return visiting ? (
-    <div className={clsx(className, "visiting")}>{label}</div>
-  ) : (
-    <Link href={href}>
-      <a className={className}>{label}</a>
-    </Link>
-  );
-};
-
-const Logo = () => (
-  <React.Fragment>
-    crafting<span>way</span>
-  </React.Fragment>
-);
-
-const Home = () => (
-  <React.Fragment>
-    «
-    <span className="spacer" />
-    home
-  </React.Fragment>
-);

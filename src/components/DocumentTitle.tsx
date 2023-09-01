@@ -15,6 +15,8 @@ export default function DocumentTitle({ prefix }: { prefix?: string | null }) {
   useEffect(() => {
     if (location.startsWith("/rotation")) {
       setSuffix("Saved Rotation");
+    } else if (location.startsWith("/logbook")) {
+      setSuffix("Logbook");
     } else {
       setSuffix("Craftingway");
     }

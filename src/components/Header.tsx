@@ -16,6 +16,12 @@ const Header = observer(function Header() {
         </VisitableLink>
 
         <div className="links">
+          <div className="internal">
+            <VisitableLink href="/logbook">
+              {(visiting) => (visiting ? null : <React.Fragment>logbook</React.Fragment>)}
+            </VisitableLink>
+          </div>
+
           <div className="external">
             <a
               className="ko-fi"

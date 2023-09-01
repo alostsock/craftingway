@@ -8,6 +8,7 @@ import CraftStateDisplay from "./CraftStateDisplay";
 import DocumentTitle from "./DocumentTitle";
 import Footer from "./Footer";
 import Header from "./Header";
+import Logbook from "./Logbook";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
 import RotationDisplay from "./RotationDisplay";
@@ -27,6 +28,11 @@ const App = observer(function App() {
           </Route>
 
           <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
+
+          <Route path="/logbook">
+            <DocumentTitle />
+            <Logbook />
+          </Route>
 
           <Route>
             <Redirect to="/" />

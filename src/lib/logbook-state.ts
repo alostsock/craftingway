@@ -1,18 +1,51 @@
 import { autorun, makeAutoObservable } from "mobx";
 
+import { RotationData } from "./rotation-data";
 import Storage from "./storage";
 
-const LOGBOOK_ITEMS_STORE = "logbookItems";
+type LogbookEntry = {
+  key: string;
+  data: RotationData;
+};
+
+const MAX_ENTRIES = 5;
+
+const LOGBOOK_ENTRIES_STORE = "logbookEntries";
 
 class _LogbookState {
-  entries = [];
+  entries: LogbookEntry[];
 
   constructor() {
     makeAutoObservable(this);
 
-    this.entries = Storage.retrieve(LOGBOOK_ITEMS_STORE) || [];
+    this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
 
-    autorun(() => Storage.store(LOGBOOK_ITEMS_STORE, JSON.stringify(this.entries)));
+    autorun(() => Storage.store(LOGBOOK_ENTRIES_STORE, JSON.stringify(this.entries)));
+  }
+
+  refresh() {
+    this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
+  }
+
+  // Adds a logbook entry to the front of the list, so that older items move to
+  // the back of the list. If the entry already exists, it should be updated
+  // to be at the front.
+  addEntry(entry: LogbookEntry) {
+    const existingIndex = this.entries.findIndex(({ key }) => key === entry.key);
+
+    if (existingIndex === 0) {
+      return;
+    }
+
+    if (existingIndex > 0) {
+      this.entries.splice(existingIndex, 1);
+    }
+
+    this.entries.unshift(entry);
+
+    if (this.entries.length > MAX_ENTRIES) {
+      this.entries.length = MAX_ENTRIES;
+    }
   }
 }
 

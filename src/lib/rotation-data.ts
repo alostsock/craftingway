@@ -9,6 +9,7 @@ import type { Job } from "../lib/jobs";
 import { RecipeData, RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
 import { useAutorun } from "./hooks";
+import { LogbookState } from "./logbook-state";
 
 export interface RotationData {
   player: Player;
@@ -126,7 +127,7 @@ export function useRotationData(slug: string): RotationData | string | null {
     return "There was a problem loading this rotation";
   }
 
-  return {
+  const rotationData = {
     player,
     job,
     recipe,
@@ -137,6 +138,10 @@ export function useRotationData(slug: string): RotationData | string | null {
     actions,
     createdAt,
   };
+
+  LogbookState.addEntry({ key: slug, data: rotationData });
+
+  return rotationData;
 }
 
 export function useSimulatorResult(

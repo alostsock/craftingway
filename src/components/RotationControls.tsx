@@ -2,20 +2,22 @@ import "./RotationControls.scss";
 
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
+import { useLocation } from "wouter";
 
 import { createRotation } from "../lib/api";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
-import CopyButton from "./CopyButton";
 import CopyMacroButtons from "./CopyMacroButtons";
 
 const RotationControls = observer(function RotationControls() {
+  const [_, setLocation] = useLocation();
+
   const reset = action(() => {
     SimulatorState.actions = [];
   });
 
-  const getShareableLink = async () => {
+  const saveRotation = async () => {
     if (!RecipeState.recipe) return;
 
     const { job_level, craftsmanship, control, cp, food, potion } = PlayerState.config;
@@ -33,7 +35,13 @@ const RotationControls = observer(function RotationControls() {
       hq_ingredients: RecipeState.hq_ingredients,
       actions: SimulatorState.actions.join(","),
     });
-    return typeof result === "string" ? `${window.origin}/rotation/${result}` : undefined;
+
+    if (typeof result !== "string") {
+      // TODO: handle error
+      return;
+    }
+
+    setLocation(`/rotation/${result}`);
   };
 
   if (!SimulatorState.craftState || SimulatorState.actions.length === 0) {
@@ -54,9 +62,9 @@ const RotationControls = observer(function RotationControls() {
         disabled={isSearching}
       />
 
-      <CopyButton className="link" copyText={getShareableLink} disabled={isSearching}>
-        Share
-      </CopyButton>
+      <button className="link" onClick={saveRotation} disabled={isSearching}>
+        Save rotation
+      </button>
     </div>
   );
 });

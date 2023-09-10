@@ -1,11 +1,12 @@
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable, runInAction } from "mobx";
 
 import { RotationData } from "./rotation-data";
 import Storage from "./storage";
 
 type LogbookEntry = {
-  key: string;
+  slug: string;
   data: RotationData;
+  hash: number;
 };
 
 const MAX_ENTRIES = 5;
@@ -24,14 +25,16 @@ class _LogbookState {
   }
 
   refresh() {
-    this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
+    runInAction(() => {
+      this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
+    });
   }
 
   // Adds a logbook entry to the front of the list, so that older items move to
   // the back of the list. If the entry already exists, it should be updated
   // to be at the front.
   addEntry(entry: LogbookEntry) {
-    const existingIndex = this.entries.findIndex(({ key }) => key === entry.key);
+    const existingIndex = this.entries.findIndex(({ hash }) => hash === entry.hash);
 
     if (existingIndex === 0) {
       return;

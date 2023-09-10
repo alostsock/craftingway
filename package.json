@@ -20,6 +20,7 @@
     "clsx": "^1.2.1",
     "crafty": "link:crafty/web/pkg",
     "downshift": "^6.1.12",
+    "fast-json-stable-stringify": "=2.1.0",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
     "msgpackr": "^1.8.5",

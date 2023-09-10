@@ -18,10 +18,11 @@ const Logbook = observer(function Logbook() {
       </section>
 
       <section>
-        {LogbookState.entries.map(({ key, data }) => (
-          <pre key={key}>
-            <code>{JSON.stringify(data, null, 2)}</code>
-          </pre>
+        {LogbookState.entries.map(({ hash, slug, data }) => (
+          <div key={hash}>
+            <p>{slug}</p>
+            <p>{hash}</p>
+          </div>
         ))}
       </section>
     </div>

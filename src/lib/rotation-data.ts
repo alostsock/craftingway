@@ -8,6 +8,7 @@ import { calculateConsumableBonus } from "../lib/consumables";
 import type { Job } from "../lib/jobs";
 import { RecipeData, RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
+import { objectHash } from "./hash";
 import { useAutorun } from "./hooks";
 import { LogbookState } from "./logbook-state";
 
@@ -139,7 +140,11 @@ export function useRotationData(slug: string): RotationData | string | null {
     createdAt,
   };
 
-  LogbookState.addEntry({ key: slug, data: rotationData });
+  LogbookState.addEntry({
+    slug,
+    data: rotationData,
+    hash: objectHash(rotationData),
+  });
 
   return rotationData;
 }

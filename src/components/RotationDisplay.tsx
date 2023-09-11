@@ -6,19 +6,13 @@ import React from "react";
 
 import { calculateConsumableBonus } from "../lib/consumables";
 import { useRotationData, useSimulatorResult } from "../lib/rotation-data";
+import { STATS } from "../lib/stats";
 import CopyMacroButtons from "./CopyMacroButtons";
 import CraftStepDisplay from "./CraftStepDisplay";
 import DocumentTitle from "./DocumentTitle";
 import { ActionIcon } from "./Icons";
 import Progress from "./Progress";
 import RecipeDisplay from "./RecipeDisplay";
-
-const STATS = [
-  { name: "job_level", label: "Level" },
-  { name: "craftsmanship", label: "Craftsmanship" },
-  { name: "control", label: "Control" },
-  { name: "cp", label: "CP" },
-] as const;
 
 interface Props {
   slug: string;

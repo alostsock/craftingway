@@ -16,23 +16,10 @@ import { useReaction } from "../lib/hooks";
 import { Job, JOB_EMOJIS, JOBS } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
+import { STATS } from "../lib/stats";
 import Emoji from "./Emoji";
 import Highlighter from "./Highlighter";
 import NumberInput from "./NumberInput";
-
-type StatConfig = {
-  name: string;
-  label: string;
-  min: number;
-  max: number;
-};
-
-const STATS = [
-  { name: "job_level", label: "Level", min: 1, max: 90 },
-  { name: "craftsmanship", label: "Craftsmanship", min: 0, max: 9000 },
-  { name: "control", label: "Control", min: 0, max: 9000 },
-  { name: "cp", label: "CP", min: 180, max: 1000 },
-] as const satisfies readonly StatConfig[];
 
 const PlayerConfig = observer(function PlayerConfig() {
   type CopyMenuState = "inactive" | "copying" | "copying-all";

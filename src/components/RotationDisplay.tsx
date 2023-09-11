@@ -1,7 +1,6 @@
 import "./RotationDisplay.scss";
 
 import clsx from "clsx";
-import { observer } from "mobx-react-lite";
 import React from "react";
 
 import { calculateConsumableBonus } from "../lib/consumables";
@@ -18,16 +17,18 @@ interface Props {
   slug: string;
 }
 
-const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
+const RotationDisplay = function RotationDisplay({ slug }: Props) {
   const rotationData = useRotationData(slug);
-  const simulatorResult = useSimulatorResult(rotationData);
+  const simulatorResult = useSimulatorResult(
+    rotationData && "error" in rotationData ? null : rotationData
+  );
 
   if (rotationData == null || simulatorResult == null) {
     return <section className="RotationDisplay">Loading...</section>;
   }
 
-  if (typeof rotationData === "string") {
-    return <section className="RotationDisplay">{rotationData}</section>;
+  if ("error" in rotationData) {
+    return <section className="RotationDisplay">{rotationData.error}</section>;
   }
 
   const { player, job, recipe, ingredients, startingQuality, food, potion, actions, createdAt } =
@@ -145,6 +146,6 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
       </section>
     </div>
   );
-});
+};
 
 export default RotationDisplay;

@@ -1,8 +1,9 @@
 import type { Action, Player, SimulatorResult } from "crafty";
+import { runInAction } from "mobx";
 import { useEffect, useState } from "react";
 
 import { ACTIONS } from "../lib/actions";
-import { getRotation, RotationResponse } from "../lib/api";
+import { ApiError, getRotation, RotationResponse } from "../lib/api";
 import { ConsumableVariant, FOOD_VARIANTS, POTION_VARIANTS } from "../lib/consumables";
 import { calculateConsumableBonus } from "../lib/consumables";
 import type { Job } from "../lib/jobs";
@@ -24,32 +25,23 @@ export interface RotationData {
   createdAt: Date;
 }
 
-export function useRotationData(slug: string): RotationData | string | null {
-  const [loading, setLoading] = useState(true);
-  const [apiResult, setApiResult] = useState<RotationResponse | null>(null);
-  const [apiError, setApiError] = useState<string | null>(null);
+type RotationDataError = { error: string };
 
-  const [player, setPlayer] = useState<Player | null>(null);
-  const [job, setJob] = useState<Job | null>(null);
-  const [recipe, setRecipe] = useState<RecipeData | null>(null);
-  const [ingredients, setIngredients] = useState<Record<string, number> | null>(null);
-  const [food, setFood] = useState<ConsumableVariant | null>(null);
-  const [potion, setPotion] = useState<ConsumableVariant | null>(null);
-  const [actions, setActions] = useState<Action[] | null>(null);
-  const [createdAt, setCreatedAt] = useState<Date | null>(null);
+export function useRotationData(slug: string): RotationData | RotationDataError | null {
+  const [apiResult, setApiResult] = useState<RotationResponse | ApiError | null>(null);
+  const [result, setResult] = useState<RotationData | RotationDataError | null>(null);
 
   useEffect(() => {
-    getRotation(slug).then((result) => {
-      if ("error" in result) {
-        setApiError(result.error);
-      } else {
-        setApiResult(result);
-      }
-    });
+    getRotation(slug).then((result) => setApiResult(result));
   }, [slug]);
 
   useAutorun(() => {
     if (!RecipeState.loaded || !SimulatorState.loaded || !apiResult) {
+      return;
+    }
+
+    if ("error" in apiResult) {
+      setResult(apiResult);
       return;
     }
 
@@ -68,94 +60,61 @@ export function useRotationData(slug: string): RotationData | string | null {
       created_at,
     } = apiResult;
 
-    if (job_level && craftsmanship && control && cp) {
-      setPlayer({ job_level, craftsmanship, control, cp });
-    } else {
-      setPlayer(null);
+    if (!job_level || !craftsmanship || !control || !cp) {
+      setResult({ error: "Invalid player stats" });
+      return;
     }
 
-    setJob(job);
+    const recipe = recipeName.startsWith("Generic Recipe")
+      ? SimulatorState.recipesByLevel(recipe_job_level).find((r) => r.name === recipeName) ?? null
+      : RecipeState.recipes.find((r) => r.name === recipeName) ?? null;
 
-    if (recipeName.startsWith("Generic Recipe")) {
-      setRecipe(
-        SimulatorState.recipesByLevel(recipe_job_level).find((r) => r.name === recipeName) ?? null
-      );
-    } else {
-      setRecipe(RecipeState.recipes.find((r) => r.name === recipeName) ?? null);
+    if (!recipe) {
+      setResult({ error: "Invalid recipe" });
+      return;
     }
 
-    setIngredients(hq_ingredients);
+    const actionNames: string[] = rawActions.split(",");
+    const actions = actionNames.every((actionName) => ACTIONS.some((a) => a.name === actionName))
+      ? (actionNames as Action[])
+      : null;
 
-    setFood(FOOD_VARIANTS.find((f) => f.name === foodName) ?? null);
-
-    setPotion(POTION_VARIANTS.find((p) => p.name === potionName) ?? null);
-
-    const actionNames = rawActions.split(",");
-    if (actionNames.every((actionName) => ACTIONS.some((a) => a.name === actionName))) {
-      setActions(actionNames as Action[]);
-    } else {
-      setActions(null);
+    if (!actions) {
+      setResult({ error: "Invalid actions" });
+      return;
     }
 
-    setCreatedAt(new Date(created_at * 1000));
-
-    setLoading(false);
+    setResult({
+      player: { job_level, craftsmanship, control, cp },
+      job,
+      recipe,
+      ingredients: hq_ingredients,
+      startingQuality: RecipeState.calculateStartingQuality(recipe, hq_ingredients),
+      food: FOOD_VARIANTS.find((f) => f.name === foodName) ?? null,
+      potion: POTION_VARIANTS.find((p) => p.name === potionName) ?? null,
+      actions,
+      createdAt: new Date(created_at * 1000),
+    });
   }, [apiResult]);
 
-  if (loading) {
-    return null;
+  if (result && !("error" in result)) {
+    runInAction(() => {
+      LogbookState.addEntry({
+        slug,
+        data: result,
+        hash: objectHash(result, ["createdAt"]),
+      });
+    });
   }
 
-  if (apiError != null) {
-    return apiError;
-  }
-
-  for (const [attr, errorMessage] of [
-    [player, "Invalid player stats"],
-    [job, "Invalid job"],
-    [recipe, "Invalid recipe"],
-    [ingredients, "Invalid ingredients"],
-    [actions, "Invalid actions"],
-    [createdAt, "Invalid date"],
-  ] as const) {
-    if (attr == null) {
-      return errorMessage;
-    }
-  }
-
-  if (!player || !job || !recipe || !ingredients || !actions || !createdAt) {
-    // this should be unreachable
-    return "There was a problem loading this rotation";
-  }
-
-  const rotationData = {
-    player,
-    job,
-    recipe,
-    ingredients,
-    startingQuality: RecipeState.calculateStartingQuality(recipe, ingredients),
-    food,
-    potion,
-    actions,
-    createdAt,
-  };
-
-  LogbookState.addEntry({
-    slug,
-    data: rotationData,
-    hash: objectHash(rotationData),
-  });
-
-  return rotationData;
+  return result;
 }
 
-export function useSimulatorResult(
-  rotationData: RotationData | string | null
-): SimulatorResult | null {
+export function useSimulatorResult(rotationData: RotationData | null): SimulatorResult | null {
   const [result, setResult] = useState<SimulatorResult | null>(null);
 
-  useEffect(() => {
-    if (rotationData == null || typeof rotationData === "string") {
+  useAutorun(() => {
+    if (rotationData == null || !SimulatorState.loaded) {
       return;
     }
 

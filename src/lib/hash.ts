@@ -11,6 +11,15 @@ export function simpleHash(str: string): number {
   return hash;
 }
 
-export function objectHash(obj: object): number {
-  return simpleHash(jsonStableStringify(obj));
+export function objectHash<T>(obj: T, ignoredProps?: ReadonlyArray<keyof T>): number {
+  if (!ignoredProps) {
+    return simpleHash(jsonStableStringify(obj));
+  }
+
+  const objectToHash = ignoredProps.reduce<Omit<Partial<T>, keyof T>>((obj, ignoredProp) => {
+    const { [ignoredProp]: _, ...objectToHash } = obj;
+    return objectToHash;
+  }, obj as Partial<T>);
+
+  return simpleHash(jsonStableStringify(objectToHash));
 }

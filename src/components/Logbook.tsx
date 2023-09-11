@@ -1,14 +1,13 @@
 import "./Logbook.scss";
 
+import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
 import { LogbookState } from "../lib/logbook-state";
 
 const Logbook = observer(function Logbook() {
-  useEffect(() => {
-    LogbookState.refresh();
-  }, []);
+  useEffect(() => runInAction(() => LogbookState.refresh()), []);
 
   return (
     <div className="Logbook">

@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable, runInAction } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 
 import { RotationData } from "./rotation-data";
 import Storage from "./storage";
@@ -25,9 +25,7 @@ class _LogbookState {
   }
 
   refresh() {
-    runInAction(() => {
-      this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
-    });
+    this.entries = Storage.retrieve(LOGBOOK_ENTRIES_STORE) || [];
   }
 
   // Adds a logbook entry to the front of the list, so that older items move to

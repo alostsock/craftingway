@@ -1,0 +1,34 @@
+.ProgressMini {
+  display: flex;
+  align-items: center;
+  gap: var(--025);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+
+    .name {
+      color: var(--text-muted-color);
+      font-size: var(--small-font-size);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 0.5em;
+    }
+  }
+
+  .divider {
+    color: var(--text-muted-color);
+  }
+
+  .gauge {
+    width: 2.5em;
+    height: 2.5em;
+    transform: rotate(-90deg);
+    opacity: 0.8;
+
+    circle {
+      transition: stroke-dashoffset 140ms ease-in-out;
+    }
+  }
+}

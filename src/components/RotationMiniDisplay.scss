@@ -1,0 +1,97 @@
+.RotationMiniDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: var(--025);
+
+  .food {
+    color: var(--food-color);
+  }
+
+  .potion {
+    color: var(--potion-color);
+  }
+
+  .separator {
+    color: var(--text-muted-color);
+  }
+
+  .header {
+    display: flex;
+    align-items: baseline;
+    gap: 0 0.5em;
+
+    a {
+      flex-shrink: 1;
+      color: var(--text-color);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .rlvl {
+      flex-shrink: 0;
+      color: var(--text-muted-color);
+      font-size: 1rem;
+    }
+  }
+
+  .level {
+    color: var(--text-muted-color);
+  }
+
+  .consumables {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    align-items: baseline;
+
+    color: var(--text-muted-color);
+    max-width: 100%;
+  }
+
+  .nowrap {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .bars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--05) var(--1);
+    justify-content: flex-start;
+    flex-shrink: 1;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--05);
+    padding: var(--025) 0;
+
+    .ActionIcon img {
+      width: 2em;
+      height: 2em;
+    }
+
+    .steps {
+      color: var(--text-muted-color);
+      size: var(--small-font-size);
+    }
+  }
+
+  .controls {
+    padding-top: 0.25em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75em 1em;
+    align-items: baseline;
+
+    button.link {
+      font-size: var(--small-font-size);
+    }
+  }
+}

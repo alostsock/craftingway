@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 
 import { LogbookState } from "../lib/logbook-state";
+import RotationMiniDisplay from "./RotationMiniDisplay";
 
 const Logbook = observer(function Logbook() {
   useEffect(() => runInAction(() => LogbookState.refresh()), []);
@@ -13,15 +14,12 @@ const Logbook = observer(function Logbook() {
     <div className="Logbook">
       <section>
         <h1>Logbook</h1>
-        <p>Recently viewed and completed recipes will appear here.</p>
+        <p>Recently viewed saved recipes will appear here.</p>
       </section>
 
-      <section>
+      <section className="entries">
         {LogbookState.entries.map(({ hash, slug, data }) => (
-          <div key={hash}>
-            <p>{slug}</p>
-            <p>{hash}</p>
-          </div>
+          <RotationMiniDisplay key={hash} slug={slug} rotationData={data} />
         ))}
       </section>
     </div>

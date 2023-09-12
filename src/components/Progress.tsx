@@ -20,9 +20,9 @@ export default function Progress({ label, initialValue = 0, value, target }: Pro
         </span>
       </label>
 
-      <div className="progress">
-        <div className="bar" style={{ width: percentage(value, target) }} />
-        <div className="bar initial" style={{ width: percentage(initialValue, target) }} />
+      <div className="bar">
+        <div className="fill" style={{ width: percentage(value, target) }} />
+        <div className="fill initial" style={{ width: percentage(initialValue, target) }} />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const Logbook = observer(function Logbook() {
     <div className="Logbook">
       <section>
         <h1>Logbook</h1>
-        <p>Recently viewed saved recipes will appear here.</p>
+        <p>Recently viewed saved rotations will appear here.</p>
       </section>
 
       <section className="entries">

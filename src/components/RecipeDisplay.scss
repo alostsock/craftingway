@@ -1,7 +1,7 @@
 .RecipeDisplay {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1.5em;
+  gap: 0 1em;
 
   .name {
     grid-column: 1 / -1;

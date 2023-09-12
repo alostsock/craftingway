@@ -82,16 +82,26 @@ const RotationDisplay = function RotationDisplay({ slug }: Props) {
             ))}
           </div>
           <div className="consumables">
-            {food && (
+            {food ? (
               <React.Fragment>
                 <label className="food-active">Food</label>
                 <div>{food.name}</div>
               </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <label>Food</label>
+                <div>None</div>
+              </React.Fragment>
             )}
-            {potion && (
+            {potion ? (
               <React.Fragment>
                 <label className="potion-active">Potion</label>
                 <div>{potion.name}</div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <label>Potion</label>
+                <div>None</div>
               </React.Fragment>
             )}
           </div>

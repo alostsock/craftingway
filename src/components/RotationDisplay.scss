@@ -66,6 +66,10 @@
       grid-template-columns: min-content 1fr;
       gap: var(--05);
 
+      label {
+        color: var(--text-muted-color);
+      }
+
       .food-active {
         color: var(--food-color);
       }

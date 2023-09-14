@@ -155,6 +155,40 @@ p {
   margin: 0;
 }
 
+details {
+  summary {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    padding: var(--025) var(--05);
+    margin: 0 calc(-1 * var(--05));
+    border-radius: var(--border-radius);
+
+    &::marker {
+      content: none;
+    }
+
+    &::before {
+      content: "";
+      display: inline-block;
+      border: 0.3em solid transparent;
+      border-right-width: 0;
+      border-left: 0.61em solid var(--text-color);
+      margin-right: 0.61em;
+      transition: transform 70ms;
+    }
+
+    &:hover {
+      background: var(--grey-800);
+    }
+  }
+
+  &[open] summary::before {
+    transform: rotate(90deg);
+  }
+}
+
 footer {
   text-align: right;
   color: var(--text-muted-color);

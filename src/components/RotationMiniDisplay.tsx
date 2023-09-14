@@ -70,8 +70,8 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
       </div>
 
       <div className="consumables">
-        {food ? <span className="food nowrap">{food.name}</span> : <span>No food</span>}
-        {potion ? <span className="potion nowrap">{potion.name}</span> : <span>No potion</span>}
+        {food && <span className="food nowrap">{food.name}</span>}
+        {potion && <span className="potion nowrap">{potion.name}</span>}
       </div>
 
       <div className="bars">
@@ -90,24 +90,27 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
         )}
       </div>
 
-      <div className="actions">
-        {actions.map((action, index) => {
-          const step = index + 1;
-          return (
-            <div
-              key={index}
-              className={clsx("action", {
-                disabled: step >= (simulatorResult?.craft_state.step || 0),
-              })}
-            >
-              <ActionIcon name={action} />
-            </div>
-          );
-        })}
-        <div className="steps nowrap">
-          ({actions.length} {actions.length > 1 ? "steps" : "step"})
+      <details>
+        <summary>
+          Show {actions.length} {actions.length > 1 ? "steps" : "step"}
+        </summary>
+
+        <div className="actions">
+          {actions.map((action, index) => {
+            const step = index + 1;
+            return (
+              <div
+                key={index}
+                className={clsx("action", {
+                  disabled: step >= (simulatorResult?.craft_state.step || 0),
+                })}
+              >
+                <ActionIcon name={action} />
+              </div>
+            );
+          })}
         </div>
-      </div>
+      </details>
 
       <div className="controls">
         <CopyLink />

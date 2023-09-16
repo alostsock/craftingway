@@ -5,10 +5,12 @@ import React from "react";
 import { Link } from "wouter";
 
 import { calculateConsumableBonus } from "../lib/consumables";
+import { JOB_EMOJIS } from "../lib/jobs";
 import { type RotationData, useSimulatorResult } from "../lib/rotation-data";
 import { stars } from "../lib/utils";
 import CopyButton from "./CopyButton";
 import CopyMacroButtons from "./CopyMacroButtons";
+import Emoji from "./Emoji";
 import { ActionIcon } from "./Icons";
 import ProgressMini from "./ProgressMini";
 
@@ -18,7 +20,7 @@ interface Props {
 }
 
 export default function RotationMiniDisplay({ rotationData, slug }: Props) {
-  const { player, recipe, startingQuality, food, potion, actions } = rotationData;
+  const { player, job, recipe, startingQuality, food, potion, actions } = rotationData;
 
   const simulatorResult = useSimulatorResult(rotationData);
 
@@ -59,7 +61,7 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
       </div>
 
       <div className="stats">
-        <span className="level">Lv.{player.job_level}</span>{" "}
+        <Emoji emoji={JOB_EMOJIS[job]} /> <span className="level">Lv.{player.job_level}</span>{" "}
         <span className="nowrap">
           <Stat name="craftsmanship" />
           <Sep />

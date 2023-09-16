@@ -14,7 +14,7 @@
     }
 
     .subtext {
-      color: var(--text-muted-color);
+      color: var(--muted-text-color);
     }
 
     .job-swap-prompt {
@@ -32,7 +32,7 @@
   }
 
   .prompt {
-    color: var(--text-muted-color);
+    color: var(--muted-text-color);
     display: flex;
     column-gap: 0.5em;
   }

@@ -6,13 +6,13 @@
   min-height: var(--status-icon-height);
 
   .no-buffs {
-    color: var(--text-muted-color);
+    color: var(--muted-text-color);
     font-size: var(--small-font-size);
     margin: auto 0;
   }
 
   .tooltip {
-    color: var(--text-muted-color);
+    color: var(--muted-text-color);
     max-width: 22em;
 
     .buff-label {

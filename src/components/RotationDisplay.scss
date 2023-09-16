@@ -7,7 +7,7 @@
 
   .info {
     h2 {
-      color: var(--text-muted-color);
+      color: var(--muted-text-color);
       margin-bottom: calc(-1 * var(--1));
 
       span {
@@ -35,7 +35,7 @@
     }
 
     .player .stats {
-      color: var(--text-muted-color);
+      color: var(--muted-text-color);
       display: grid;
       grid-template-columns: min-content min-content 1fr;
       gap: var(--05);
@@ -67,7 +67,7 @@
       gap: var(--05);
 
       label {
-        color: var(--text-muted-color);
+        color: var(--muted-text-color);
       }
 
       .food-active {
@@ -86,12 +86,12 @@
       gap: var(--05);
 
       label {
-        color: var(--text-muted-color);
+        color: var(--muted-text-color);
       }
 
       .ingredient {
         .x {
-          color: var(--text-muted-color);
+          color: var(--muted-text-color);
         }
       }
     }

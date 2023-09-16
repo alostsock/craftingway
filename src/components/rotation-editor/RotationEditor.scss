@@ -61,7 +61,7 @@
       gap: var(--025);
 
       .name {
-        color: var(--text-muted-color);
+        color: var(--muted-text-color);
         font-size: var(--small-font-size);
       }
 
@@ -136,7 +136,7 @@
   }
 
   .tooltip {
-    color: var(--text-muted-color);
+    color: var(--muted-text-color);
     max-width: 22em;
 
     .action-label {

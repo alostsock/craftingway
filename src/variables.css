@@ -9,7 +9,7 @@
   --4: 64px;
 
   --text-color: var(--orange-050);
-  --text-muted-color: var(--grey-300);
+  --muted-text-color: var(--grey-300);
   --placeholder-color: var(--grey-500);
   --focus-color: var(--orange-400);
   --link-hover-color: var(--blue-300);

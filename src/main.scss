@@ -70,7 +70,7 @@ button {
 
   &.link {
     font-weight: 400;
-    color: var(--text-muted-color);
+    color: var(--muted-text-color);
     background: none;
     text-decoration: underline;
     padding: 0;
@@ -200,7 +200,7 @@ details {
 
 footer {
   text-align: right;
-  color: var(--text-muted-color);
+  color: var(--muted-text-color);
   font-size: var(--small-font-size);
   opacity: 0.3;
 

@@ -8,6 +8,9 @@
   --3: 48px;
   --4: 64px;
 
+  /* 0.6em closely matches Fira Mono's character width */
+  --charwidth: 0.6em;
+
   --text-color: var(--orange-050);
   --muted-text-color: var(--grey-300);
   --placeholder-color: var(--grey-500);

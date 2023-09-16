@@ -174,8 +174,7 @@ details {
       display: inline-block;
       border: 0.25em solid transparent;
       border-right-width: 0;
-      // 0.61em closely matches Fira Mono's character width
-      border-left: 0.61em solid var(--text-color);
+      border-left: var(--charwidth) solid var(--text-color);
       margin-right: 0.61em;
       transition: transform 70ms;
     }

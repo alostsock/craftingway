@@ -3,7 +3,7 @@ import "./SearchPanel.scss";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { SimulatorState } from "../lib/simulator-state";
 import Storage from "../lib/storage";
@@ -13,12 +13,12 @@ const CONFIG_VISIBILITY_STORE = "showConfig";
 
 const SearchPanel = observer(function SearchPanel() {
   const [showConfig, setShowConfig] = useState(Storage.retrieve(CONFIG_VISIBILITY_STORE) || false);
-
-  const toggleConfig = () =>
-    setShowConfig((previous) => {
-      Storage.store(CONFIG_VISIBILITY_STORE, JSON.stringify(!previous));
-      return !previous;
-    });
+  const configRef = useRef<HTMLDetailsElement>(null);
+  const toggleConfig = () => {
+    const isOpen = !!configRef?.current?.open;
+    Storage.store(CONFIG_VISIBILITY_STORE, JSON.stringify(isOpen));
+    setShowConfig(isOpen);
+  };
 
   const existingRotation = !!SimulatorState.completionReason;
   const isSearching = SimulatorState.isSearching;
@@ -46,11 +46,9 @@ const SearchPanel = observer(function SearchPanel() {
         actions to use first, you can add them from the "Craft manually" tab.
       </p>
 
-      <button className="link" onClick={toggleConfig} disabled={isSearching}>
-        {showConfig ? "Hide" : "Show"} search settings
-      </button>
+      <details ref={configRef} onToggle={toggleConfig} open={showConfig ? true : undefined}>
+        <summary>Show search settings</summary>
 
-      {showConfig && (
         <div className="config">
           <div className="field max-steps">
             <LabelHelp
@@ -184,7 +182,7 @@ const SearchPanel = observer(function SearchPanel() {
             Reset settings to default
           </button>
         </div>
-      )}
+      </details>
     </div>
   );
 });

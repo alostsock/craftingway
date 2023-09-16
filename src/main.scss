@@ -172,8 +172,9 @@ details {
     &::before {
       content: "";
       display: inline-block;
-      border: 0.3em solid transparent;
+      border: 0.25em solid transparent;
       border-right-width: 0;
+      // 0.61em closely matches Fira Mono's character width
       border-left: 0.61em solid var(--text-color);
       margin-right: 0.61em;
       transition: transform 70ms;
@@ -184,8 +185,16 @@ details {
     }
   }
 
-  &[open] summary::before {
-    transform: rotate(90deg);
+  &[open] {
+    padding-bottom: var(--05);
+
+    summary {
+      margin-bottom: var(--05);
+
+      &::before {
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 

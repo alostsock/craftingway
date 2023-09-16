@@ -75,11 +75,6 @@
       width: 2.5rem;
       height: 2.5rem;
     }
-
-    .steps {
-      color: var(--text-muted-color);
-      size: var(--small-font-size);
-    }
   }
 
   .controls {
@@ -88,9 +83,5 @@
     flex-wrap: wrap;
     gap: 0.75em 1em;
     align-items: baseline;
-
-    button.link {
-      font-size: var(--small-font-size);
-    }
   }
 }

@@ -1,7 +1,7 @@
 .CopyMacroButtons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5em;
+  gap: var(--charwidth);
 
   * {
     color: var(--muted-text-color);

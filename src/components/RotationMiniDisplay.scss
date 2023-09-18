@@ -81,7 +81,7 @@
     padding-top: 0.25em;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75em 1em;
+    gap: 0.5em calc(2 * var(--charwidth));
     align-items: baseline;
   }
 }

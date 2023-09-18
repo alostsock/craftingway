@@ -34,7 +34,7 @@ const MODE_STORE = "rotationEditorMode";
 type Mode = "manual" | "auto";
 
 const RotationEditor = observer(function RotationEditor() {
-  const [itemIds, setItemIds] = useState<string[]>(SimulatorState.actions);
+  const [itemIds, setItemIds] = useState<string[]>(SimulatorState.actions.map(idFromAction));
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(

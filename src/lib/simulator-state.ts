@@ -105,7 +105,7 @@ class _SimulatorState {
 
       return {
         name: `Generic Recipe (${key})`,
-        jobs: new Set(JOBS),
+        jobs: [...JOBS],
         item_level: 0,
         equip_level: 0,
         is_specialist: false,

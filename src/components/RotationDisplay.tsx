@@ -12,6 +12,7 @@ import DocumentTitle from "./DocumentTitle";
 import { ActionIcon } from "./Icons";
 import Progress from "./Progress";
 import RecipeDisplay from "./RecipeDisplay";
+import RotationLoadButton from "./RotationLoadButton";
 
 interface Props {
   slug: string;
@@ -119,7 +120,11 @@ const RotationDisplay = function RotationDisplay({ slug }: Props) {
           </div>
         )}
 
-        <CopyMacroButtons craftState={simulatorResult.craft_state} actions={actions} />
+        <div className="controls">
+          <CopyMacroButtons craftState={simulatorResult.craft_state} actions={actions} />
+
+          <RotationLoadButton rotationData={rotationData} />
+        </div>
       </section>
 
       <section>

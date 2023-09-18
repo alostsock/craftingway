@@ -96,9 +96,10 @@
       }
     }
 
-    .CopyMacroButtons span {
-      color: var(--text-color);
-      font-size: 1rem;
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em calc(2 * var(--charwidth));
     }
   }
 

@@ -13,6 +13,7 @@ import CopyMacroButtons from "./CopyMacroButtons";
 import Emoji from "./Emoji";
 import { ActionIcon } from "./Icons";
 import ProgressMini from "./ProgressMini";
+import RotationLoadButton from "./RotationLoadButton";
 
 interface Props {
   rotationData: RotationData;
@@ -116,9 +117,12 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
 
       <div className="controls">
         <CopyLink />
+
         {simulatorResult && (
           <CopyMacroButtons craftState={simulatorResult.craft_state} actions={actions} />
         )}
+
+        <RotationLoadButton rotationData={rotationData} />
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ const Header = observer(function Header() {
 
         <div className="links">
           <div className="internal">
-            {location !== "/logbook" && <Link href="/logbook">logbook</Link>}
+            {!location.startsWith("/logbook") && <Link href="/logbook">logbook</Link>}
           </div>
 
           <div className="external">

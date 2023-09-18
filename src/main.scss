@@ -52,6 +52,12 @@ h2 {
   font-weight: 500;
 }
 
+a {
+  &:hover {
+    color: var(--link-hover-color);
+  }
+}
+
 button {
   cursor: pointer;
   font-weight: 500;

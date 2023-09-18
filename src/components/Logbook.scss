@@ -5,7 +5,28 @@
   align-items: center;
   gap: var(--15);
 
+  .no-entries {
+    color: var(--muted-text-color);
+  }
+
   .entries {
     gap: var(--2);
+  }
+
+  .pager {
+    display: flex;
+    flex-wrap: wrap;
+
+    a:not(:hover) {
+      color: var(--muted-text-color);
+    }
+
+    // make links slightly wider so they're easier to click
+    :first-child {
+      margin-right: calc(0.5 * var(--charwidth));
+    }
+    :not(:first-child) {
+      padding: 0 calc(0.5 * var(--charwidth));
+    }
   }
 }

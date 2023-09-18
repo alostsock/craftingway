@@ -9,7 +9,7 @@ type LogbookEntry = {
   hash: number;
 };
 
-const MAX_ENTRIES = 5;
+const MAX_ENTRIES = 50;
 
 const LOGBOOK_ENTRIES_STORE = "logbookEntries";
 

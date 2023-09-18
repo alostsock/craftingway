@@ -29,10 +29,7 @@ const App = observer(function App() {
 
           <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
 
-          <Route path="/logbook">
-            <DocumentTitle />
-            <Logbook />
-          </Route>
+          <Route path="/logbook/:page?">{({ page }) => <Logbook page={page} />}</Route>
 
           <Route>
             <Redirect to="/" />

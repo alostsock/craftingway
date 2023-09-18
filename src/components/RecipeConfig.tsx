@@ -104,6 +104,10 @@ const RecipesByName = observer(function RecipesByName() {
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
     defaultHighlightedIndex: 0,
+    scrollIntoView: (node, menuNode) => {
+      menuNode.scrollIntoView();
+      node.scrollIntoView();
+    },
   });
 
   return (
@@ -160,6 +164,10 @@ const RecipesByLevel = observer(function RecipesByLevel() {
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
     defaultHighlightedIndex: 0,
+    scrollIntoView: (node, menuNode) => {
+      menuNode.scrollIntoView();
+      node.scrollIntoView();
+    },
   });
 
   return (

@@ -14,7 +14,7 @@ interface Props {
 export default function RecipeDisplay({ recipe, job }: Props) {
   return (
     <div className="RecipeDisplay">
-      <h1 className="name">
+      <h1 id="recipe-display" className="name">
         <CopyButton className="text" copyText={recipe.name}>
           {recipe.name}
         </CopyButton>

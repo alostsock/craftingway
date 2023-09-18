@@ -1,5 +1,7 @@
 import "./RecipeDisplay.scss";
 
+import { useLocation } from "wouter";
+
 import { Job, JOB_EMOJIS } from "../lib/jobs";
 import type { RecipeData } from "../lib/recipe-state";
 import { stars } from "../lib/utils";
@@ -12,8 +14,20 @@ interface Props {
 }
 
 export default function RecipeDisplay({ recipe, job }: Props) {
+  const [_, setLocation] = useLocation();
+
+  // used on the home page to scroll to a recipe when loading
+  // it from a saved rotation
+  const checkScroll = (el: HTMLDivElement | null) => {
+    const params = new URLSearchParams(window.location.search);
+    if (el && params.get("recipe") != null) {
+      el.scrollIntoView();
+      setLocation("/", { replace: true });
+    }
+  };
+
   return (
-    <div className="RecipeDisplay">
+    <div ref={checkScroll} className="RecipeDisplay">
       <h1 id="recipe-display" className="name">
         <CopyButton className="text" copyText={recipe.name}>
           {recipe.name}

@@ -48,7 +48,7 @@ const RotationLoadButton = observer(function RotationLoadButton({ rotationData }
         RecipeState.hq_ingredients = rotationData.ingredients;
         SimulatorState.actions = rotationData.actions;
       });
-      setLocation("/");
+      setLocation("/?recipe");
     } else {
       setShouldConfirm(true);
     }

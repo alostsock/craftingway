@@ -13,7 +13,7 @@ export interface Ingredient {
   can_hq: boolean;
 }
 
-interface RawRecipeData extends Recipe {
+export interface RecipeData extends Recipe {
   name: string;
   jobs: Job[];
   job_level: number;
@@ -24,10 +24,6 @@ interface RawRecipeData extends Recipe {
   can_hq: boolean;
   material_quality: number;
   ingredients: Ingredient[];
-}
-
-export interface RecipeData extends Omit<RawRecipeData, "jobs"> {
-  jobs: Set<Job>;
 }
 
 class _RecipeState {
@@ -48,8 +44,7 @@ class _RecipeState {
 
   async loadRecipes() {
     const response = await fetch("/recipes.msgpack");
-    const rawRecipeData: RawRecipeData[] = unpack(new Uint8Array(await response.arrayBuffer()));
-    this.recipes = rawRecipeData.map((raw) => ({ ...raw, jobs: new Set(raw.jobs) }));
+    this.recipes = unpack(new Uint8Array(await response.arrayBuffer()));
     runInAction(() => (this.loaded = true));
   }
 
@@ -96,7 +91,7 @@ class _RecipeState {
       if (!score) continue;
 
       // grant a small boost if the recipe is relevant to the current job
-      if (recipe.jobs.has(PlayerState.job)) {
+      if (recipe.jobs.includes(PlayerState.job)) {
         score += 0.2;
       }
 

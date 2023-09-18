@@ -86,7 +86,7 @@ const RecipesByName = observer(function RecipesByName() {
   const [queryResults, setQueryResults] = useState<RecipeData[]>([]);
 
   const setRecipe = action((recipe: RecipeData | null) => {
-    if (recipe && !recipe.jobs.has(PlayerState.job)) {
+    if (recipe && !recipe.jobs.includes(PlayerState.job)) {
       PlayerState.job = recipe.jobs.values().next().value;
     }
     SimulatorState.actions = [];
@@ -131,7 +131,7 @@ const RecipesByName = observer(function RecipesByName() {
                   Lv.{recipe.job_level} {stars(recipe.stars)}
                 </div>
 
-                {!recipe.jobs.has(PlayerState.job) && (
+                {!recipe.jobs.includes(PlayerState.job) && (
                   <div className="subtext job-swap-prompt">
                     Swaps to {recipe.jobs.values().next().value}
                   </div>

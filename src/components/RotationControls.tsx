@@ -5,6 +5,8 @@ import { observer } from "mobx-react-lite";
 import { useLocation } from "wouter";
 
 import { createRotation } from "../lib/api";
+import { objectHash } from "../lib/hash";
+import { LogbookState } from "../lib/logbook-state";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
@@ -21,6 +23,27 @@ const RotationControls = observer(function RotationControls() {
     if (!RecipeState.recipe) return;
 
     const { job_level, craftsmanship, control, cp, food, potion } = PlayerState.config;
+
+    const hash = objectHash({
+      player: { job_level, craftsmanship, control, cp },
+      job: PlayerState.job,
+      recipe: RecipeState.recipe,
+      ingredients: RecipeState.hq_ingredients,
+      startingQuality: RecipeState.startingQuality,
+      food: PlayerState.config.food,
+      potion: PlayerState.config.potion,
+      actions: SimulatorState.actions,
+    });
+
+    const existingRotation = LogbookState.entries.find(
+      (entry) => entry.hash === hash && entry.slug.length > 0
+    );
+
+    if (existingRotation) {
+      setLocation(`/rotation/${existingRotation.slug}`);
+      return;
+    }
+
     const result = await createRotation({
       version: "6.4-1",
       job: PlayerState.job,

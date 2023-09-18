@@ -13,21 +13,12 @@
     gap: var(--1);
 
     a {
-      color: var(--muted-text-color);
       display: flex;
       align-items: center;
-      transition: color 70ms;
-
-      &:hover {
-        color: var(--text-color);
-      }
 
       &:not(:hover) {
-        text-decoration: none;
-      }
-
-      &:visited:not(:hover) {
         color: var(--muted-text-color);
+        text-decoration: none;
       }
     }
 
@@ -54,7 +45,6 @@
     }
 
     .links {
-      color: var(--muted-text-color);
       flex-grow: 1;
       display: flex;
       align-items: center;

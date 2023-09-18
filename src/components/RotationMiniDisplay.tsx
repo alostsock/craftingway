@@ -1,19 +1,16 @@
 import "./RotationMiniDisplay.scss";
 
 import clsx from "clsx";
-import React from "react";
 import { Link } from "wouter";
 
-import { calculateConsumableBonus } from "../lib/consumables";
-import { JOB_EMOJIS } from "../lib/jobs";
 import { type RotationData, useSimulatorResult } from "../lib/rotation-data";
 import { stars } from "../lib/utils";
 import CopyButton from "./CopyButton";
 import CopyMacroButtons from "./CopyMacroButtons";
-import Emoji from "./Emoji";
 import { ActionIcon } from "./Icons";
 import ProgressMini from "./ProgressMini";
 import RotationLoadButton from "./RotationLoadButton";
+import StatDisplay from "./StatDisplay";
 
 interface Props {
   rotationData: RotationData;
@@ -25,30 +22,12 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
 
   const simulatorResult = useSimulatorResult(rotationData);
 
-  const foodBonus = calculateConsumableBonus(player, food);
-  const potionBonus = calculateConsumableBonus(player, potion);
-
   const CopyLink = () =>
     slug ? (
       <CopyButton className="link" copyText={`${window.origin}/rotation/${slug}`}>
         Copy link
       </CopyButton>
     ) : null;
-
-  const Stat = ({ name }: { name: "craftsmanship" | "control" | "cp" }) => {
-    const foodValue = foodBonus[name];
-    const potionValue = potionBonus[name];
-
-    return (
-      <React.Fragment>
-        {player[name] + foodValue + potionValue}
-        {foodValue > 0 ? <span className="food">*</span> : null}
-        {potionValue > 0 ? <span className="potion">*</span> : null}
-      </React.Fragment>
-    );
-  };
-
-  const Sep = () => <span className="separator"> / </span>;
 
   return (
     <div className="RotationMiniDisplay">
@@ -61,16 +40,7 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
         </span>
       </div>
 
-      <div className="stats">
-        <Emoji emoji={JOB_EMOJIS[job]} /> <span className="level">Lv.{player.job_level}</span>{" "}
-        <span className="nowrap">
-          <Stat name="craftsmanship" />
-          <Sep />
-          <Stat name="control" />
-          <Sep />
-          <Stat name="cp" />
-        </span>
-      </div>
+      <StatDisplay job={job} player={player} food={food} potion={potion} />
 
       <div className="consumables">
         {food && <span className="food nowrap">{food.name}</span>}

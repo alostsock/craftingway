@@ -233,6 +233,12 @@ footer {
   gap: 0.5em;
 }
 
+.nowrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .dropdown-list {
   position: relative;
 

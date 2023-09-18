@@ -8,6 +8,7 @@ import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { RotationData } from "../lib/rotation-data";
 import { SimulatorState } from "../lib/simulator-state";
+import StatDisplay from "./StatDisplay";
 
 interface Props {
   rotationData: RotationData;
@@ -17,20 +18,20 @@ const RotationLoadButton = observer(function RotationLoadButton({ rotationData }
   const [shouldConfirm, setShouldConfirm] = useState(false);
   const [_, setLocation] = useLocation();
 
+  const { job_level, craftsmanship, control, cp, food, potion } =
+    PlayerState.configByJob[rotationData.job];
+
+  const currentConfig = {
+    player: { job_level, craftsmanship, control, cp },
+    food,
+    potion,
+  };
+
   const load = (confirmed = false) => {
-    const newConfig = {
+    const newConfig: typeof currentConfig = {
       player: rotationData.player,
       food: rotationData.food,
       potion: rotationData.potion,
-    };
-
-    const { job_level, craftsmanship, control, cp, food, potion } =
-      PlayerState.configByJob[rotationData.job];
-
-    const currentConfig: typeof newConfig = {
-      player: { job_level, craftsmanship, control, cp },
-      food,
-      potion,
     };
 
     if (confirmed || objectHash(currentConfig) === objectHash(newConfig)) {
@@ -60,7 +61,9 @@ const RotationLoadButton = observer(function RotationLoadButton({ rotationData }
     </button>
   ) : (
     <div>
-      Loading this rotation will replace your current stats and consumables. Are you sure?{" "}
+      Editing this rotation will replace your current stats and consumables (
+      <StatDisplay job={rotationData.job} {...currentConfig} />
+      ). Are you sure?{" "}
       <button className="link" onClick={() => load(true)}>
         OK
       </button>{" "}

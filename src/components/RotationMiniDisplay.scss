@@ -11,10 +11,6 @@
     color: var(--potion-color);
   }
 
-  .separator {
-    color: var(--muted-text-color);
-  }
-
   .header {
     display: flex;
     align-items: baseline;
@@ -49,12 +45,6 @@
 
     color: var(--muted-text-color);
     max-width: 100%;
-  }
-
-  .nowrap {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
   }
 
   .bars {

@@ -27,7 +27,7 @@ const Logbook = observer(function Logbook({ page: pageParam }: { page?: string }
 
   return (
     <div className="Logbook">
-      <DocumentTitle />
+      <DocumentTitle prefix={currentPage > 1 ? `Page ${currentPage}` : undefined} />
 
       <section>
         <h1>Logbook</h1>

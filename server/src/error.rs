@@ -12,7 +12,10 @@ pub enum ApiError {
     Json(#[from] serde_json::Error),
 
     #[error("Try again in {wait_time} seconds")]
-    TooManyRequests { wait_time: u64 },
+    TooManyRequests {
+        client_ip: std::net::IpAddr,
+        wait_time: u64,
+    },
 }
 
 impl IntoResponse for ApiError {
@@ -35,8 +38,11 @@ impl IntoResponse for ApiError {
                     String::from("Database communication error"),
                 )
             }
-            Self::TooManyRequests { wait_time: _ } => {
-                warn!("Rate limit quota reached");
+            Self::TooManyRequests {
+                client_ip,
+                wait_time: _,
+            } => {
+                warn!("Rate limit quota reached for {client_ip}");
                 (StatusCode::TOO_MANY_REQUESTS, format!("{self}"))
             }
             _ => (StatusCode::INTERNAL_SERVER_ERROR, format!("{self}")),

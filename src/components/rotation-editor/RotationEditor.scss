@@ -98,8 +98,8 @@
       cursor: grabbing;
     }
 
-    &.disabled {
-      opacity: 0.4;
+    &.disabled .ActionIcon {
+      opacity: 0.3;
     }
 
     &.active {

@@ -2,15 +2,15 @@ mod rotation;
 mod words;
 
 use axum::{
+    body::Body,
     routing::{get, post},
     Router,
 };
-use hyper::Body;
 use serde::Serialize;
 
 use crate::ApiState;
 
-pub fn create_router() -> Router<ApiState, Body> {
+pub fn create_router() -> Router<ApiState, http_body::Limited<Body>> {
     Router::new()
         .route("/rotation/:slug", get(rotation::get))
         .route("/rotation", post(rotation::insert))

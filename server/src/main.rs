@@ -1,13 +1,16 @@
 #![warn(clippy::pedantic)]
-use axum::middleware;
+use axum::{
+    http::{HeaderValue, Method},
+    middleware,
+};
 use clap::{Parser, Subcommand};
-use hyper::http::{HeaderValue, Method};
 use sqlx::sqlite::SqlitePoolOptions;
 use sqlx::SqlitePool;
 use std::{net::SocketAddr, sync::Arc};
 use tower::ServiceBuilder;
 use tower_http::{
     cors::{Any, CorsLayer},
+    limit::RequestBodyLimitLayer,
     timeout::TimeoutLayer,
     trace::TraceLayer,
 };
@@ -71,6 +74,8 @@ async fn serve(sqlite_connection: SqlitePool, port: &u16) {
 
     let trace = TraceLayer::new_for_http();
 
+    let body_limit = RequestBodyLimitLayer::new(1024);
+
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_headers(Any)
@@ -83,6 +88,7 @@ async fn serve(sqlite_connection: SqlitePool, port: &u16) {
     let app = server::create_router().with_state(state).layer(
         ServiceBuilder::new()
             .layer(trace)
+            .layer(body_limit)
             .layer(cors)
             .layer(rate_limit)
             .layer(timeout),

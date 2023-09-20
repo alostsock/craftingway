@@ -82,6 +82,7 @@ const RotationDisplay = function RotationDisplay({ slug }: Props) {
               </React.Fragment>
             ))}
           </div>
+
           <div className="consumables">
             {food ? (
               <React.Fragment>

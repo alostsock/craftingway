@@ -20,11 +20,11 @@ export interface Config {
 
 // Remember to bump version number when updating DEFAULT_CONFIG, so that the
 // cache is invalidated
-const CONFIG_STORE = "simulatorConfig_v2";
+const CONFIG_STORE = "simulatorConfig_v3";
 
 export const DEFAULT_CONFIG: Config = {
   maxSteps: 25,
-  iterations: 200_000,
+  iterations: 150_000,
   maxScoreWeightingConstant: 0.1,
   explorationConstant: 3.0,
   concurrency: Math.ceil(navigator.hardwareConcurrency / 2),

@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-09-23 17:32+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: fr\n"
+
+#: src/components/RecipeConfig.tsx:48
+msgid "by level"
+msgstr "par niveau"
+
+#: src/components/RecipeConfig.tsx:47
+msgid "by name"
+msgstr "par son nom"
+
+#: src/components/RecipeConfig.tsx:44
+msgid "Search for a recipe"
+msgstr "Rechercher une recette"

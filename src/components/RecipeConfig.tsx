@@ -1,11 +1,13 @@
 import "./RecipeConfig.scss";
 
+import { t } from "@lingui/macro";
 import { useCombobox } from "downshift";
 import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 
 import { useAutorun } from "../lib/hooks";
+import { LocaleState } from "../lib/locale-state";
 import { PlayerState } from "../lib/player-state";
 import { RecipeData, RecipeState } from "../lib/recipe-state";
 import { SimulatorState } from "../lib/simulator-state";
@@ -39,13 +41,14 @@ const RecipeConfig = observer(function RecipeConfig() {
     <section className="RecipeConfig">
       {!RecipeState.recipe && (
         <ModeSelector
-          prompt="Search for a recipe…"
+          prompt={t`Search for a recipe`}
           defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "name"}
           modeOptions={[
-            { mode: "name", label: "by name", component: RecipesByName },
-            { mode: "level", label: "by level", component: RecipesByLevel },
+            { mode: "name", label: t`by name`, component: RecipesByName },
+            { mode: "level", label: t`by level`, component: RecipesByLevel },
           ]}
           onChange={onModeChange}
+          reverse={LocaleState.locale == "jp"}
         />
       )}
 

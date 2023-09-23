@@ -16,6 +16,7 @@ type Props<Mode extends string> = {
   defaultMode: Mode;
   modeOptions: ModeOption<Mode>[];
   onChange?: (mode: Mode) => void;
+  reverse?: boolean;
 };
 
 export default function ModeSelector<Mode extends string>({
@@ -23,6 +24,7 @@ export default function ModeSelector<Mode extends string>({
   defaultMode,
   modeOptions,
   onChange,
+  reverse = false,
 }: Props<Mode>) {
   const [selectedMode, setMode] = useState<Mode>(defaultMode);
 
@@ -38,7 +40,7 @@ export default function ModeSelector<Mode extends string>({
     <div className="ModeSelector">
       <fieldset>
         {/* <legend> on its own doesn't respect display: flex for some reason */}
-        {prompt && (
+        {prompt && !reverse && (
           <span className="legend">
             <legend>{prompt}</legend>
           </span>
@@ -64,6 +66,12 @@ export default function ModeSelector<Mode extends string>({
             </React.Fragment>
           );
         })}
+
+        {prompt && reverse && (
+          <span className="legend">
+            <legend>{prompt}</legend>
+          </span>
+        )}
       </fieldset>
 
       <ModeComponent />

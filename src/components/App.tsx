@@ -1,5 +1,8 @@
 import "./App.scss";
+import "../lib/locale-state";
 
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
 import { Provider as TooltipProvider } from "@radix-ui/react-tooltip";
 import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "wouter";
@@ -16,28 +19,30 @@ import RotationDisplay from "./RotationDisplay";
 const App = observer(function App() {
   return (
     <div className="App">
-      <TooltipProvider delayDuration={400} skipDelayDuration={300}>
-        <Header />
+      <I18nProvider i18n={i18n}>
+        <TooltipProvider delayDuration={400} skipDelayDuration={300}>
+          <Header />
 
-        <Switch>
-          <Route path="/">
-            <DocumentTitle />
-            <PlayerConfig />
-            <RecipeConfig />
-            <CraftStateDisplay />
-          </Route>
+          <Switch>
+            <Route path="/">
+              <DocumentTitle />
+              <PlayerConfig />
+              <RecipeConfig />
+              <CraftStateDisplay />
+            </Route>
 
-          <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
+            <Route path="/rotation/:slug">{({ slug }) => <RotationDisplay slug={slug} />}</Route>
 
-          <Route path="/logbook/:page?">{({ page }) => <Logbook page={page} />}</Route>
+            <Route path="/logbook/:page?">{({ page }) => <Logbook page={page} />}</Route>
 
-          <Route>
-            <Redirect to="/" />
-          </Route>
-        </Switch>
+            <Route>
+              <Redirect to="/" />
+            </Route>
+          </Switch>
 
-        <Footer />
-      </TooltipProvider>
+          <Footer />
+        </TooltipProvider>
+      </I18nProvider>
     </div>
   );
 });

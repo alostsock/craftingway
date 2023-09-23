@@ -7,7 +7,7 @@
   fieldset {
     display: flex;
     flex-wrap: wrap;
-    gap: 0 0.5em;
+    gap: 0 var(--charwidth);
     padding: 0;
     margin: 0;
     border: 0;

@@ -7,11 +7,11 @@
     "dev": "vite",
     "dev-server": "RUST_LOG=\"debug\" cargo watch -C server -x 'run -- serve --port 8080'",
     "format": "eslint src --fix && prettier src --write",
-    "lint": "eslint src && prettier --check . && tsc",
-    "messages-extract": "lingui extract",
-    "messages-compile": "lingui compile --strict",
+    "extract-messages": "lingui extract",
+    "compile-messages": "lingui compile --strict",
+    "lint": "lingui compile --strict && eslint src && prettier --check . && tsc",
     "build-submodule": "bash -c \"cd crafty && ./build-web.sh\"",
-    "build": "tsc && vite build",
+    "build": "lingui compile --strict && tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

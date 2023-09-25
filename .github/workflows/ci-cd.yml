@@ -43,7 +43,7 @@ jobs:
       - name: Build submodule
         if: steps.submodule-cache.outputs.cache-hit != 'true'
         run: |
-          yarn global add wasm-pack@0.11.1
+          yarn global add wasm-pack@0.12.1
           yarn run build-submodule
 
       - run: yarn install --frozen-lockfile

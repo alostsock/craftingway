@@ -4,6 +4,7 @@ import { unpack } from "msgpackr/unpack";
 
 import { fuzzysearch } from "./fuzzysearch";
 import { Job } from "./jobs";
+import { LocaleState } from "./locale-state";
 import { PlayerState } from "./player-state";
 
 export interface Ingredient {
@@ -86,7 +87,9 @@ class _RecipeState {
     const matches = [];
 
     for (const recipe of this.recipes) {
-      let score = fuzzysearch(query, recipe.name.toLowerCase());
+      const recipeName = LocaleState.translateItemName(recipe.name);
+
+      let score = fuzzysearch(query, recipeName.toLowerCase());
 
       if (!score) continue;
 

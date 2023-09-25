@@ -104,7 +104,7 @@ const RecipesByName = observer(function RecipesByName() {
     defaultInputValue: query,
     onInputValueChange: ({ inputValue }) => setQuery(inputValue || ""),
     items: queryResults,
-    itemToString: (item) => item?.name || "",
+    itemToString: (item) => (item ? LocaleState.translateItemName(item.name) : ""),
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),
     defaultHighlightedIndex: 0,
     scrollIntoView: (node, menuNode) => {
@@ -119,7 +119,7 @@ const RecipesByName = observer(function RecipesByName() {
       <div className="dropdown-list" {...cb.getComboboxProps()}>
         <input
           autoFocus
-          placeholder="Orphanage Donation"
+          placeholder={LocaleState.translateItemName("Orphanage Donation")}
           spellCheck="false"
           {...cb.getInputProps()}
         />
@@ -128,7 +128,7 @@ const RecipesByName = observer(function RecipesByName() {
           {cb.isOpen &&
             queryResults.map((recipe, index) => (
               <li key={`${recipe.name}-${index}`} {...cb.getItemProps({ item: recipe, index })}>
-                <Highlighter needle={query} haystack={recipe.name} />
+                <Highlighter needle={query} haystack={LocaleState.translateItemName(recipe.name)} />
 
                 <div className="subtext">
                   Lv.{recipe.job_level} {stars(recipe.stars)}

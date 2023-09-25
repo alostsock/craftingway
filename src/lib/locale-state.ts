@@ -82,7 +82,7 @@ class _LocaleState {
     }
   }
 
-  translateItemName(englishItemName: string) {
+  translateItemName(englishItemName: string): string {
     if (this.locale === "en") {
       return englishItemName;
     }

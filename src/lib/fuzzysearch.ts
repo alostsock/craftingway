@@ -1,7 +1,7 @@
 /**
  * Slightly modified from https://github.com/bevacqua/fuzzysearch
  *
- * Note that very character in `needle` must be present in `haystack`. Returns
+ * Note that every character in `needle` must be present in `haystack`. Returns
  * a score such that 0 < score <= 2.0
  */
 export function fuzzysearch(needle: string, haystack: string): number {

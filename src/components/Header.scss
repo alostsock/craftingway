@@ -51,25 +51,26 @@
       justify-content: space-between;
       gap: var(--05);
 
-      img {
-        opacity: 0.4;
-        transition: opacity 70ms;
-
-        &:hover {
-          opacity: 1;
-        }
-      }
-
       .internal {
         display: flex;
         align-items: center;
         gap: var(--05);
+        flex-grow: 1;
       }
 
       .external {
         display: flex;
         align-items: center;
         gap: var(--05);
+
+        img {
+          opacity: 0.4;
+          transition: opacity 70ms;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
 
         .ko-fi img {
           height: 1.2rem;

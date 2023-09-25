@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import { Link, useLocation } from "wouter";
 
+import { LocaleSelect } from "./LocaleSelect";
+
 const Header = observer(function Header() {
   const [location, _] = useLocation();
 
@@ -25,6 +27,8 @@ const Header = observer(function Header() {
           <div className="internal">
             {!location.startsWith("/logbook") && <Link href="/logbook">logbook</Link>}
           </div>
+
+          <LocaleSelect />
 
           <div className="external">
             <a

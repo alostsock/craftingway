@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 
 import { messages as englishMessages } from "../locales/en";
 
-type Locale = "en" | "jp" | "fr" | "de";
+export type Locale = "en" | "jp" | "fr" | "de";
 type NonEnglishLocale = Exclude<Locale, "en">;
 
 interface TranslatedContent {

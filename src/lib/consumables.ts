@@ -1,6 +1,7 @@
 import type { Player } from "crafty";
 
 import { fuzzysearch } from "./fuzzysearch";
+import { LocaleState } from "./locale-state";
 
 type ConsumableStatValues = readonly [value: number, max: number, hq_value: number, hq_max: number];
 
@@ -154,7 +155,8 @@ export function searchConsumables(
 
   const matches = [];
   for (const consumable of consumables) {
-    const score = fuzzysearch(query, consumable.name.toLowerCase());
+    const name = LocaleState.translateItemName(consumable.name, true);
+    const score = fuzzysearch(query, name.toLowerCase());
     if (!score) continue;
     matches.push({ consumable, score });
   }

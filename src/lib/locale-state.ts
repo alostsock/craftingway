@@ -82,13 +82,17 @@ class _LocaleState {
     }
   }
 
-  translateItemName(englishItemName: string): string {
+  translateItemName(englishItemName: string, checkHq = false): string {
     if (this.locale === "en") {
       return englishItemName;
     }
 
     const content = TRANSLATION_STATES[this.locale];
     if (content && content !== "loading") {
+      if (checkHq && englishItemName.endsWith(" HQ")) {
+        const nqItemName = englishItemName.substring(0, englishItemName.length - 3);
+        return `${content.items[nqItemName] ?? englishItemName} HQ`;
+      }
       return content.items[englishItemName] ?? englishItemName;
     } else {
       return englishItemName;

@@ -89,7 +89,7 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
             {food ? (
               <React.Fragment>
                 <label className="food-active">Food</label>
-                <div>{food.name}</div>
+                <div>{LocaleState.translateItemName(food.name, true)}</div>
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -100,7 +100,7 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
             {potion ? (
               <React.Fragment>
                 <label className="potion-active">Potion</label>
-                <div>{potion.name}</div>
+                <div>{LocaleState.translateItemName(potion.name, true)}</div>
               </React.Fragment>
             ) : (
               <React.Fragment>

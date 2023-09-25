@@ -14,6 +14,7 @@ import {
 } from "../lib/consumables";
 import { useReaction } from "../lib/hooks";
 import { Job, JOB_EMOJIS, JOBS } from "../lib/jobs";
+import { LocaleState } from "../lib/locale-state";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { STATS } from "../lib/stats";
@@ -125,7 +126,7 @@ const PlayerConfig = observer(function PlayerConfig() {
           {PlayerState.config.food ? (
             <SelectedConsumable
               label="Food"
-              name={PlayerState.config.food.name}
+              name={LocaleState.translateItemName(PlayerState.config.food.name, true)}
               onReset={action(() => PlayerState.setConfig({ food: null }))}
             />
           ) : (
@@ -135,7 +136,7 @@ const PlayerConfig = observer(function PlayerConfig() {
           {PlayerState.config.potion ? (
             <SelectedConsumable
               label="Potion"
-              name={PlayerState.config.potion.name}
+              name={LocaleState.translateItemName(PlayerState.config.potion.name, true)}
               onReset={action(() => PlayerState.setConfig({ potion: null }))}
             />
           ) : (
@@ -212,13 +213,15 @@ function SelectedConsumable({
 }
 
 const FoodSelect = observer(function FoodSelect() {
-  const [query, setQuery] = useState(PlayerState.config.food?.name ?? "");
+  const [query, setQuery] = useState(
+    PlayerState.config.food ? LocaleState.translateItemName(PlayerState.config.food.name, true) : ""
+  );
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(FOOD_VARIANTS.slice());
 
   useReaction(
     () => PlayerState.config.food,
     (food) => {
-      setQuery(food?.name ?? "");
+      setQuery(food ? LocaleState.translateItemName(food.name, true) : "");
       if (food) {
         cb.selectItem(food);
       }
@@ -236,7 +239,7 @@ const FoodSelect = observer(function FoodSelect() {
   const cb = useCombobox({
     inputValue: query,
     items: queryResults,
-    itemToString: (item) => item?.name || "",
+    itemToString: (item) => (item ? LocaleState.translateItemName(item.name) : ""),
     onSelectedItemChange: ({ selectedItem }) => setFood(selectedItem || null),
     defaultHighlightedIndex: 0,
   });
@@ -271,13 +274,17 @@ const FoodSelect = observer(function FoodSelect() {
 });
 
 const PotionSelect = observer(function PotionSelect() {
-  const [query, setQuery] = useState(PlayerState.config.potion?.name ?? "");
+  const [query, setQuery] = useState(
+    PlayerState.config.potion
+      ? LocaleState.translateItemName(PlayerState.config.potion.name, true)
+      : ""
+  );
   const [queryResults, setQueryResults] = useState<ConsumableVariant[]>(POTION_VARIANTS.slice());
 
   useReaction(
     () => PlayerState.config.potion,
     (potion) => {
-      setQuery(potion?.name ?? "");
+      setQuery(potion ? LocaleState.translateItemName(potion.name) : "");
       if (potion) {
         cb.selectItem(potion);
       }
@@ -295,7 +302,7 @@ const PotionSelect = observer(function PotionSelect() {
   const cb = useCombobox({
     inputValue: query,
     items: queryResults,
-    itemToString: (item) => item?.name || "",
+    itemToString: (item) => (item ? LocaleState.translateItemName(item.name) : ""),
     onSelectedItemChange: ({ selectedItem }) => setPotion(selectedItem || null),
     defaultHighlightedIndex: 0,
   });
@@ -342,7 +349,7 @@ const ConsumableListItem = observer(function ConsumableListItem({
   return (
     <React.Fragment>
       <div className="name">
-        <Highlighter needle={query} haystack={name} />
+        <Highlighter needle={query} haystack={LocaleState.translateItemName(name, true)} />
       </div>
       <div className="details">
         {craftsmanship && (

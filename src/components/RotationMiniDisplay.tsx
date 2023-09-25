@@ -51,8 +51,12 @@ const RotationMiniDisplay = observer(function RotationMiniDisplay({ rotationData
       <StatDisplay job={job} player={player} food={food} potion={potion} />
 
       <div className="consumables">
-        {food && <span className="food nowrap">{food.name}</span>}
-        {potion && <span className="potion nowrap">{potion.name}</span>}
+        {food && (
+          <span className="food nowrap">{LocaleState.translateItemName(food.name, true)}</span>
+        )}
+        {potion && (
+          <span className="potion nowrap">{LocaleState.translateItemName(potion.name, true)}</span>
+        )}
       </div>
 
       <div className="bars">

@@ -40,7 +40,7 @@ const IngredientConfig = observer(function IngredientConfig() {
 
   return (
     <div className="IngredientConfig">
-      <div className="prompt">Quality ingredients:</div>
+      <div className="prompt">HQ ingredients:</div>
 
       <div className="ingredients">
         {RecipeState.recipe.ingredients

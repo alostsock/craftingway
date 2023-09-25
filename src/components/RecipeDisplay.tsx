@@ -1,8 +1,10 @@
 import "./RecipeDisplay.scss";
 
+import { observer } from "mobx-react-lite";
 import { useLocation } from "wouter";
 
 import { Job, JOB_EMOJIS } from "../lib/jobs";
+import { LocaleState } from "../lib/locale-state";
 import type { RecipeData } from "../lib/recipe-state";
 import { stars } from "../lib/utils";
 import CopyButton from "./CopyButton";
@@ -13,7 +15,7 @@ interface Props {
   job?: Job;
 }
 
-export default function RecipeDisplay({ recipe, job }: Props) {
+const RecipeDisplay = observer(function RecipeDisplay({ recipe, job }: Props) {
   const [_, setLocation] = useLocation();
 
   // used on the home page to scroll to a recipe when loading
@@ -29,8 +31,8 @@ export default function RecipeDisplay({ recipe, job }: Props) {
   return (
     <div ref={checkScroll} className="RecipeDisplay">
       <h1 id="recipe-display" className="name">
-        <CopyButton className="text" copyText={recipe.name}>
-          {recipe.name}
+        <CopyButton className="text" copyText={LocaleState.translateItemName(recipe.name)}>
+          {LocaleState.translateItemName(recipe.name)}
         </CopyButton>
       </h1>
       {job && (
@@ -46,4 +48,6 @@ export default function RecipeDisplay({ recipe, job }: Props) {
       {recipe.item_level > 0 && <div className="info ilvl">Item Lv.{recipe.item_level}</div>}
     </div>
   );
-}
+});
+
+export default RecipeDisplay;

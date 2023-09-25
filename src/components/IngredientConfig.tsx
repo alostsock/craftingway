@@ -4,6 +4,7 @@ import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import React from "react";
 
+import { LocaleState } from "../lib/locale-state";
 import { RecipeState } from "../lib/recipe-state";
 import CopyButton from "./CopyButton";
 import NumberInput from "./NumberInput";
@@ -49,7 +50,7 @@ const IngredientConfig = observer(function IngredientConfig() {
           .map(({ name, amount }) => (
             <QuantityInput
               key={name}
-              label={name}
+              label={LocaleState.translateItemName(name)}
               quantity={RecipeState.hq_ingredients[name] ?? 0}
               total={amount}
               onChange={(quantity) => handleChange(name, quantity)}

@@ -1,9 +1,11 @@
 import "./RotationDisplay.scss";
 
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 import React from "react";
 
 import { calculateConsumableBonus } from "../lib/consumables";
+import { LocaleState } from "../lib/locale-state";
 import { useRotationData, useSimulatorResult } from "../lib/rotation-data";
 import { STATS } from "../lib/stats";
 import CopyMacroButtons from "./CopyMacroButtons";
@@ -18,7 +20,7 @@ interface Props {
   slug: string;
 }
 
-const RotationDisplay = function RotationDisplay({ slug }: Props) {
+const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
   const rotationData = useRotationData(slug);
   const simulatorResult = useSimulatorResult(
     rotationData && "error" in rotationData ? null : rotationData
@@ -111,10 +113,10 @@ const RotationDisplay = function RotationDisplay({ slug }: Props) {
 
         {startingQuality > 0 && (
           <div className="ingredients">
-            <label>Quality ingredients:</label>
+            <label>HQ ingredients:</label>
             {Object.entries(ingredients).map(([ingredientName, quantity]) => (
               <div key={ingredientName} className="ingredient">
-                {ingredientName} <span className="x">⨯</span>
+                {LocaleState.translateItemName(ingredientName)} <span className="x">⨯</span>
                 {quantity}
               </div>
             ))}
@@ -162,6 +164,6 @@ const RotationDisplay = function RotationDisplay({ slug }: Props) {
       </section>
     </div>
   );
-};
+});
 
 export default RotationDisplay;

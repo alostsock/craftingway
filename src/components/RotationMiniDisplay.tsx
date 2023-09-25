@@ -1,8 +1,10 @@
 import "./RotationMiniDisplay.scss";
 
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
 import { Link } from "wouter";
 
+import { LocaleState } from "../lib/locale-state";
 import { type RotationData, useSimulatorResult } from "../lib/rotation-data";
 import { stars } from "../lib/utils";
 import CopyButton from "./CopyButton";
@@ -17,7 +19,7 @@ interface Props {
   slug?: string;
 }
 
-export default function RotationMiniDisplay({ rotationData, slug }: Props) {
+const RotationMiniDisplay = observer(function RotationMiniDisplay({ rotationData, slug }: Props) {
   const { player, job, recipe, startingQuality, food, potion, actions } = rotationData;
 
   const simulatorResult = useSimulatorResult(rotationData);
@@ -29,11 +31,17 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
       </CopyButton>
     ) : null;
 
+  const translatedRecipeName = LocaleState.translateItemName(recipe.name);
+
   return (
     <section className="RotationMiniDisplay">
       <div className="header">
         <h2 className="nowrap">
-          {slug ? <Link href={`/rotation/${slug}`}>{recipe.name}</Link> : recipe.name}{" "}
+          {slug ? (
+            <Link href={`/rotation/${slug}`}>{translatedRecipeName}</Link>
+          ) : (
+            translatedRecipeName
+          )}{" "}
         </h2>
         <span className="rlvl nowrap">
           Lv.{recipe.job_level} {stars(recipe.stars)}
@@ -96,4 +104,6 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
       </div>
     </section>
   );
-}
+});
+
+export default RotationMiniDisplay;

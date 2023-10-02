@@ -27,7 +27,7 @@ const Logbook = observer(function Logbook({ page: pageParam }: { page?: string }
 
   const Pager = () =>
     pages.length > 1 ? (
-      <div className="pager">
+      <section className="pager">
         <span>Page:</span>
         {pages.map((page) =>
           currentPage === page ? (
@@ -38,7 +38,7 @@ const Logbook = observer(function Logbook({ page: pageParam }: { page?: string }
             </Link>
           )
         )}
-      </div>
+      </section>
     ) : null;
 
   return (
@@ -50,21 +50,19 @@ const Logbook = observer(function Logbook({ page: pageParam }: { page?: string }
         <p>Recently viewed saved rotations will appear here.</p>
       </section>
 
-      <section className="entries">
-        <Pager />
+      <Pager />
 
-        {LogbookState.entries.length === 0 ? (
-          <div className="no-entries">No entries</div>
-        ) : (
-          LogbookState.entries
-            .slice(offset, offset + ENTRIES_PER_PAGE)
-            .map(({ hash, slug, data }) => (
-              <RotationMiniDisplay key={hash} slug={slug} rotationData={data} />
-            ))
-        )}
+      {LogbookState.entries.length === 0 ? (
+        <section className="no-entries">No entries</section>
+      ) : (
+        LogbookState.entries
+          .slice(offset, offset + ENTRIES_PER_PAGE)
+          .map(({ hash, slug, data }) => (
+            <RotationMiniDisplay key={hash} slug={slug} rotationData={data} />
+          ))
+      )}
 
-        <Pager />
-      </section>
+      <Pager />
     </div>
   );
 });

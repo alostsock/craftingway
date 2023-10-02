@@ -15,7 +15,9 @@
 
   .pager {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    gap: 0;
 
     a:not(:hover) {
       color: var(--muted-text-color);

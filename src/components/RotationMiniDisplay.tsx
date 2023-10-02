@@ -30,7 +30,7 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
     ) : null;
 
   return (
-    <div className="RotationMiniDisplay">
+    <section className="RotationMiniDisplay">
       <div className="header">
         <h2 className="nowrap">
           {slug ? <Link href={`/rotation/${slug}`}>{recipe.name}</Link> : recipe.name}{" "}
@@ -94,6 +94,6 @@ export default function RotationMiniDisplay({ rotationData, slug }: Props) {
 
         <RotationLoadButton rotationData={rotationData} />
       </div>
-    </div>
+    </section>
   );
 }

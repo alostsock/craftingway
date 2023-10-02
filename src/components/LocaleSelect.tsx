@@ -7,10 +7,10 @@ import Emoji from "./Emoji";
 export const LocaleSelect = observer(function LocaleSelect() {
   type Item = { locale: Locale; label: string };
   const items: Item[] = [
-    { locale: "en", label: "English" },
-    { locale: "jp", label: "日本語" },
-    { locale: "fr", label: "Français" },
-    { locale: "de", label: "Deutsch" },
+    { locale: "eng", label: "English" },
+    { locale: "jpn", label: "日本語" },
+    { locale: "fra", label: "Français" },
+    { locale: "deu", label: "Deutsch" },
   ];
 
   const select = useSelect({

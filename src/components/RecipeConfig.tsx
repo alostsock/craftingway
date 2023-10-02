@@ -48,7 +48,7 @@ const RecipeConfig = observer(function RecipeConfig() {
             { mode: "level", label: t`by level`, component: RecipesByLevel },
           ]}
           onChange={onModeChange}
-          reverse={LocaleState.locale == "jp"}
+          reverse={LocaleState.locale == "jpn"}
         />
       )}
 

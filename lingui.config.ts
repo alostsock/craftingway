@@ -1,8 +1,8 @@
 import type { LinguiConfig } from "@lingui/conf";
 
 const config: LinguiConfig = {
-  locales: ["en", "de", "fr", "jp"],
-  sourceLocale: "en",
+  locales: ["eng", "deu", "fra", "jpn"],
+  sourceLocale: "eng",
   catalogs: [
     {
       path: "<rootDir>/src/locales/{locale}",

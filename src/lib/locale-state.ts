@@ -1,33 +1,35 @@
 import { i18n, Messages } from "@lingui/core";
 import { makeAutoObservable } from "mobx";
 
-import { messages as englishMessages } from "../locales/en";
+import { messages as englishMessages } from "../locales/eng";
 
-export type Locale = "en" | "jp" | "fr" | "de";
-type NonEnglishLocale = Exclude<Locale, "en">;
+export type Locale = "eng" | "jpn" | "fra" | "deu";
+type NonEnglishLocale = Exclude<Locale, "eng">;
 
 interface TranslatedContent {
   messages: Messages;
   items: Record<string, string>;
+  actions: Record<string, string>;
 }
 
 type TranslationState = TranslatedContent | "loading" | null;
 
 const TRANSLATION_STATES: Record<NonEnglishLocale, TranslationState> = {
-  jp: null,
-  fr: null,
-  de: null,
+  jpn: null,
+  fra: null,
+  deu: null,
 };
 
 class _LocaleState {
-  private _locale: Locale = "en";
+  private _locale: Locale = "eng";
   private queuedLocale: Locale | null = null;
 
   constructor() {
     makeAutoObservable(this);
 
-    i18n.load("en", englishMessages);
-    i18n.activate("en");
+    i18n.load("eng", englishMessages);
+    i18n.activate("eng");
+    console.log("loaded english messages");
   }
 
   get locale() {
@@ -44,11 +46,12 @@ class _LocaleState {
 
     if (state == null) {
       TRANSLATION_STATES[locale] = "loading";
-      const [{ messages }, items] = await Promise.all([
+      const [{ messages }, items, actions] = await Promise.all([
         import(`../locales/${locale}.ts`),
-        fetch(`/items_${locale}.json`).then((r) => r.json()),
+        fetch(`/translations/items_${locale}.json`).then((r) => r.json()),
+        fetch(`/translations/actions_${locale}.json`).then((r) => r.json()),
       ]);
-      const content = { messages, items };
+      const content = { messages, items, actions };
       TRANSLATION_STATES[locale] = content;
 
       return content;
@@ -60,7 +63,7 @@ class _LocaleState {
   }
 
   async setLocale(locale: Locale) {
-    if (locale === "en") {
+    if (locale === "eng") {
       this.locale = locale;
       i18n.activate(locale);
       return;
@@ -83,7 +86,7 @@ class _LocaleState {
   }
 
   translateItemName(englishItemName: string, checkHq = false): string {
-    if (this.locale === "en") {
+    if (this.locale === "eng") {
       return englishItemName;
     }
 

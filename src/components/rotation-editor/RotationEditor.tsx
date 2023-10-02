@@ -14,7 +14,7 @@ import { useState } from "react";
 
 import {
   CustomKeyboardSensor,
-  CustomPointerSensor,
+  CustomMouseSensor,
   CustomTouchSensor,
 } from "../../lib/custom-dnd-sensors";
 import { useReaction } from "../../lib/hooks";
@@ -38,9 +38,9 @@ const RotationEditor = observer(function RotationEditor() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const sensors = useSensors(
-    useSensor(CustomPointerSensor, { activationConstraint: { distance: 10 } }),
-    useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-    useSensor(CustomTouchSensor, { activationConstraint: { distance: 10 } })
+    useSensor(CustomMouseSensor, { activationConstraint: { distance: 25 } }),
+    useSensor(CustomTouchSensor, { activationConstraint: { delay: 750, tolerance: 25 } }),
+    useSensor(CustomKeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   useReaction(

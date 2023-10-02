@@ -1,10 +1,10 @@
 import type {
   Activators,
   KeyboardSensorOptions,
-  PointerSensorOptions,
+  MouseSensorOptions,
   TouchSensorOptions,
 } from "@dnd-kit/core";
-import { KeyboardCode, KeyboardSensor, PointerSensor, TouchSensor } from "@dnd-kit/core";
+import { KeyboardCode, KeyboardSensor, MouseSensor, TouchSensor } from "@dnd-kit/core";
 
 // Patches for the default dnd-kit sensors to ignore events from elements with a
 // "data-no-dnd" attribute.
@@ -22,19 +22,12 @@ function shouldHandleEvent(element: HTMLElement | null) {
   return true;
 }
 
-export class CustomPointerSensor extends PointerSensor {
+export class CustomMouseSensor extends MouseSensor {
   static activators = [
     {
-      eventName: "onPointerDown" as const,
-      handler: (
-        { nativeEvent: event }: React.PointerEvent,
-        { onActivation }: PointerSensorOptions
-      ) => {
-        if (
-          !event.isPrimary ||
-          event.button !== 0 ||
-          !shouldHandleEvent(event.target as HTMLElement)
-        ) {
+      eventName: "onMouseDown" as const,
+      handler: ({ nativeEvent: event }: React.MouseEvent, { onActivation }: MouseSensorOptions) => {
+        if (event.button !== 0 || !shouldHandleEvent(event.target as HTMLElement)) {
           return false;
         }
 

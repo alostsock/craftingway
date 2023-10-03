@@ -83,6 +83,13 @@
           margin-left: 0.15rem;
         }
       }
+
+      @media (max-width: 24em) {
+        .Emoji,
+        .ko-fi {
+          display: none;
+        }
+      }
     }
   }
 }

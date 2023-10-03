@@ -1,7 +1,8 @@
 import { i18n, Messages } from "@lingui/core";
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 
 import { messages as englishMessages } from "../locales/eng";
+import Storage from "./storage";
 
 export type Locale = "eng" | "jpn" | "fra" | "deu";
 type NonEnglishLocale = Exclude<Locale, "eng">;
@@ -20,6 +21,8 @@ const TRANSLATION_STATES: Record<NonEnglishLocale, TranslationState> = {
   deu: null,
 };
 
+const LOCALE_STORE = "userLocale";
+
 class _LocaleState {
   private _locale: Locale = "eng";
   private queuedLocale: Locale | null = null;
@@ -28,8 +31,10 @@ class _LocaleState {
     makeAutoObservable(this);
 
     i18n.load("eng", englishMessages);
-    i18n.activate("eng");
-    console.log("loaded english messages");
+
+    this.setLocale(Storage.retrieve(LOCALE_STORE) || determineUserLocale());
+
+    autorun(() => Storage.store(LOCALE_STORE, JSON.stringify(this.locale)));
   }
 
   get locale() {
@@ -38,6 +43,7 @@ class _LocaleState {
 
   // A setter is needed since this is set asynchronously
   private set locale(locale: Locale) {
+    i18n.activate(locale);
     this._locale = locale;
   }
 
@@ -64,7 +70,6 @@ class _LocaleState {
 
   async setLocale(locale: Locale) {
     if (locale === "eng") {
-      i18n.activate(locale);
       this.locale = locale;
       return;
     }
@@ -79,7 +84,6 @@ class _LocaleState {
 
     if (translatedContent && this.queuedLocale == locale) {
       i18n.load(locale, translatedContent.messages);
-      i18n.activate(locale);
       this.locale = locale;
       this.queuedLocale = null;
     }
@@ -118,3 +122,18 @@ class _LocaleState {
 }
 
 export const LocaleState = new _LocaleState();
+
+function determineUserLocale(): Locale {
+  const shortCodeMatch = navigator.language.match(/^([\w]{2})-?.*$/);
+  if (!shortCodeMatch) {
+    return "eng";
+  }
+  const shortCode = shortCodeMatch[1];
+  const localeLookup: Record<string, Locale> = {
+    en: "eng",
+    de: "deu",
+    fr: "fra",
+    ja: "jpn",
+  };
+  return localeLookup[shortCode] ?? "eng";
+}

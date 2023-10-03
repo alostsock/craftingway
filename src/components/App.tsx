@@ -15,6 +15,7 @@ import Logbook from "./Logbook";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
 import RotationDisplay from "./RotationDisplay";
+import TranslationNotice from "./TranslationNotice";
 
 const App = observer(function App() {
   return (
@@ -22,6 +23,8 @@ const App = observer(function App() {
       <I18nProvider i18n={i18n}>
         <TooltipProvider delayDuration={400} skipDelayDuration={300}>
           <Header />
+
+          <TranslationNotice />
 
           <Switch>
             <Route path="/">

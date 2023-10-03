@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: jp\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/components/RecipeConfig.tsx:48
 msgid "by level"
@@ -18,3 +24,7 @@ msgstr "名前で"
 #: src/components/RecipeConfig.tsx:44
 msgid "Search for a recipe"
 msgstr "レシピを検索"
+
+#: src/components/TranslationNotice.tsx:16
+msgid "Translation work is in progress!"
+msgstr "翻訳作業が進行中です！"

@@ -64,8 +64,8 @@ class _LocaleState {
 
   async setLocale(locale: Locale) {
     if (locale === "eng") {
-      this.locale = locale;
       i18n.activate(locale);
+      this.locale = locale;
       return;
     }
 
@@ -91,15 +91,29 @@ class _LocaleState {
     }
 
     const content = TRANSLATION_STATES[this.locale];
-    if (content && content !== "loading") {
-      if (checkHq && englishItemName.endsWith(" HQ")) {
-        const nqItemName = englishItemName.substring(0, englishItemName.length - 3);
-        return `${content.items[nqItemName] ?? englishItemName} HQ`;
-      }
-      return content.items[englishItemName] ?? englishItemName;
-    } else {
+    if (!content || content === "loading") {
       return englishItemName;
     }
+
+    if (checkHq && englishItemName.endsWith(" HQ")) {
+      const nqItemName = englishItemName.substring(0, englishItemName.length - 3);
+      return `${content.items[nqItemName] ?? englishItemName} HQ`;
+    }
+
+    return content.items[englishItemName] ?? englishItemName;
+  }
+
+  translateActionName(englishActionName: string): string {
+    if (this.locale === "eng") {
+      return englishActionName;
+    }
+
+    const content = TRANSLATION_STATES[this.locale];
+    if (!content || content === "loading") {
+      return englishActionName;
+    }
+
+    return content.actions[englishActionName] ?? englishActionName;
   }
 }
 

@@ -3,6 +3,7 @@ import init, { generateMacroText, Player, recipesByJobLevel, simulateActions } f
 import { autorun, makeAutoObservable, runInAction, toJS } from "mobx";
 
 import { JOBS } from "./jobs";
+import { LocaleState } from "./locale-state";
 import { PlayerState } from "./player-state";
 import { RecipeData, RecipeState } from "./recipe-state";
 import type { SearchRequestMessage, SearchResponseMessage } from "./search.worker";
@@ -232,7 +233,13 @@ class _SimulatorState {
 
     const latestValidStep = craftState.step;
     const validActions = actions.slice(0, latestValidStep - 1);
-    const lines = generateMacroText(validActions);
+    const lines = generateMacroText(validActions).map((line) =>
+      line.replace(/^(\/ac )("?.*"?)( <.*)$/, (_line, ac, action, wait) => {
+        action = LocaleState.translateActionName(action.replaceAll('"', ""));
+        action = action.indexOf(" ") >= 0 ? `"${action}"` : action;
+        return `${ac}${action}${wait}`;
+      })
+    );
 
     const parts: string[][] = [];
     while (lines.length > 0) {

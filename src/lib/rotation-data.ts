@@ -126,7 +126,7 @@ export function useSimulatorResult(rotationData: RotationData | null): Simulator
     const player: Player = {
       job_level,
       craftsmanship: craftsmanship + foodBonus.craftsmanship + potionBonus.craftsmanship,
-      control: control + foodBonus.control + potionBonus.craftsmanship,
+      control: control + foodBonus.control + potionBonus.control,
       cp: cp + foodBonus.cp + potionBonus.cp,
     };
 

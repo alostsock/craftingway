@@ -4,7 +4,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "eslint.packageManager": "yarn",
   "prettier.prettierPath": "./node_modules/prettier",
   "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"],
   "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },

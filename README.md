@@ -28,24 +28,38 @@ If you have questions, suggestions, or would like to contribute, please join the
 
 ## Development
 
-The site itself is a relatively straightforward React app. However, it heavily relies on the [simulator/solver](https://github.com/alostsock/crafty), which is a library written in Rust and compiled to WASM with Javascript bindings. The simulator package is included as a git submodule. If you haven't interacted with submodules before, you'll need to run this after cloning the repo:
+The frontend is a React app that heavily relies on the [simulator and solver](https://github.com/alostsock/crafty), which is a library written in Rust and compiled to WASM with Javascript bindings. This library is included as a git submodule. If you haven't interacted with submodules before, you'll need to run this after cloning the repo:
 
 ```sh
 git submodule update --init
 ```
 
+The backend is a web server written in Rust, designed to be deployed on Fly.io. It relies on SQLite for storing rotation data, and uses [LiteFS](https://github.com/superfly/litefs) for database replication.
+
 From here, there are two ways to develop: either with or without a container.
 
 ### Using the dev container
 
-If you use VS Code, the editor should automatically detect the dev container and prompt you to use it when you open the project. After the container starts, it will start building the submodule.
+If you use VS Code, the editor should automatically detect the dev container and prompt you to reopen the workspace in a container -- you should do so. After the docker image is built, the submodule build should start.
 
-Afterwards, run the following inside the container:
+Afterwards, to start the frontend and backend dev servers, run the following commands inside the container:
 
 ```sh
-yarn run build-submodule # optional, if you want to rebuild the submodule
+# One-time-only, unless you are working on the submodule.
+# This should automatically run after starting the dev container.
+yarn run build-submodule
+
 yarn install
+
+# Optional, unless you are working on translations
+yarn extract-messages
+# One-time-only, unless you are working on translations.
+yarn compile-messages
+
+# Run this in one terminal
 yarn run dev
+# ... and this in another terminal.
+yarn run dev-server
 ```
 
 #### Podman
@@ -65,10 +79,22 @@ Then, run the `yarn` commands in the section above.
 
 ### Without a container
 
-Running the app requires Node.js, the [yarn](https://classic.yarnpkg.com/lang/en/docs/install) package manager, the Rust toolchain, and [`wasm-pack`](https://rustwasm.github.io/wasm-pack/) for compilation. All of these should be installed. A couple scripts also kinda assume a Linux system -- if you're on Windows, I strongly recommend just using WSL.
+Running the app requires Node.js, the [yarn](https://classic.yarnpkg.com/lang/en/docs/install) package manager, the [Rust toolchain](https://www.rust-lang.org/tools/install), and [`wasm-pack`](https://rustwasm.github.io/wasm-pack/) for compilation. All of these should be installed. A couple scripts also kind of assume a Linux system -- if you're on Windows, I strongly recommend just using WSL.
 
 After everything is installed, you should be able to build the submodule and run the app using the same `yarn` commands above.
 
 ### arm64 (including Apple silicon Macs)
 
 `wasm-pack` 0.11.x supports arm64, but you will get "Error: no prebuilt wasm-opt binaries are available for this platform". Modify `crafty/web/Cargo.toml` as the error message suggests.
+
+## Localization
+
+[Lingui](https://lingui.dev/) is used for localization. For the most part, their ["common React patterns" guide](https://lingui.dev/tutorials/react-patterns) can be followed. The exception to this is game data, which can be translated using `LocaleState.translateItemName` and `LocaleState.translateActionName`. This should handle most use cases.
+
+The workflow for adding translations should look something like:
+
+1. Mark text with a `<Trans>` or `t` macro
+2. Extract the newly marked message(s) with `yarn extract-messages`
+3. Add translations to the placeholders generated in the `src/locales/*.po` files
+4. Compile the translations with `yarn compile-messages`
+5. Check that the translations look OK in the app

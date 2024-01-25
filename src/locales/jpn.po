@@ -25,6 +25,6 @@ msgstr "名前で"
 msgid "Search for a recipe"
 msgstr "レシピを検索"
 
-#: src/components/TranslationNotice.tsx:16
+#: src/components/TranslationNotice.tsx:19
 msgid "Translation work is in progress!"
 msgstr "翻訳作業が進行中です！"

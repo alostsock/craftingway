@@ -25,6 +25,6 @@ msgstr "by name"
 msgid "Search for a recipe"
 msgstr "Search for a recipe"
 
-#: src/components/TranslationNotice.tsx:16
+#: src/components/TranslationNotice.tsx:19
 msgid "Translation work is in progress!"
 msgstr "Translation work is in progress!"

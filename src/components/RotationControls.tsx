@@ -19,7 +19,31 @@ const RotationControls = observer(function RotationControls() {
     SimulatorState.actions = [];
   });
 
-  const saveRotation = async () => {
+  if (!SimulatorState.craftState || SimulatorState.actions.length === 0) {
+    return <div className="RotationControls" />;
+  }
+
+  const isSearching = SimulatorState.isSearching;
+
+  return (
+    <div className="RotationControls">
+      <button className="link reset" onClick={reset} disabled={isSearching}>
+        Reset
+      </button>
+
+      <CopyMacroButtons
+        craftState={SimulatorState.craftState}
+        actions={SimulatorState.actions}
+        disabled={isSearching}
+      />
+
+      <button className="link" onClick={saveRotation} disabled={isSearching}>
+        Save rotation
+      </button>
+    </div>
+  );
+
+  async function saveRotation() {
     if (!RecipeState.recipe) return;
 
     const { job_level, craftsmanship, control, cp, food, potion } = PlayerState.config;
@@ -60,36 +84,12 @@ const RotationControls = observer(function RotationControls() {
     });
 
     if (typeof result !== "string") {
-      // TODO: handle error
+      // TODO: handle error; introduce toast notifications?
       return;
     }
 
     setLocation(`/rotation/${result}`);
-  };
-
-  if (!SimulatorState.craftState || SimulatorState.actions.length === 0) {
-    return <div className="RotationControls" />;
   }
-
-  const isSearching = SimulatorState.isSearching;
-
-  return (
-    <div className="RotationControls">
-      <button className="link reset" onClick={reset} disabled={isSearching}>
-        Reset
-      </button>
-
-      <CopyMacroButtons
-        craftState={SimulatorState.craftState}
-        actions={SimulatorState.actions}
-        disabled={isSearching}
-      />
-
-      <button className="link" onClick={saveRotation} disabled={isSearching}>
-        Save rotation
-      </button>
-    </div>
-  );
 });
 
 export default RotationControls;

@@ -6,18 +6,23 @@ import { observer } from "mobx-react-lite";
 
 import { ACTION_LOOKUP } from "../lib/actions";
 import { actionIcons, statusIcons } from "../lib/assets";
+import { Job } from "../lib/jobs";
 import { PlayerState } from "../lib/player-state";
 import { SimulatorState } from "../lib/simulator-state";
 
 type ActionIconProps = {
   name: Action;
+  job?: Job;
   step?: number;
   showCp?: boolean;
 };
 
-export const ActionIcon = observer(function ActionIcon({ name, step, showCp }: ActionIconProps) {
-  const job = PlayerState.job;
-
+export const ActionIcon = observer(function ActionIcon({
+  name,
+  job = PlayerState.job,
+  step,
+  showCp,
+}: ActionIconProps) {
   let { label, cp } = ACTION_LOOKUP[name];
 
   const nameWithJob = `${label}-${job}`;

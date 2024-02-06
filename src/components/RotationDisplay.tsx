@@ -156,7 +156,7 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
                 key={index}
                 className={clsx("action", { disabled: step >= simulatorResult.craft_state.step })}
               >
-                <ActionIcon name={action} step={step} />
+                <ActionIcon name={action} job={job} step={step} />
               </div>
             );
           })}

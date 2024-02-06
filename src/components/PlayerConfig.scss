@@ -126,19 +126,21 @@
       .selected-consumable {
         position: relative;
 
-        .reset {
+        button.reset {
           background-color: var(--grey-800);
           height: 100%;
           padding: 0 var(--05);
           position: absolute;
           top: 0;
           right: 0;
-          opacity: 0;
+          filter: grayscale(40%);
+          opacity: 0.8;
           transition: opacity 70ms;
-        }
 
-        &:hover button.reset {
-          opacity: 1;
+          &:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+          }
         }
       }
 

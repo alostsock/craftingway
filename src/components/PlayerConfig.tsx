@@ -204,7 +204,7 @@ function SelectedConsumable({
 
       <div className="selected-consumable">
         {name}
-        <button className="reset" onClick={onReset}>
+        <button className="reset" title="Remove consumable" onClick={onReset}>
           <Emoji emoji="❌" />
         </button>
       </div>

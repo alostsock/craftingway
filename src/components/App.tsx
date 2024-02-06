@@ -12,6 +12,7 @@ import DocumentTitle from "./DocumentTitle";
 import Footer from "./Footer";
 import Header from "./Header";
 import Logbook from "./Logbook";
+import Logo from "./Logo";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
 import RotationDisplay from "./RotationDisplay";
@@ -29,6 +30,7 @@ const App = observer(function App() {
           <Switch>
             <Route path="/">
               <DocumentTitle />
+              <Logo />
               <PlayerConfig />
               <RecipeConfig />
               <CraftStateDisplay />

@@ -10,85 +10,67 @@
     width: 100%;
     display: flex;
     align-items: center;
-    gap: var(--1);
+    justify-content: space-between;
+    gap: var(--05);
 
     a {
       display: flex;
       align-items: center;
+      text-decoration: none;
+      transition: color 70ms;
 
       &:not(:hover) {
         color: var(--muted-text-color);
-        text-decoration: none;
+      }
+
+      &:hover,
+      &:active {
+        color: var(--text-color);
       }
     }
 
-    &.expanded {
-      align-items: flex-end;
-      flex-direction: row-reverse;
-      flex-wrap: wrap-reverse;
-    }
-
-    .logo {
-      color: var(--text-color);
-      text-align: center;
-      font-size: 2rem;
-      width: 100%;
-      padding: var(--05);
-
-      span {
-        color: var(--orange-200);
-      }
-    }
-
-    .home span {
-      width: 0.25em;
-    }
-
-    .links {
-      flex-grow: 1;
+    .internal-links {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: var(--05);
+      flex-grow: 1;
+
+      .home span {
+        width: 0.25em;
+        display: inline-block;
+      }
+    }
+
+    .external-links {
+      display: flex;
+      align-items: center;
       gap: var(--05);
 
-      .internal {
-        display: flex;
-        align-items: center;
-        gap: var(--05);
-        flex-grow: 1;
-      }
+      img {
+        opacity: 0.4;
+        transition: opacity 70ms;
 
-      .external {
-        display: flex;
-        align-items: center;
-        gap: var(--05);
-
-        img {
-          opacity: 0.4;
-          transition: opacity 70ms;
-
-          &:hover {
-            opacity: 1;
-          }
-        }
-
-        .ko-fi img {
-          height: 1.2rem;
-        }
-        .discord img {
-          height: 1.05rem;
-        }
-        .github img {
-          height: 1.35rem;
-          margin-left: 0.15rem;
+        &:hover {
+          opacity: 1;
         }
       }
 
-      @media (max-width: 24em) {
-        .Emoji,
-        .ko-fi {
-          display: none;
-        }
+      .ko-fi img {
+        height: 1.2rem;
+      }
+      .discord img {
+        height: 1.05rem;
+      }
+      .github img {
+        height: 1.35rem;
+        margin-left: 0.15rem;
+      }
+    }
+
+    @media (max-width: 24em) {
+      .Emoji,
+      .ko-fi {
+        display: none;
       }
     }
   }

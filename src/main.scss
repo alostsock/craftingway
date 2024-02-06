@@ -58,16 +58,20 @@ a {
   }
 }
 
+a,
+button,
+input {
+  &:focus {
+    outline: 1px solid var(--focus-color);
+  }
+}
+
 button {
   cursor: pointer;
   font-weight: 500;
   padding: var(--025) var(--1);
   border: none;
   border-radius: var(--border-radius);
-
-  &:focus {
-    outline: 1px solid var(--focus-color);
-  }
 
   &:disabled {
     opacity: 0.4;
@@ -116,10 +120,6 @@ input {
   padding: var(--025) var(--05);
   border: none;
   border-radius: var(--border-radius);
-
-  &:focus {
-    outline: 1px solid var(--focus-color);
-  }
 
   &::placeholder {
     color: var(--placeholder-color);

@@ -60,7 +60,8 @@ a {
 
 a,
 button,
-input {
+input,
+fieldset label:has(+ input) {
   &:focus {
     outline: 1px solid var(--focus-color);
   }

@@ -7,7 +7,7 @@ import { SimulatorState } from "../lib/simulator-state";
 import BuffList from "./BuffList";
 import CraftStepDisplay from "./CraftStepDisplay";
 import Progress from "./Progress";
-import RotationEditor from "./rotation-editor/RotationEditor";
+import RotationEditor from "./RotationEditor";
 
 const CraftStateDisplay = observer(function CraftStateDisplay() {
   if (!RecipeState.recipe || !SimulatorState.craftState) return null;

@@ -169,7 +169,7 @@ const PlayerConfig = observer(function PlayerConfig() {
         ) : (
           <div>
             Copy stats from…
-            {JOBS.map((job) => (
+            {JOBS.filter((job) => job != PlayerState.job).map((job) => (
               <React.Fragment key={job}>
                 {" "}
                 <button key={job} className="link" onClick={() => handleConfigCopy(job)}>

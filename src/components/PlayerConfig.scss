@@ -96,6 +96,7 @@
       display: grid;
       gap: var(--05) var(--charwidth);
       grid-template-columns: min-content 1fr;
+      align-items: baseline;
 
       label.food-active {
         color: var(--food-color);
@@ -103,10 +104,6 @@
 
       label.potion-active {
         color: var(--potion-color);
-      }
-
-      label {
-        align-self: baseline;
       }
 
       .selected-consumable,
@@ -123,21 +120,21 @@
       }
 
       .selected-consumable {
-        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: var(--05);
 
         button.reset {
-          background-color: var(--grey-800);
+          background: none;
           height: 100%;
           padding: 0 var(--05);
-          position: absolute;
-          top: 0;
-          right: 0;
-          filter: grayscale(40%);
-          opacity: 0.8;
+          margin: calc(-1 * var(--05));
+          opacity: 0.6;
           transition: opacity 70ms;
 
           &:hover {
-            filter: grayscale(0%);
             opacity: 1;
           }
         }

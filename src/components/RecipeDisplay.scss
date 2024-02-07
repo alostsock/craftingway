@@ -1,19 +1,17 @@
 .RecipeDisplay {
+  color: var(--muted-text-color);
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1em;
+  gap: var(--05) calc(2 * var(--charwidth));
 
   .name {
+    color: var(--text-color);
     grid-column: 1 / -1;
     width: 100%;
 
     button {
       text-align: left;
     }
-  }
-
-  .info {
-    color: var(--muted-text-color);
   }
 
   @media (max-width: 30em) {

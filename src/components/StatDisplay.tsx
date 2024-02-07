@@ -4,8 +4,8 @@ import { Player } from "crafty";
 import React from "react";
 
 import { calculateConsumableBonus, ConsumableVariant } from "../lib/consumables";
-import { Job, JOB_EMOJIS } from "../lib/jobs";
-import Emoji from "./Emoji";
+import { Job } from "../lib/jobs";
+import JobDisplay from "./JobDisplay";
 
 interface Props {
   job: Job;
@@ -35,8 +35,8 @@ export default function StatDisplay({ job, player, food, potion }: Props) {
 
   return (
     <span className="StatDisplay">
-      <Emoji emoji={JOB_EMOJIS[job]} /> <span className="level">Lv.{player.job_level}</span>{" "}
-      <span className="nowrap">
+      <JobDisplay job={job} /> <span>Lv.{player.job_level}</span>{" "}
+      <span className="stats nowrap">
         <Stat name="craftsmanship" />
         <Sep />
         <Stat name="control" />

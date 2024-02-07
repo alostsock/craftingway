@@ -13,13 +13,14 @@ import {
   searchConsumables,
 } from "../lib/consumables";
 import { useReaction } from "../lib/hooks";
-import { Job, JOB_EMOJIS, JOBS } from "../lib/jobs";
+import { Job, JOBS } from "../lib/jobs";
 import { LocaleState } from "../lib/locale-state";
 import { PlayerState } from "../lib/player-state";
 import { RecipeState } from "../lib/recipe-state";
 import { STATS } from "../lib/stats";
 import Emoji from "./Emoji";
 import Highlighter from "./Highlighter";
+import JobDisplay from "./JobDisplay";
 import NumberInput from "./NumberInput";
 
 const PlayerConfig = observer(function PlayerConfig() {
@@ -77,8 +78,7 @@ const PlayerConfig = observer(function PlayerConfig() {
                 htmlFor={id}
                 tabIndex={-1}
               >
-                <Emoji emoji={JOB_EMOJIS[job]} />
-                {job}
+                <JobDisplay job={job} />
               </label>
             </React.Fragment>
           );

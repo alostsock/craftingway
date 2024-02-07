@@ -1,4 +1,14 @@
 .StatDisplay {
+  color: var(--muted-text-color);
+
+  .Emoji {
+    margin-right: 0.25em;
+  }
+
+  .stats {
+    color: var(--text-color);
+  }
+
   .separator {
     color: var(--muted-text-color);
   }

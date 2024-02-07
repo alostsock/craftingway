@@ -3,12 +3,12 @@ import "./RecipeDisplay.scss";
 import { observer } from "mobx-react-lite";
 import { useLocation } from "wouter";
 
-import { Job, JOB_EMOJIS } from "../lib/jobs";
+import { Job } from "../lib/jobs";
 import { LocaleState } from "../lib/locale-state";
 import type { RecipeData } from "../lib/recipe-state";
 import { stars } from "../lib/utils";
 import CopyButton from "./CopyButton";
-import Emoji from "./Emoji";
+import JobDisplay from "./JobDisplay";
 
 interface Props {
   recipe: RecipeData;
@@ -35,17 +35,13 @@ const RecipeDisplay = observer(function RecipeDisplay({ recipe, job }: Props) {
           {LocaleState.translateItemName(recipe.name)}
         </CopyButton>
       </h1>
-      {job && (
-        <div className="info">
-          <Emoji emoji={JOB_EMOJIS[job]} /> {job}
-        </div>
-      )}
-      <div className="info">
+      {job && <JobDisplay job={job} />}
+      <div>
         Lv.{recipe.job_level} {stars(recipe.stars)}
       </div>
-      <div className="info rlvl">Recipe Lv.{recipe.recipe_level}</div>
-      {recipe.equip_level > 0 && <div className="info elvl">Equip Lv.{recipe.equip_level}</div>}
-      {recipe.item_level > 0 && <div className="info ilvl">Item Lv.{recipe.item_level}</div>}
+      <div className="rlvl">Recipe Lv.{recipe.recipe_level}</div>
+      {recipe.equip_level > 0 && <div className="elvl">Equip Lv.{recipe.equip_level}</div>}
+      {recipe.item_level > 0 && <div className="ilvl">Item Lv.{recipe.item_level}</div>}
     </div>
   );
 });

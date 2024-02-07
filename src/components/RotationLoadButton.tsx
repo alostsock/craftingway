@@ -61,9 +61,8 @@ const RotationLoadButton = observer(function RotationLoadButton({ rotationData }
     </button>
   ) : (
     <div>
-      Editing this rotation will replace your current stats and consumables (
-      <StatDisplay job={rotationData.job} {...currentConfig} />
-      ). Are you sure?{" "}
+      Editing this rotation will replace your current stats and consumables:{" "}
+      <StatDisplay job={rotationData.job} {...currentConfig} />. Are you sure?{" "}
       <button className="link" onClick={() => load(true)}>
         OK
       </button>{" "}

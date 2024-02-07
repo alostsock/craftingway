@@ -70,6 +70,7 @@ fieldset label:has(+ input) {
 button {
   cursor: pointer;
   font-weight: 500;
+  color: var(--text-color);
   padding: var(--025) var(--1);
   border: none;
   border-radius: var(--border-radius);

@@ -51,6 +51,9 @@ export default function ModeSelector<Mode extends string>({
 
           return (
             <React.Fragment key={mode}>
+              <label htmlFor={id} tabIndex={-1}>
+                {label}
+              </label>
               <input
                 id={id}
                 className="visually-hidden"
@@ -60,9 +63,6 @@ export default function ModeSelector<Mode extends string>({
                 onChange={() => handleModeChange(mode)}
                 autoComplete="off"
               />
-              <label htmlFor={id} tabIndex={-1}>
-                {label}
-              </label>
             </React.Fragment>
           );
         })}

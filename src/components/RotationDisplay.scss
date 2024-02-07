@@ -38,7 +38,7 @@
       color: var(--muted-text-color);
       display: grid;
       grid-template-columns: min-content min-content 1fr;
-      gap: var(--05);
+      gap: var(--05) var(--charwidth);
 
       .stat {
         color: var(--text-color);
@@ -47,7 +47,7 @@
 
       .bonuses {
         display: flex;
-        gap: var(--05);
+        gap: var(--05) var(--charwidth);
         min-width: 6em;
 
         .food {
@@ -64,7 +64,7 @@
       flex-shrink: 1;
       display: grid;
       grid-template-columns: min-content 1fr;
-      gap: var(--05);
+      gap: var(--05) var(--charwidth);
 
       label {
         color: var(--muted-text-color);

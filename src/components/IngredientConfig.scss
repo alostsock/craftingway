@@ -10,7 +10,7 @@
   .ingredients {
     display: grid;
     grid-template-columns: 1fr repeat(3, min-content);
-    gap: var(--05);
+    gap: var(--05) var(--charwidth);
     align-items: center;
 
     input {

@@ -55,7 +55,7 @@
       display: grid;
       grid-template-columns: min-content min-content 1fr;
       align-items: center;
-      gap: var(--05);
+      gap: var(--05) var(--charwidth);
 
       #input-job_level {
         width: 2.5em;
@@ -70,7 +70,7 @@
         justify-content: flex-start;
         min-width: 6em; // enough space for "+000 +000"
         display: flex;
-        gap: var(--05);
+        gap: var(--05) var(--charwidth);
 
         .food {
           color: var(--food-color);
@@ -94,7 +94,7 @@
       max-width: 28em;
 
       display: grid;
-      gap: var(--05);
+      gap: var(--05) var(--charwidth);
       grid-template-columns: min-content 1fr;
 
       label.food-active {

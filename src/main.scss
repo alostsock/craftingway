@@ -111,8 +111,12 @@ button {
     margin: 0;
 
     &:hover,
-    &:active {
+    &[aria-expanded="true"] {
       background: var(--grey-800);
+    }
+
+    &:active {
+      background: var(--grey-700);
     }
   }
 }
@@ -201,12 +205,17 @@ details {
     &:hover {
       background: var(--grey-800);
     }
+
+    &:active {
+      background: var(--grey-700);
+    }
   }
 
   &[open] {
     padding-bottom: var(--05);
 
     summary {
+      background: var(--grey-800);
       margin-bottom: var(--05);
 
       &::before {
@@ -243,7 +252,7 @@ footer {
 .field {
   display: flex;
   align-items: baseline;
-  gap: 0.5em;
+  gap: var(--charwidth);
 }
 
 .nowrap {

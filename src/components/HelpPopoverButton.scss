@@ -1,0 +1,12 @@
+button.HelpPopoverButton {
+  font-size: 0.75em;
+  padding: var(--025);
+
+  div {
+    width: 1.5em;
+    height: 1.5em;
+    color: var(--grey-300);
+    border-radius: 50%;
+    border: 1px solid var(--grey-400);
+  }
+}

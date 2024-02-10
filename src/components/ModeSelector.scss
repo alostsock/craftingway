@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: var(--1);
 
-  fieldset {
+  > fieldset {
     display: flex;
     flex-wrap: wrap;
     gap: 0 var(--charwidth);
@@ -29,6 +29,11 @@
 
       &:hover {
         opacity: 0.8;
+      }
+
+      &:focus {
+        outline: 1px solid var(--focus-color);
+        outline-offset: 3px;
       }
     }
 

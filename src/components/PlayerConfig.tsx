@@ -21,14 +21,15 @@ import { STATS } from "../lib/stats";
 import Emoji from "./Emoji";
 import Highlighter from "./Highlighter";
 import JobDisplay from "./JobDisplay";
+import ModeSelector from "./ModeSelector";
 import NumberInput from "./NumberInput";
 
 const PlayerConfig = observer(function PlayerConfig() {
   type CopyMenuState = "inactive" | "copying" | "copying-all";
   const [copyMenuState, setCopyMenuState] = useState<CopyMenuState>("inactive");
 
-  const handleJobChange = action((event: React.ChangeEvent<HTMLInputElement>) => {
-    PlayerState.job = event.target.value as Job;
+  const handleJobChange = action((job: Job) => {
+    PlayerState.job = job;
     RecipeState.recipe = null;
     setCopyMenuState("inactive");
   });
@@ -57,35 +58,16 @@ const PlayerConfig = observer(function PlayerConfig() {
 
   return (
     <section className="PlayerConfig">
-      <fieldset className="jobs">
-        <legend className="visually-hidden">Select a job</legend>
-
-        {JOBS.map((job) => {
-          const id = `radio-${job}`;
-
-          return (
-            <React.Fragment key={job}>
-              <label
-                className={clsx({ specialist: PlayerState.configByJob[job].isSpecialist })}
-                htmlFor={id}
-                tabIndex={-1}
-              >
-                <JobDisplay job={job} />
-              </label>
-              <input
-                id={id}
-                className="visually-hidden"
-                type="radio"
-                name="job"
-                checked={PlayerState.job === job}
-                value={job}
-                onChange={handleJobChange}
-                autoComplete="off"
-              />
-            </React.Fragment>
-          );
-        })}
-      </fieldset>
+      <ModeSelector
+        name="job"
+        prompt="Select a job"
+        defaultMode={PlayerState.job}
+        modeOptions={JOBS.map((job) => ({
+          mode: job,
+          label: <JobDisplay job={job} isSpecialist={PlayerState.configByJob[job].isSpecialist} />,
+        }))}
+        onChange={handleJobChange}
+      />
 
       <div className="configs">
         <div className="stats">

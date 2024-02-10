@@ -3,20 +3,20 @@ import "./ModeSelector.scss";
 import React, { useState } from "react";
 
 import { generateId } from "../lib/utils";
-import EmptyComponent from "./EmptyComponent";
 
 type ModeOption<Mode extends string> = {
   mode: Mode;
   label: string | React.ReactNode;
-  component: React.ComponentType;
+  component?: React.ReactNode;
 };
 
 type Props<Mode extends string> = {
   name: string;
-  prompt?: string;
+  prompt: string;
   defaultMode: Mode;
   modeOptions: ModeOption<Mode>[];
   onChange?: (mode: Mode) => void;
+  showPrompt?: boolean;
   reverse?: boolean;
 };
 
@@ -26,6 +26,7 @@ export default function ModeSelector<Mode extends string>({
   defaultMode,
   modeOptions,
   onChange,
+  showPrompt = false,
   reverse = false,
 }: Props<Mode>) {
   const [selectedMode, setMode] = useState<Mode>(defaultMode);
@@ -35,14 +36,14 @@ export default function ModeSelector<Mode extends string>({
     onChange?.(mode);
   };
 
-  const ModeComponent =
-    modeOptions.find((option) => option.mode === selectedMode)?.component ?? EmptyComponent;
+  const modeComponent =
+    modeOptions.find((option) => option.mode === selectedMode)?.component ?? null;
 
   return (
     <div className="ModeSelector">
       <fieldset>
         {/* <legend> on its own doesn't respect display: flex for some reason */}
-        {prompt && !reverse && (
+        {prompt && showPrompt && !reverse && (
           <span className="legend">
             <legend>{prompt}</legend>
           </span>
@@ -70,14 +71,14 @@ export default function ModeSelector<Mode extends string>({
           );
         })}
 
-        {prompt && reverse && (
+        {prompt && showPrompt && reverse && (
           <span className="legend">
             <legend>{prompt}</legend>
           </span>
         )}
       </fieldset>
 
-      <ModeComponent />
+      {modeComponent}
     </div>
   );
 }

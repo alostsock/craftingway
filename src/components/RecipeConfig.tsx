@@ -43,10 +43,11 @@ const RecipeConfig = observer(function RecipeConfig() {
         <ModeSelector
           name="recipe-search-mode"
           prompt={t`Search for a recipe`}
+          showPrompt
           defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "name"}
           modeOptions={[
-            { mode: "name", label: t`by name`, component: RecipesByName },
-            { mode: "level", label: t`by level`, component: RecipesByLevel },
+            { mode: "name", label: t`by name`, component: <RecipesByName /> },
+            { mode: "level", label: t`by level`, component: <RecipesByLevel /> },
           ]}
           onChange={onModeChange}
           reverse={LocaleState.locale == "jpn"}

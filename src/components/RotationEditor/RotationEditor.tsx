@@ -139,17 +139,18 @@ const RotationEditor = observer(function RotationEditor() {
 
           <ModeSelector
             name="rotation-editor-mode"
+            prompt="Select a rotation edit mode"
             defaultMode={rotationEditorMode}
             modeOptions={[
               {
                 mode: "auto",
                 label: autoModeLabel,
-                component: () => <SearchPanel />,
+                component: <SearchPanel />,
               },
               {
                 mode: "manual",
                 label: manualModeLabel,
-                component: () => <PersistentList onAdd={addItem} />,
+                component: <PersistentList onAdd={addItem} />,
               },
             ]}
             onChange={onModeChange}

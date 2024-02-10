@@ -61,10 +61,14 @@ a {
 a,
 button,
 input,
-fieldset label:has(+ input) {
+label:has(+ input[type="checkbox"]) {
   &:focus {
     outline: 1px solid var(--focus-color);
   }
+}
+
+fieldset label:has(+ input:focus) {
+  outline: 1px solid var(--focus-color);
 }
 
 button {

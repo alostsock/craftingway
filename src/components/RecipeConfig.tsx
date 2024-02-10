@@ -41,6 +41,7 @@ const RecipeConfig = observer(function RecipeConfig() {
     <section className="RecipeConfig">
       {!RecipeState.recipe && (
         <ModeSelector
+          name="recipe-search-mode"
           prompt={t`Search for a recipe`}
           defaultMode={Storage.retrieve<Mode>(MODE_STORE) || "name"}
           modeOptions={[
@@ -118,7 +119,6 @@ const RecipesByName = observer(function RecipesByName() {
       <label {...cb.getLabelProps()}>Name</label>
       <div className="dropdown-list" {...cb.getComboboxProps()}>
         <input
-          autoFocus
           placeholder={LocaleState.translateItemName("Orphanage Donation")}
           spellCheck="false"
           {...cb.getInputProps()}
@@ -177,7 +177,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
     <div className="RecipesByLevel field">
       <label {...cb.getLabelProps()}>Level</label>
       <div className="dropdown-list" {...cb.getComboboxProps()}>
-        <input autoFocus type="text" inputMode="numeric" placeholder="00" {...cb.getInputProps()} />
+        <input type="text" inputMode="numeric" placeholder="00" {...cb.getInputProps()} />
 
         <ul {...cb.getMenuProps()}>
           {cb.isOpen &&

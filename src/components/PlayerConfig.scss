@@ -34,7 +34,7 @@
       }
     }
 
-    input:checked + label {
+    label:has(+ input:checked) {
       cursor: default;
       opacity: 1;
     }

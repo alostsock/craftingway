@@ -58,11 +58,20 @@ const PlayerConfig = observer(function PlayerConfig() {
   return (
     <section className="PlayerConfig">
       <fieldset className="jobs">
+        <legend className="visually-hidden">Select a job</legend>
+
         {JOBS.map((job) => {
           const id = `radio-${job}`;
 
           return (
             <React.Fragment key={job}>
+              <label
+                className={clsx({ specialist: PlayerState.configByJob[job].isSpecialist })}
+                htmlFor={id}
+                tabIndex={-1}
+              >
+                <JobDisplay job={job} />
+              </label>
               <input
                 id={id}
                 className="visually-hidden"
@@ -73,13 +82,6 @@ const PlayerConfig = observer(function PlayerConfig() {
                 onChange={handleJobChange}
                 autoComplete="off"
               />
-              <label
-                className={clsx({ specialist: PlayerState.configByJob[job].isSpecialist })}
-                htmlFor={id}
-                tabIndex={-1}
-              >
-                <JobDisplay job={job} />
-              </label>
             </React.Fragment>
           );
         })}

@@ -12,6 +12,7 @@ type ModeOption<Mode extends string> = {
 };
 
 type Props<Mode extends string> = {
+  name: string;
   prompt?: string;
   defaultMode: Mode;
   modeOptions: ModeOption<Mode>[];
@@ -20,6 +21,7 @@ type Props<Mode extends string> = {
 };
 
 export default function ModeSelector<Mode extends string>({
+  name,
   prompt,
   defaultMode,
   modeOptions,
@@ -58,6 +60,7 @@ export default function ModeSelector<Mode extends string>({
                 id={id}
                 className="visually-hidden"
                 type="radio"
+                name={name}
                 checked={selectedMode === mode}
                 value={mode}
                 onChange={() => handleModeChange(mode)}

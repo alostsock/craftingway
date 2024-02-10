@@ -138,6 +138,7 @@ const RotationEditor = observer(function RotationEditor() {
           </div>
 
           <ModeSelector
+            name="rotation-editor-mode"
             defaultMode={rotationEditorMode}
             modeOptions={[
               {

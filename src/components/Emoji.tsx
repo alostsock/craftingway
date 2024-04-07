@@ -1,7 +1,7 @@
 import "./Emoji.scss";
 
+import twemoji from "@twemoji/api";
 import { memo } from "react";
-import twemoji from "twemoji";
 
 type Props = { emoji: string };
 

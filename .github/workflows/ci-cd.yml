@@ -67,14 +67,14 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         working-directory: ./server
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --verbose -a servingway --remote-only
 
       - name: Deploy backend (preview)
         if: ${{ github.ref_name == 'preview' }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_PREVIEW_API_TOKEN }}
         working-directory: ./server
-        run: flyctl deploy -a servingway-preview --remote-only
+        run: flyctl deploy --verbose -a servingway-preview --remote-only
 
       - name: Deploy frontend
         if: ${{ github.ref_name == 'main' }}

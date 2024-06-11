@@ -68,8 +68,6 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         working-directory: ./server
         run: |
-          flyctl agent restart
-          flyctl doctor -a servingway
           LOG_LEVEL=debug flyctl deploy --verbose -a servingway --remote-only
 
       - name: Deploy backend (preview)
@@ -78,8 +76,6 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_PREVIEW_API_TOKEN }}
         working-directory: ./server
         run: |
-          flyctl agent restart
-          flyctl doctor -a servingway-preview
           LOG_LEVEL=debug flyctl deploy --verbose -a servingway-preview --remote-only
 
       - name: Deploy frontend

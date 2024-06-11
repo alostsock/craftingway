@@ -70,7 +70,7 @@ jobs:
         run: |
           flyctl agent restart
           flyctl doctor -a servingway
-          flyctl deploy --verbose -a servingway --remote-only
+          LOG_LEVEL=debug flyctl deploy --verbose -a servingway --remote-only
 
       - name: Deploy backend (preview)
         if: ${{ github.ref_name == 'preview' }}
@@ -80,7 +80,7 @@ jobs:
         run: |
           flyctl agent restart
           flyctl doctor -a servingway-preview
-          flyctl deploy --verbose -a servingway-preview --remote-only
+          LOG_LEVEL=debug flyctl deploy --verbose -a servingway-preview --remote-only
 
       - name: Deploy frontend
         if: ${{ github.ref_name == 'main' }}

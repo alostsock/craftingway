@@ -1,6 +1,6 @@
 import "./ModeSelector.scss";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { generateId } from "../lib/utils";
 
@@ -35,6 +35,10 @@ export default function ModeSelector<Mode extends string>({
     setMode(mode);
     onChange?.(mode);
   };
+
+  useEffect(() => {
+    setMode(defaultMode);
+  }, [defaultMode]);
 
   const modeComponent =
     modeOptions.find((option) => option.mode === selectedMode)?.component ?? null;

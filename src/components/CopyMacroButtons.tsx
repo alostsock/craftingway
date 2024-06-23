@@ -16,10 +16,15 @@ export default function CopyMacroButtons({ craftState, actions, disabled }: Prop
 
   if (macroTextParts.length === 0) return null;
 
+  // Use Unix-style newlines if the OS appears to be Mac OS. Unsure if this
+  // more generally applies to iOS/Linux (since most players should be using the
+  // Windows client), so those are ignored for now.
+  const newline = window.navigator.userAgent.includes("Mac") ? "\n" : "\r\n";
+
   if (macroTextParts.length === 1) {
     return (
       <div className="CopyMacroButtons">
-        <CopyButton className="link" copyText={macroTextParts[0].join("\r\n")} disabled={disabled}>
+        <CopyButton className="link" copyText={macroTextParts[0].join(newline)} disabled={disabled}>
           Copy macro
         </CopyButton>
       </div>
@@ -33,7 +38,7 @@ export default function CopyMacroButtons({ craftState, actions, disabled }: Prop
           <CopyButton
             key={index}
             className="link"
-            copyText={macroTextLines.join("\r\n")}
+            copyText={macroTextLines.join(newline)}
             disabled={disabled}
           >
             Part {index + 1}

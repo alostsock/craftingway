@@ -16,6 +16,15 @@ pub enum ApiError {
         client_ip: std::net::IpAddr,
         wait_time: u64,
     },
+
+    #[error(
+        "The version number for this {resource_name} is incorrect (found \"{found}\", expected \"{expected}\")"
+    )]
+    ResourceVersionMismatch {
+        resource_name: String,
+        expected: String,
+        found: String,
+    },
 }
 
 impl IntoResponse for ApiError {
@@ -45,6 +54,7 @@ impl IntoResponse for ApiError {
                 warn!("Rate limit quota reached for {client_ip}");
                 (StatusCode::TOO_MANY_REQUESTS, format!("{self}"))
             }
+            Self::ResourceVersionMismatch { .. } => (StatusCode::BAD_REQUEST, format!("{self}")),
             _ => (StatusCode::INTERNAL_SERVER_ERROR, format!("{self}")),
         };
 

@@ -26,12 +26,12 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
     rotationData && "error" in rotationData ? null : rotationData
   );
 
-  if (rotationData == null || simulatorResult == null) {
-    return <section className="RotationDisplay">Loading...</section>;
+  if (rotationData && "error" in rotationData) {
+    return <section className="RotationDisplay">{rotationData.error}</section>;
   }
 
-  if ("error" in rotationData) {
-    return <section className="RotationDisplay">{rotationData.error}</section>;
+  if (rotationData == null || simulatorResult == null) {
+    return <section className="RotationDisplay">Loading...</section>;
   }
 
   const { player, job, recipe, ingredients, startingQuality, food, potion, actions, createdAt } =

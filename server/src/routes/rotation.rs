@@ -1,8 +1,10 @@
 use crate::models::shared_rotation::{NewSharedRotation, SharedRotation, SharedRotationBody};
 use crate::routes::Slug;
-use crate::{ApiResult, ApiState};
+use crate::{ApiError, ApiResult, ApiState};
 use axum::extract::{Path, State};
 use axum::Json;
+
+const CURRENT_VERSION: &str = "7.0-1";
 
 pub async fn get(
     State(state): State<ApiState>,
@@ -15,6 +17,14 @@ pub async fn get(
     )
     .fetch_one(&state.db)
     .await?;
+
+    if result.version != CURRENT_VERSION {
+        return Err(ApiError::ResourceVersionMismatch {
+            resource_name: String::from("rotation"),
+            expected: String::from(CURRENT_VERSION),
+            found: result.version,
+        });
+    }
 
     Ok(Json(result))
 }

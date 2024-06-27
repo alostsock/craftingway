@@ -3,7 +3,7 @@ import { Job } from "./jobs";
 export const API_URL = import.meta.env.DEV ? "http://localhost:8080" : import.meta.env.VITE_API_URL;
 
 interface RotationRequest {
-  version: "6.4-1";
+  version: "7.0-1";
   job: Job;
   job_level: number;
   craftsmanship: number;

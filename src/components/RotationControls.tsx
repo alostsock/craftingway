@@ -69,7 +69,7 @@ const RotationControls = observer(function RotationControls() {
     }
 
     const result = await createRotation({
-      version: "6.4-1",
+      version: "7.0-1",
       job: PlayerState.job,
       job_level,
       craftsmanship,

@@ -11,7 +11,7 @@ type LogbookEntry = {
 
 const MAX_ENTRIES = 50;
 
-const LOGBOOK_ENTRIES_STORE = "logbookEntries";
+const LOGBOOK_ENTRIES_STORE = "logbookEntries_v2";
 
 class _LogbookState {
   entries: LogbookEntry[];

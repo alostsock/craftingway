@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "wouter";
 
 import CraftStateDisplay from "./CraftStateDisplay";
+import DawntrailNotice from "./DawntrailNotice";
 import DocumentTitle from "./DocumentTitle";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -24,6 +25,8 @@ const App = observer(function App() {
       <I18nProvider i18n={i18n}>
         <TooltipProvider delayDuration={400} skipDelayDuration={300}>
           <Header />
+
+          <DawntrailNotice />
 
           <TranslationNotice />
 

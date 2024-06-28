@@ -120,10 +120,17 @@ const MEALS: Consumable[] = [
   { item_level: 554, name: "Tsai tou Vounou", craftsmanship: null, control: [4, 61, 5, 76], cp: [21, 62, 26, 78] },
   { item_level: 590, name: "Calamari Ripieni", craftsmanship: [4, 96, 5, 120], control: null, cp: [21, 66, 26, 82] },
   { item_level: 620, name: "Jhinga Biryani", craftsmanship: null, control: [4, 72, 5, 90], cp: [21, 69, 26, 86] },
+  { item_level: 657, name: "Gateau Au Chocolat", craftsmanship: [7, 192, 9, 240], control: null, cp: [8, 30, 10, 38] },
+  { item_level: 670, name: "Salmon Jerky", craftsmanship: [4, 78, 5, 98], control: [7, 172, 9, 215], cp: null },
+  { item_level: 684, name: "Rroneek Steak", craftsmanship: null, control: [4, 77, 5, 97], cp: [21, 73, 26, 92] },
 ];
 
 // prettier-ignore
 const POTIONS: Consumable[] = [
+  { item_level: 665, name: "Competent Craftsman's Tisane", craftsmanship: [2, 50, 3, 63], control: null, cp: null, },
+  { item_level: 670, name: "Commanding Craftsman's Tisane", craftsmanship: null, control: [2, 50, 3, 63], cp: null, },
+  { item_level: 675, name: "Cunning Craftsman's Tisane", craftsmanship: null, control: null, cp: [5, 21, 6, 27], },
+
   { item_level: 527, name: "Competent Craftsman's Draught", craftsmanship: [2, 40, 3, 50], control: null, cp: null },
   { item_level: 540, name: "Commanding Craftsman's Draught", craftsmanship: null, control: [2, 40, 3, 50], cp: null },
   { item_level: 554, name: "Cunning Craftsman's Draught", craftsmanship: null, control: null, cp: [5, 17, 6, 21] },

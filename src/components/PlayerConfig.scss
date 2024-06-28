@@ -18,9 +18,13 @@
 
   .configs {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: min-content 1fr;
     justify-content: space-between;
     gap: var(--1);
+
+    @media (max-width: 40em) {
+      grid-template-columns: 1fr;
+    }
 
     .stats {
       width: min-content;

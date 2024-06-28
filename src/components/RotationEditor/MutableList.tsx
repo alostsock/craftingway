@@ -1,6 +1,7 @@
 import { useDroppable } from "@dnd-kit/core";
 import { observer } from "mobx-react-lite";
 
+import { SimulatorState } from "../../lib/simulator-state";
 import SortableIcon from "./SortableIcon";
 
 type MutableListProps = {
@@ -27,6 +28,7 @@ const MutableList = observer(function MutableList({
           step={index + 1}
           onRemove={onRemove}
           active={id === activeItemId}
+          disabled={index > SimulatorState.lastValidActionIndex}
         />
       ))}
     </div>

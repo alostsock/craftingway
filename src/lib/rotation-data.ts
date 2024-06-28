@@ -110,8 +110,10 @@ export function useRotationData(slug: string): RotationData | RotationDataError 
   return result;
 }
 
-export function useSimulatorResult(rotationData: RotationData | null): SimulatorResult | null {
-  const [result, setResult] = useState<SimulatorResult | null>(null);
+type Result = SimulatorResult & { lastValidActionIndex: number };
+
+export function useSimulatorResult(rotationData: RotationData | null): Result | null {
+  const [result, setResult] = useState<Result | null>(null);
 
   useAutorun(() => {
     if (rotationData == null || !SimulatorState.loaded) {
@@ -130,12 +132,17 @@ export function useSimulatorResult(rotationData: RotationData | null): Simulator
       cp: cp + foodBonus.cp + potionBonus.cp,
     };
 
+    const requiresSpecialist = rotationData.actions.includes("QuickInnovation");
+
     setResult(
       SimulatorState.simulateActions(
         rotationData.recipe,
         player,
         rotationData.actions,
-        rotationData.startingQuality
+        rotationData.startingQuality,
+        requiresSpecialist,
+        requiresSpecialist,
+        rotationData.actions.includes("Manipulation")
       )
     );
   }, [rotationData]);

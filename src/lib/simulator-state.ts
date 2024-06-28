@@ -37,6 +37,7 @@ class _SimulatorState {
   private _actions: Action[] = [];
   private _craftState: CraftState | null = null;
   private _completionReason: CompletionReason | null = null;
+  private _lastValidActionIndex = 0;
 
   config: Config;
   private workers: Set<Worker> = new Set();
@@ -52,14 +53,18 @@ class _SimulatorState {
 
     autorun(() => {
       if (this.loaded && RecipeState.recipe) {
-        const { craft_state, completion_reason } = this.simulateActions(
+        const { craft_state, completion_reason, lastValidActionIndex } = this.simulateActions(
           RecipeState.recipe,
           PlayerState.playerWithBonuses,
           this.actions,
-          RecipeState.startingQuality
+          RecipeState.startingQuality,
+          PlayerState.config.isSpecialist ?? false,
+          PlayerState.config.useDelineations ?? false,
+          PlayerState.config.hasManipulation ?? true
         );
         this.craftState = craft_state;
         this.completionReason = completion_reason || null;
+        this.lastValidActionIndex = lastValidActionIndex;
       } else {
         this.craftState = null;
       }
@@ -90,12 +95,40 @@ class _SimulatorState {
     this._completionReason = reason;
   }
 
-  simulateActions(recipe: Recipe, player: Player, actions: Action[], startingQuality: number) {
-    return simulateActions(recipe, player, actions, {
+  get lastValidActionIndex() {
+    return this._lastValidActionIndex;
+  }
+
+  set lastValidActionIndex(i: number) {
+    this._lastValidActionIndex = i;
+  }
+
+  simulateActions(
+    recipe: Recipe,
+    player: Player,
+    actions: Action[],
+    startingQuality: number,
+    playerIsSpecialist: boolean,
+    useDelineation: boolean,
+    useManipulation: boolean
+  ) {
+    const simulatorResult = simulateActions(recipe, player, actions, {
       max_steps: 50,
       starting_quality: startingQuality,
       quality_target: undefined,
+      player_is_specialist: playerIsSpecialist,
+      use_delineation: useDelineation,
+      use_manipulation: useManipulation,
     });
+
+    const quickInnovationPosition = actions.indexOf("QuickInnovation");
+    const lastStep = simulatorResult.craft_state.step;
+    const lastValidActionIndex =
+      quickInnovationPosition >= 0 && quickInnovationPosition < lastStep
+        ? lastStep - 1
+        : lastStep - 2;
+
+    return { ...simulatorResult, lastValidActionIndex };
   }
 
   recipesByLevel(jobLevel: number): RecipeData[] {
@@ -216,6 +249,9 @@ class _SimulatorState {
           max_steps: this.config.maxSteps,
           starting_quality: RecipeState.startingQuality,
           quality_target: RecipeState.recipe.can_hq ? RecipeState.recipe.quality : 0,
+          player_is_specialist: PlayerState.config.isSpecialist ?? false,
+          use_delineation: PlayerState.config.useDelineations ?? false,
+          use_manipulation: PlayerState.config.hasManipulation ?? true,
         },
         searchOptions: {
           iterations: this.config.iterations,

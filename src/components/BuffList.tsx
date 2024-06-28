@@ -8,15 +8,21 @@ import { SimulatorState } from "../lib/simulator-state";
 import { StatusIcon } from "./Icons";
 
 const BuffList = observer(function BuffList() {
-  if (!SimulatorState.craftState) return null;
+  const craftState = SimulatorState.craftState;
+  if (!craftState) return null;
 
-  const hasActiveBuffs = Object.values(SimulatorState.craftState.buffs).some(Boolean);
+  const buffs = {
+    ...craftState.buffs,
+    trained_perfection: craftState.previous_combo_action == "TrainedPerfection" ? 1 : 0,
+  };
+
+  const hasActiveBuffs = Object.values(buffs).some(Boolean);
 
   return (
     <div className="BuffList">
       {!hasActiveBuffs && <div className="no-buffs">No buffs active</div>}
 
-      {Object.entries(SimulatorState.craftState.buffs).map(([buffName, stacksOrExpiry]) => {
+      {Object.entries(buffs).map(([buffName, stacksOrExpiry]) => {
         if (!stacksOrExpiry) return null;
 
         const buffData = BUFF_LOOKUP[buffName as Buff];

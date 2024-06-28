@@ -21,6 +21,7 @@ export const ACTIONS: readonly ActionData[] = [
   { level: 15, name: "Veneration", label: "Veneration", group: "Buff", cp: 18 },
   { level: 21, name: "GreatStrides", label: "Great Strides", group: "Buff", cp: 32 },
   { level: 26, name: "Innovation", label: "Innovation", group: "Buff", cp: 18 },
+  { level: 96, name: "QuickInnovation", label: "Quick Innovation", group: "Buff" },
 
   { level: 1, name: "BasicSynthesis", label: "Basic Synthesis", group: "Progress" },
   { level: 31, name: "BasicSynthesisTraited", label: "Basic Synthesis", group: "Progress" },
@@ -32,30 +33,26 @@ export const ACTIONS: readonly ActionData[] = [
 
   { level: 5, name: "BasicTouch", label: "Basic Touch", group: "Quality", cp: 18 },
   { level: 18, name: "StandardTouch", label: "Standard Touch", group: "Quality", cp: 32 },
-  { level: 84, name: "AdvancedTouch", label: "Advanced Touch", group: "Quality", cp: 46 },
+  { level: 68, name: "AdvancedTouch", label: "Advanced Touch", group: "Quality", cp: 46 },
   { level: 50, name: "ByregotsBlessing", label: "Byregot's Blessing", group: "Quality", cp: 24 },
   { level: 66, name: "PrudentTouch", label: "Prudent Touch", group: "Quality", cp: 25 },
   { level: 71, name: "PreparatoryTouch", label: "Preparatory Touch", group: "Quality", cp: 40 },
   { level: 90, name: "TrainedFinesse", label: "Trained Finesse", group: "Quality", cp: 32 },
+  { level: 92, name: "RefinedTouch", label: "Refined Touch", group: "Quality", cp: 24 },
 
   { level: 7, name: "MastersMend", label: "Master's Mend", group: "Durability", cp: 88 },
+  { level: 98, name: "ImmaculateMend", label: "Immaculate Mend", group: "Durability", cp: 112 },
   { level: 15, name: "WasteNot", label: "Waste Not", group: "Durability", cp: 56 },
   { level: 47, name: "WasteNotII", label: "Waste Not II", group: "Durability", cp: 98 },
   { level: 65, name: "Manipulation", label: "Manipulation", group: "Durability", cp: 96 },
+  { level: 100, name: "TrainedPerfection", label: "Trained Perfection", group: "Durability" },
 
   { level: 13, name: "Observe", label: "Observe", group: "Other", cp: 7 },
-  { level: 67, name: "FocusedSynthesis", label: "Focused Synthesis", group: "Other", cp: 5 },
-  { level: 68, name: "FocusedTouch", label: "Focused Touch", group: "Other", cp: 18 },
   { level: 76, name: "DelicateSynthesis", label: "Delicate Synthesis", group: "Other", cp: 32 },
-
-  // ignored for now:
-  // hasty touch
-  // rapid synthesis
-  // tricks of the trade
-  // final appraisal
-  // precise touch
-  // intensive synthesis
+  { level: 94, name: "DelicateSynthesisTraited", label: "Delicate Synthesis", group: "Other", cp: 32 },
 ] as const;
+
+export const SPECIALIST_ACTIONS: Action[] = ["QuickInnovation"];
 
 export const ACTIONS_BY_GROUP = groupBy(ACTIONS.slice(), "group");
 

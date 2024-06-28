@@ -1,6 +1,6 @@
 import { Buffs } from "crafty";
 
-export type Buff = keyof Buffs;
+export type Buff = keyof Buffs & "trained_perfection";
 
 type BuffData = {
   name: Buff;
@@ -54,16 +54,15 @@ export const BUFF_LOOKUP: Record<Buff, BuffData> = {
     tooltip: "Efficiency of Synthesis actions is increased by 50%.",
     expires: true,
   },
-  makers_mark: {
-    name: "makers_mark",
-    label: "Maker's Mark",
-    tooltip: "Flawless Synthesis CP cost and durability loss is reduced to zero.",
-    expires: true,
-  },
   muscle_memory: {
     name: "muscle_memory",
     label: "Muscle Memory",
     tooltip: "Efficiency of the next Synthesis action is increased by 100%.",
     expires: true,
+  },
+  trained_perfection: {
+    name: "trained_perfection",
+    label: "Trained Perfection",
+    tooltip: "Durability loss of next action is reduced to zero.",
   },
 } as const;

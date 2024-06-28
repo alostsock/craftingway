@@ -30,9 +30,17 @@ export const ActionIcon = observer(function ActionIcon({
     label = nameWithJob;
   }
 
-  if (showCp && SimulatorState.craftState?.next_combo_action === name) {
-    // handle Standard/Advanced touch
-    cp = 18;
+  if (showCp) {
+    const previous = SimulatorState.craftState?.previous_combo_action;
+
+    if (
+      (previous == "BasicTouch" && name == "StandardTouch") ||
+      ((previous == "StandardTouch" || previous == "Observe") && name == "AdvancedTouch")
+    ) {
+      cp = 18;
+    } else if (cp != null && previous == "TrainedPerfection") {
+      cp = 0;
+    }
   }
 
   const url = `/icon/action/${label}`;
@@ -42,7 +50,7 @@ export const ActionIcon = observer(function ActionIcon({
       <img src={encodeURI(`${url}.webp`)} title={label} alt={label} draggable={false} />
 
       {step && <div className="step">{step}</div>}
-      {showCp && cp && <div className="cp">{cp}</div>}
+      {showCp && cp != null && <div className="cp">{cp}</div>}
     </div>
   );
 });

@@ -119,24 +119,18 @@ export const TOOLTIP_TEXT: Record<Action, React.ReactNode> = {
       <span>Unavailable when Waste Not or Waste Not II is active.</span>
     </React.Fragment>
   ),
-  FocusedSynthesis: (
-    <React.Fragment>
-      <span>Increases progress.</span>
-      <Progress>200%</Progress>
-      <span>Combo Action: Observe</span>
-    </React.Fragment>
-  ),
-  FocusedTouch: (
+  AdvancedTouch: (
     <React.Fragment>
       <span>Increases quality.</span>
       <Quality>150%</Quality>
-      <span>Combo Action: Observe</span>
+      <span>Combo Action: Standard Touch or Observe</span>
+      <span>Combo Bonus: CP cost reduced to 18</span>
     </React.Fragment>
   ),
   Reflect: (
     <React.Fragment>
       <span>Increases quality.</span>
-      <Quality>100%</Quality>
+      <Quality>300%</Quality>
       <span>Additional Effect: Grants an extra Inner Quiet stack</span>
       <span>Available only on the first step.</span>
     </React.Fragment>
@@ -174,19 +168,22 @@ export const TOOLTIP_TEXT: Record<Action, React.ReactNode> = {
       </span>
     </React.Fragment>
   ),
-  TrainedEye: (
+  DelicateSynthesisTraited: (
     <React.Fragment>
-      <span>Increases quality to maximum.</span>
-      <span> Available only on the first step.</span>
-      <span>Recipe level must be at least 10 levels below job level.</span>
+      <span>Increases both progress and quality.</span>
+      <span>
+        Progress efficiency: <span className="progress">150%</span>
+      </span>
+      <span>
+        Quality efficiency: <span className="quality">100%</span>
+      </span>
     </React.Fragment>
   ),
-  AdvancedTouch: (
+  TrainedEye: (
     <React.Fragment>
-      <span>Increases quality.</span>
-      <Quality>150%</Quality>
-      <span>Combo Action: Standard Touch</span>
-      <span>Combo Bonus: CP cost reduced to 18</span>
+      <span>Increases quality to 100%.</span>
+      <span>Available only on the first step.</span>
+      <span>Recipe level must be at least 10 levels below job level.</span>
     </React.Fragment>
   ),
   PrudentSynthesis: (
@@ -201,6 +198,34 @@ export const TOOLTIP_TEXT: Record<Action, React.ReactNode> = {
       <span>Increases quality at no cost to durability.</span>
       <Quality>100%</Quality>
       <span>Available only when Inner Quiet stack size is 10.</span>
+    </React.Fragment>
+  ),
+  RefinedTouch: (
+    <React.Fragment>
+      <span>Increases quality.</span>
+      <Quality>100%</Quality>
+      <span>Combo Action: Basic Touch</span>
+      <span>Combo Bonus: Grants an extra Inner Quiet stack</span>
+    </React.Fragment>
+  ),
+  QuickInnovation: (
+    <React.Fragment>
+      <span>Grants Innovation for 1 turn.</span>
+      <span>Cannot be executed while under the effect of Innovation.</span>
+      <span>Requires 1 crafter's delineation.</span>
+      <span>Can only be used once per synthesis.</span>
+      <span>This action does not increase step count.</span>
+    </React.Fragment>
+  ),
+  ImmaculateMend: (
+    <React.Fragment>
+      <span>Restores all item durability.</span>
+    </React.Fragment>
+  ),
+  TrainedPerfection: (
+    <React.Fragment>
+      <span>Reduces durability loss of next action to 0.</span>
+      <span>Can only be used once per synthesis.</span>
     </React.Fragment>
   ),
 };

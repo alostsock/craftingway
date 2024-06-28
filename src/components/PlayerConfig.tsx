@@ -46,6 +46,10 @@ const PlayerConfig = observer(function PlayerConfig() {
     setCopyMenuState("inactive");
   });
 
+  const toggleManipulation = action(() => {
+    PlayerState.setConfig({ hasManipulation: !(PlayerState.config.hasManipulation ?? true) });
+  });
+
   const toggleSpecialist = action(() => {
     const { craftsmanship, control, cp, isSpecialist } = PlayerState.config;
     PlayerState.setConfig({
@@ -53,7 +57,12 @@ const PlayerConfig = observer(function PlayerConfig() {
       control: isSpecialist ? control - 20 : control + 20,
       cp: isSpecialist ? cp - 15 : cp + 15,
       isSpecialist: !isSpecialist,
+      useDelineations: false,
     });
+  });
+
+  const toggleDelineations = action(() => {
+    PlayerState.setConfig({ useDelineations: !PlayerState.config.useDelineations });
   });
 
   return (
@@ -96,14 +105,6 @@ const PlayerConfig = observer(function PlayerConfig() {
               </React.Fragment>
             );
           })}
-
-          <label htmlFor="specialist-toggle">Specialist?</label>
-          <input
-            id="specialist-toggle"
-            type="checkbox"
-            checked={!!PlayerState.config.isSpecialist}
-            onChange={toggleSpecialist}
-          />
         </div>
 
         <div className="consumables">
@@ -125,6 +126,40 @@ const PlayerConfig = observer(function PlayerConfig() {
             />
           ) : (
             <PotionSelect />
+          )}
+        </div>
+
+        <div className="toggles">
+          <div className="field">
+            <label htmlFor="manipulation-toggle">Has Manipulation?</label>
+            <input
+              id="manipulation-toggle"
+              type="checkbox"
+              checked={PlayerState.config.hasManipulation ?? true}
+              onChange={toggleManipulation}
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="specialist-toggle">Specialist?</label>
+            <input
+              id="specialist-toggle"
+              type="checkbox"
+              checked={!!PlayerState.config.isSpecialist}
+              onChange={toggleSpecialist}
+            />
+          </div>
+
+          {PlayerState.config.isSpecialist && (
+            <div className="field">
+              <label htmlFor="delineations-toggle">Use delineations?</label>
+              <input
+                id="delineations-toggle"
+                type="checkbox"
+                checked={!!PlayerState.config.useDelineations}
+                onChange={toggleDelineations}
+              />
+            </div>
           )}
         </div>
       </div>

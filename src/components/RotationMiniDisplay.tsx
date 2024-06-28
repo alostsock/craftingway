@@ -87,10 +87,10 @@ const RotationMiniDisplay = observer(function RotationMiniDisplay({ rotationData
               <div
                 key={index}
                 className={clsx("action", {
-                  disabled: step >= (simulatorResult?.craft_state.step || 0),
+                  disabled: index > (simulatorResult?.lastValidActionIndex ?? 0),
                 })}
               >
-                <ActionIcon name={action} />
+                <ActionIcon name={action} step={step} />
               </div>
             );
           })}

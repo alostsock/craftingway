@@ -17,14 +17,10 @@
   }
 
   .configs {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr;
     justify-content: space-between;
     gap: var(--1);
-    padding: var(--05) 0;
-
-    @media (max-width: 40em) {
-      flex-direction: column;
-    }
 
     .stats {
       width: min-content;
@@ -34,7 +30,7 @@
       gap: var(--05) var(--charwidth);
 
       #input-job_level {
-        width: 2.5em;
+        width: 3em;
         justify-self: end;
       }
 
@@ -55,12 +51,6 @@
         .potion {
           color: var(--potion-color);
         }
-      }
-
-      .specialist {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
       }
     }
 
@@ -129,6 +119,22 @@
         .details {
           color: var(--muted-text-color);
         }
+      }
+    }
+
+    .toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--05) calc(var(--charwidth) * 2);
+
+      grid-column: span 2;
+
+      @media (max-width: 40em) {
+        grid-column: span 1;
+      }
+
+      .field {
+        align-items: center;
       }
     }
   }

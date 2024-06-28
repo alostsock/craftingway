@@ -163,7 +163,7 @@ const RecipesByLevel = observer(function RecipesByLevel() {
 
   const cb = useCombobox({
     defaultInputValue: level === 0 ? "" : level.toString(),
-    onInputValueChange: ({ inputValue }) => setLevel(sanitizeIntFromText(inputValue || "", 90)),
+    onInputValueChange: ({ inputValue }) => setLevel(sanitizeIntFromText(inputValue || "", 100)),
     items: queryResults,
     itemToString: (item) => item?.name || "",
     onSelectedItemChange: ({ selectedItem }) => setRecipe(selectedItem || null),

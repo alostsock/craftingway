@@ -96,6 +96,14 @@
       }
     }
 
+    .delineations {
+      color: var(--muted-text-color);
+
+      span {
+        color: var(--text-color);
+      }
+    }
+
     .controls {
       display: flex;
       flex-wrap: wrap;

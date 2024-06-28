@@ -9,6 +9,8 @@ interface JobConfig extends Player {
   food: ConsumableVariant | null;
   potion: ConsumableVariant | null;
   isSpecialist?: boolean;
+  useDelineations?: boolean;
+  hasManipulation?: boolean;
 }
 
 const DEFAULT_CONFIG: JobConfig = {
@@ -78,6 +80,12 @@ class _PlayerState {
     }
     if ("isSpecialist" in attrs) {
       this.configByJob[this.job].isSpecialist = attrs.isSpecialist;
+    }
+    if ("useDelineations" in attrs) {
+      this.configByJob[this.job].useDelineations = attrs.useDelineations;
+    }
+    if ("hasManipulation" in attrs) {
+      this.configByJob[this.job].hasManipulation = attrs.hasManipulation;
     }
   }
 

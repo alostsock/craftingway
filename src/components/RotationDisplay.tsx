@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 import React from "react";
 
+import { SPECIALIST_ACTIONS } from "../lib/actions";
 import { calculateConsumableBonus } from "../lib/consumables";
 import { LocaleState } from "../lib/locale-state";
 import { useRotationData, useSimulatorResult } from "../lib/rotation-data";
@@ -56,6 +57,8 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
       timeStyle: "short",
     })
     .toLocaleLowerCase();
+
+  const delineationCount = actions.filter((a) => SPECIALIST_ACTIONS.includes(a)).length;
 
   return (
     <div className="RotationDisplay">
@@ -123,6 +126,12 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
           </div>
         )}
 
+        {delineationCount > 0 && (
+          <div className="delineations">
+            Crafter's delineations required: <span>{delineationCount}</span>
+          </div>
+        )}
+
         <div className="controls">
           <CopyMacroButtons craftState={simulatorResult.craft_state} actions={actions} />
 
@@ -154,7 +163,9 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
             return (
               <div
                 key={index}
-                className={clsx("action", { disabled: step >= simulatorResult.craft_state.step })}
+                className={clsx("action", {
+                  disabled: index > simulatorResult.lastValidActionIndex,
+                })}
               >
                 <ActionIcon name={action} job={job} step={step} />
               </div>

@@ -24,7 +24,7 @@ const PersistentList = observer(function PersistentList({ onAdd }: PersistentLis
           <div className="name">{group}</div>
 
           <div className="actions">
-            {actions.map(({ name, label }) => (
+            {actions.map(({ name }) => (
               <DraggableIcon
                 key={name}
                 id={idFromAction(name)}

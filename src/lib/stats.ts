@@ -6,7 +6,7 @@ export type StatConfig = {
 };
 
 export const STATS = [
-  { name: "job_level", label: "Level", min: 1, max: 90 },
+  { name: "job_level", label: "Level", min: 1, max: 100 },
   { name: "craftsmanship", label: "Craftsmanship", min: 0, max: 9000 },
   { name: "control", label: "Control", min: 0, max: 9000 },
   { name: "cp", label: "CP", min: 180, max: 1000 },

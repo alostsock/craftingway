@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { observer } from "mobx-react-lite";
 
 import { ACTION_LOOKUP } from "../../lib/actions";
-import { SimulatorState } from "../../lib/simulator-state";
 import Emoji from "../Emoji";
 import { ActionIcon } from "../Icons";
 import { actionFromId } from "./converters";
@@ -13,6 +12,7 @@ type SortableIconProps = {
   step: number;
   onRemove: (id: string) => void;
   active: boolean;
+  disabled: boolean;
 };
 
 const SortableIcon = observer(function SortableIcon({
@@ -20,6 +20,7 @@ const SortableIcon = observer(function SortableIcon({
   step,
   onRemove,
   active,
+  disabled,
 }: SortableIconProps) {
   const actionName = actionFromId(id);
 
@@ -31,8 +32,6 @@ const SortableIcon = observer(function SortableIcon({
       }
     : undefined;
 
-  const disabled = SimulatorState.craftState != null && step >= SimulatorState.craftState.step;
-
   return (
     <div
       ref={(node) => {
@@ -42,7 +41,7 @@ const SortableIcon = observer(function SortableIcon({
         }
       }}
       style={style}
-      className={clsx("SortableIcon", { disabled, active })}
+      className={clsx("SortableIcon", { disabled, active }, step)}
       {...attributes}
       {...listeners}
     >

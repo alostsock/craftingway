@@ -38,8 +38,6 @@ export const ActionIcon = observer(function ActionIcon({
       ((previous == "StandardTouch" || previous == "Observe") && name == "AdvancedTouch")
     ) {
       cp = 18;
-    } else if (cp != null && previous == "TrainedPerfection") {
-      cp = 0;
     }
   }
 

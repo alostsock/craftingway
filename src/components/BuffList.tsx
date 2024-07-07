@@ -13,7 +13,7 @@ const BuffList = observer(function BuffList() {
 
   const buffs = {
     ...craftState.buffs,
-    trained_perfection: craftState.previous_combo_action == "TrainedPerfection" ? 1 : 0,
+    trained_perfection: craftState.trained_perfection_active === true ? 1 : 0,
   };
 
   const hasActiveBuffs = Object.values(buffs).some(Boolean);

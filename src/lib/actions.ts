@@ -72,7 +72,9 @@ export function traitedActions(jobLevel: number): ActionData[] {
       (action.name === "CarefulSynthesis" && jobLevel >= 82) ||
       (action.name === "CarefulSynthesisTraited" && jobLevel < 82) ||
       (action.name === "Groundwork" && jobLevel >= 86) ||
-      (action.name === "GroundworkTraited" && jobLevel < 86)
+      (action.name === "GroundworkTraited" && jobLevel < 86) ||
+      (action.name === "DelicateSynthesis" && jobLevel >= 94) ||
+      (action.name === "DelicateSynthesisTraited" && jobLevel < 94)
     ) {
       continue;
     }

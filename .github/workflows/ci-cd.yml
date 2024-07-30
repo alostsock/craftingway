@@ -70,7 +70,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         working-directory: ./server
         run: |
-          LOG_LEVEL=debug flyctl deploy --verbose -a servingway --remote-only
+          flyctl deploy --verbose -a servingway --remote-only
 
       - name: Deploy backend (preview)
         if: ${{ github.ref_name == 'preview' }}
@@ -78,7 +78,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_PREVIEW_API_TOKEN }}
         working-directory: ./server
         run: |
-          LOG_LEVEL=debug flyctl deploy --verbose -a servingway-preview --remote-only
+          flyctl deploy --verbose -a servingway-preview --remote-only
 
       - name: Deploy frontend
         if: ${{ github.ref_name == 'main' }}

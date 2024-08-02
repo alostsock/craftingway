@@ -1,18 +1,17 @@
 import "./CopyMacroButtons.scss";
 
-import type { Action, CraftState } from "crafty";
+import type { Action } from "crafty";
 
 import { SimulatorState } from "../lib/simulator-state";
 import CopyButton from "./CopyButton";
 
 interface Props {
-  craftState: CraftState;
   actions: Action[];
   disabled?: boolean;
 }
 
-export default function CopyMacroButtons({ craftState, actions, disabled }: Props) {
-  const macroTextParts = SimulatorState.createMacroParts(craftState, actions);
+export default function CopyMacroButtons({ actions, disabled }: Props) {
+  const macroTextParts = SimulatorState.createMacroParts(actions);
 
   if (macroTextParts.length === 0) return null;
 

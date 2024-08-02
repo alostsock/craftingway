@@ -32,8 +32,7 @@ const RotationControls = observer(function RotationControls() {
       </button>
 
       <CopyMacroButtons
-        craftState={SimulatorState.craftState}
-        actions={SimulatorState.actions}
+        actions={SimulatorState.actions.slice(0, SimulatorState.lastValidActionIndex + 1)}
         disabled={isSearching}
       />
 

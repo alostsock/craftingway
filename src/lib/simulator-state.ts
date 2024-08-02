@@ -264,12 +264,10 @@ class _SimulatorState {
     }
   }
 
-  createMacroParts(craftState: CraftState, actions: Action[]): string[][] {
+  createMacroParts(actions: Action[]): string[][] {
     const lineLimit = 15;
 
-    const latestValidStep = craftState.step;
-    const validActions = actions.slice(0, latestValidStep - 1);
-    const lines = generateMacroText(validActions).map((line) =>
+    const lines = generateMacroText(actions).map((line) =>
       line.replace(/^(\/ac )("?.*"?)( <.*)$/, (_line, ac, action, wait) => {
         action = LocaleState.translateActionName(action.replaceAll('"', ""));
         action = action.indexOf(" ") >= 0 ? `"${action}"` : action;

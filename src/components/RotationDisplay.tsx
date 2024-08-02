@@ -133,7 +133,12 @@ const RotationDisplay = observer(function RotationDisplay({ slug }: Props) {
         )}
 
         <div className="controls">
-          <CopyMacroButtons craftState={simulatorResult.craft_state} actions={actions} />
+          <CopyMacroButtons
+            actions={actions.slice(
+              0,
+              simulatorResult ? simulatorResult.lastValidActionIndex + 1 : actions.length
+            )}
+          />
 
           <RotationLoadButton rotationData={rotationData} />
         </div>

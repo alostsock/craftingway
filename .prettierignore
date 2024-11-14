@@ -4,7 +4,9 @@ crafty
 server
 locales
 
-# ignore all files in /public except recipes.json
+# ignore all files in /public except data files
 !public/
 public/*
+!public/translations/
+!public/translations/*
 !public/recipes.json

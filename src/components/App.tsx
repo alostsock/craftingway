@@ -8,12 +8,12 @@ import { observer } from "mobx-react-lite";
 import { Redirect, Route, Switch } from "wouter";
 
 import CraftStateDisplay from "./CraftStateDisplay";
-import DawntrailNotice from "./DawntrailNotice";
 import DocumentTitle from "./DocumentTitle";
 import Footer from "./Footer";
 import Header from "./Header";
 import Logbook from "./Logbook";
 import Logo from "./Logo";
+import Notice from "./Notice";
 import PlayerConfig from "./PlayerConfig";
 import RecipeConfig from "./RecipeConfig";
 import RotationDisplay from "./RotationDisplay";
@@ -26,7 +26,7 @@ const App = observer(function App() {
         <TooltipProvider delayDuration={400} skipDelayDuration={300}>
           <Header />
 
-          <DawntrailNotice />
+          <Notice />
 
           <TranslationNotice />
 

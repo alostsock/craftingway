@@ -58,7 +58,7 @@ jobs:
       #     DATABASE_URL: sqlite:sqlite.db?mode=rwc
       #   working-directory: ./server
       #   run: |
-      #     cargo install sqlx-cli --no-default-features --features native-tls,sqlite
+      #     cargo install sqlx-cli --locked --no-default-features --features native-tls,sqlite
       #     sqlx migrate run
       #     cargo check
 

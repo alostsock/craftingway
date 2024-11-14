@@ -2,7 +2,7 @@ FROM rust:1.79-slim-bookworm AS builder
 RUN apt update && apt install -y libssl-dev pkg-config
 # sqlx requires a mock database for compile-time validation
 ENV DATABASE_URL=sqlite:sqlite.db?mode=rwc
-RUN cargo install sqlx-cli --no-default-features --features native-tls,sqlite
+RUN cargo install sqlx-cli --locked --no-default-features --features native-tls,sqlite
 WORKDIR /app
 COPY . .
 RUN sqlx migrate run

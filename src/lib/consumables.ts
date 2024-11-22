@@ -74,11 +74,41 @@ export function calculateConsumableBonus(
 }
 
 const MEALS: Consumable[] = [
-  { item_level: 4, name: "Frumenty", craftsmanship: null, control: null, cp: [10, 10, 13, 12] },
-  { item_level: 9, name: "Salt Cod", craftsmanship: null, control: [8, 4, 10, 5], cp: null },
-  { item_level: 10, name: "Mint Lassi", craftsmanship: [12, 8, 15, 10], control: null, cp: null },
-  { item_level: 17, name: "Raw Oyster", craftsmanship: null, control: [8, 8, 10, 10], cp: null },
-  { item_level: 17, name: "Stone Soup", craftsmanship: null, control: null, cp: [10, 17, 13, 21] },
+  {
+    item_level: 4,
+    name: "Frumenty",
+    craftsmanship: null,
+    control: null,
+    cp: [10, 10, 13, 12],
+  },
+  {
+    item_level: 9,
+    name: "Salt Cod",
+    craftsmanship: null,
+    control: [8, 4, 10, 5],
+    cp: null,
+  },
+  {
+    item_level: 10,
+    name: "Mint Lassi",
+    craftsmanship: [12, 8, 15, 10],
+    control: null,
+    cp: null,
+  },
+  {
+    item_level: 17,
+    name: "Raw Oyster",
+    craftsmanship: null,
+    control: [8, 8, 10, 10],
+    cp: null,
+  },
+  {
+    item_level: 17,
+    name: "Stone Soup",
+    craftsmanship: null,
+    control: null,
+    cp: [10, 17, 13, 21],
+  },
   {
     item_level: 18,
     name: "Mashed Popotoes",
@@ -86,8 +116,20 @@ const MEALS: Consumable[] = [
     control: null,
     cp: null,
   },
-  { item_level: 26, name: "Pea Soup", craftsmanship: null, control: null, cp: [10, 21, 13, 26] },
-  { item_level: 27, name: "Boiled Bream", craftsmanship: null, control: [8, 12, 10, 15], cp: null },
+  {
+    item_level: 26,
+    name: "Pea Soup",
+    craftsmanship: null,
+    control: null,
+    cp: [10, 21, 13, 26],
+  },
+  {
+    item_level: 27,
+    name: "Boiled Bream",
+    craftsmanship: null,
+    control: [8, 12, 10, 15],
+    cp: null,
+  },
   {
     item_level: 27,
     name: "Cheese Risotto",
@@ -95,7 +137,13 @@ const MEALS: Consumable[] = [
     control: null,
     cp: null,
   },
-  { item_level: 29, name: "Baked Sole", craftsmanship: null, control: [8, 14, 10, 17], cp: null },
+  {
+    item_level: 29,
+    name: "Baked Sole",
+    craftsmanship: null,
+    control: [8, 14, 10, 17],
+    cp: null,
+  },
   {
     item_level: 32,
     name: "Tuna Miq'abob",
@@ -103,7 +151,13 @@ const MEALS: Consumable[] = [
     control: [8, 16, 10, 20],
     cp: null,
   },
-  { item_level: 34, name: "Cawl Cennin", craftsmanship: null, control: null, cp: [10, 24, 13, 30] },
+  {
+    item_level: 34,
+    name: "Cawl Cennin",
+    craftsmanship: null,
+    control: null,
+    cp: [10, 24, 13, 30],
+  },
   {
     item_level: 36,
     name: "Cheese Souffle",
@@ -118,7 +172,13 @@ const MEALS: Consumable[] = [
     control: [8, 18, 10, 23],
     cp: null,
   },
-  { item_level: 43, name: "Fish Soup", craftsmanship: null, control: null, cp: [10, 26, 13, 33] },
+  {
+    item_level: 43,
+    name: "Fish Soup",
+    craftsmanship: null,
+    control: null,
+    cp: [10, 26, 13, 33],
+  },
   {
     item_level: 46,
     name: "Rolanberry Lassi",
@@ -126,7 +186,13 @@ const MEALS: Consumable[] = [
     control: null,
     cp: null,
   },
-  { item_level: 50, name: "Dagger Soup", craftsmanship: null, control: [8, 22, 10, 27], cp: null },
+  {
+    item_level: 50,
+    name: "Dagger Soup",
+    craftsmanship: null,
+    control: [8, 22, 10, 27],
+    cp: null,
+  },
   {
     item_level: 55,
     name: "Pan-fried Mahi-mahi",
@@ -325,7 +391,7 @@ const MEALS: Consumable[] = [
   },
   {
     item_level: 657,
-    name: "Gateau Au Chocolat",
+    name: "Gateau au Chocolat",
     craftsmanship: [7, 192, 9, 240],
     control: null,
     cp: [8, 30, 10, 38],
@@ -343,6 +409,13 @@ const MEALS: Consumable[] = [
     craftsmanship: null,
     control: [4, 77, 5, 97],
     cp: [21, 73, 26, 92],
+  },
+  {
+    item_level: 720,
+    name: "Ceviche",
+    craftsmanship: [4, 120, 5, 150],
+    control: null,
+    cp: [21, 76, 26, 96],
   },
 ];
 

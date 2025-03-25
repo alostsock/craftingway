@@ -58,7 +58,8 @@ yarn compile-messages
 
 # Run this in one terminal
 yarn run dev
-# ... and this in another terminal.
+# ... and this in another terminal (migrations can be run as needed)
+cd server && sqlx migrate run
 yarn run dev-server
 ```
 

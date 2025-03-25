@@ -1,4 +1,4 @@
-FROM rust:1.79-slim-bookworm AS builder
+FROM rust:1.81-slim-bookworm AS builder
 RUN apt update && apt install -y libssl-dev pkg-config
 # sqlx requires a mock database for compile-time validation
 ENV DATABASE_URL=sqlite:sqlite.db?mode=rwc

@@ -13,15 +13,15 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/RecipeConfig.tsx:48
+#: src/components/RecipeConfig.tsx:50
 msgid "by level"
 msgstr "by level"
 
-#: src/components/RecipeConfig.tsx:47
+#: src/components/RecipeConfig.tsx:49
 msgid "by name"
 msgstr "by name"
 
-#: src/components/RecipeConfig.tsx:44
+#: src/components/RecipeConfig.tsx:45
 msgid "Search for a recipe"
 msgstr "Search for a recipe"
 

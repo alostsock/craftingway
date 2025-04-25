@@ -38,9 +38,19 @@ const IngredientConfig = observer(function IngredientConfig() {
     }
   });
 
+  const setAllHq = () => {
+    const ingredients: Record<string, number> = {};
+    RecipeState.recipe?.ingredients?.forEach(ingredient => {
+      if (ingredient.can_hq) {
+        ingredients[ingredient.name] = ingredient.amount
+      }
+    })
+    RecipeState.hq_ingredients = ingredients;
+  }
+
   return (
     <div className="IngredientConfig">
-      <div className="prompt">HQ ingredients:</div>
+      <div className="prompt">HQ ingredients: <button className="link" onClick={setAllHq}>Select all</button></div>
 
       <div className="ingredients">
         {RecipeState.recipe.ingredients

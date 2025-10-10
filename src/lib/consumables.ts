@@ -417,6 +417,13 @@ const MEALS: Consumable[] = [
     control: null,
     cp: [21, 76, 26, 96],
   },
+  {
+    item_level: 750,
+    name: "All i Pebre",
+    craftsmanship: null,
+    control: [4, 92, 5, 115],
+    cp: [21, 80, 26, 100],
+  },
 ];
 
 const POTIONS: Consumable[] = [

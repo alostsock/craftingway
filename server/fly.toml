@@ -1,6 +1,6 @@
 app = "servingway"
 
-primary_region = "atl"
+primary_region = "dfw"
 kill_signal = "SIGINT"
 kill_timeout = 5
 

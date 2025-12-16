@@ -13,7 +13,7 @@ export default function Notice() {
 
   return (
     <div className="Notice">
-      <Emoji emoji="🌅" /> Updated for patch 7.35!
+      <Emoji emoji="☄️" /> Updated for patch 7.4!
     </div>
   );
 }

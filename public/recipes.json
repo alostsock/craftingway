@@ -92889,9 +92889,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Concentrated Spirits of Salt",
@@ -96358,9 +96356,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Cosmic Tool-compatible Repair Oil",
@@ -96440,9 +96436,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Cosmoliner Aether Fiber",
@@ -96638,9 +96632,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 50,
-    "ingredients": [
-      { "name": "Survey Sap", "amount": 3, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Survey Sap", "amount": 3, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Cosmoliner Shaft",
@@ -131567,9 +131559,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 50,
-    "ingredients": [
-      { "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Drone Wire",
@@ -131620,9 +131610,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 50,
-    "ingredients": [
-      { "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Drowned King Sculpture",
@@ -211011,9 +210999,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 90,
-    "ingredients": [
-      { "name": "Habitat Flour", "amount": 2, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Habitat Flour", "amount": 2, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Habitat Breakfast",
@@ -211093,9 +211079,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 35,
-    "ingredients": [
-      { "name": "Survey Wax", "amount": 1, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Survey Wax", "amount": 1, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Habitat Candles",
@@ -211494,9 +211478,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 45,
-    "ingredients": [
-      { "name": "Test Fab Cloth", "amount": 2, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Test Fab Cloth", "amount": 2, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Habitat Dishware",
@@ -243471,9 +243453,7 @@
     "conditions_flag": 995,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Iron Plating", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Iron Plating", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Impact-resistant Metal Flooring",
@@ -243495,9 +243475,7 @@
     "conditions_flag": 995,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Iron Plating", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Iron Plating", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Impact-resistant Plating",
@@ -247747,9 +247725,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 50,
-    "ingredients": [
-      { "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Drone Plating", "amount": 3, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Indurate Lunar Adamantite Ingot",
@@ -372459,9 +372435,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Recycled Survey Velvet",
@@ -451022,9 +450996,7 @@
     "conditions_flag": 995,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Survey Cloth", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Survey Cloth", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Survey Ataxite Ingot",
@@ -451679,9 +451651,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Survey Desiccant",
@@ -452347,9 +452317,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 90,
-    "ingredients": [
-      { "name": "Test Fab Cloth", "amount": 2, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Test Fab Cloth", "amount": 2, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Survey Hi-Ether",
@@ -454212,9 +454180,7 @@
     "conditions_flag": 995,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Survey Cloth", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Survey Cloth", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Survey Uniform",
@@ -494264,9 +494230,7 @@
     "conditions_flag": 1011,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Oizys Curios", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Voyagers' Plaque",
@@ -508208,9 +508172,7 @@
     "conditions_flag": 995,
     "can_hq": true,
     "material_quality": 0,
-    "ingredients": [
-      { "name": "Worker's Skyr", "amount": 1, "item_level": 1, "can_hq": false }
-    ]
+    "ingredients": [{ "name": "Worker's Skyr", "amount": 1, "item_level": 1, "can_hq": false }]
   },
   {
     "name": "Worker's Supplement Tray",
@@ -508290,9 +508252,7 @@
     "conditions_flag": 15,
     "can_hq": true,
     "material_quality": 30,
-    "ingredients": [
-      { "name": "Worker's Oil", "amount": 1, "item_level": 1, "can_hq": true }
-    ]
+    "ingredients": [{ "name": "Worker's Oil", "amount": 1, "item_level": 1, "can_hq": true }]
   },
   {
     "name": "Worker's Vitamins",
